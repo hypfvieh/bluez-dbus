@@ -6,6 +6,7 @@ import org.bluez.datatypes.TwoTuple;
 import org.bluez.exceptions.BluezFailedException;
 import org.bluez.exceptions.BluezInvalidArgumentsException;
 import org.freedesktop.dbus.interfaces.DBusInterface;
+import org.freedesktop.dbus.types.Variant;
 
 /**
  * File generated - 2018-03-08.<br>
@@ -52,7 +53,7 @@ public interface MessageAccess1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezFailedException
      */
-    Map<?, ?>[] ListFolders(Map<?, ?> _filter) throws BluezInvalidArgumentsException, BluezFailedException;
+    Map<String, Variant<?>>[] ListFolders(Map<String, Variant<?>> _filter) throws BluezInvalidArgumentsException, BluezFailedException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -163,7 +164,7 @@ public interface MessageAccess1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezFailedException
      */
-    TwoTuple<Object,Map<?,?>>[] ListMessages(String _folder, Map<?, ?> _filter) throws BluezInvalidArgumentsException, BluezFailedException;
+    TwoTuple<DBusInterface, Map<String,Variant<?>>>[] ListMessages(String _folder, Map<String, Variant<?>> _filter) throws BluezInvalidArgumentsException, BluezFailedException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -204,6 +205,6 @@ public interface MessageAccess1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezFailedException
      */
-    TwoTuple<Object,Map<?,?>> PushMessage(String _sourcefile, String _folder, Map<?, ?> _args) throws BluezInvalidArgumentsException, BluezFailedException;
+    TwoTuple<DBusInterface, Map<String, Variant<?>>> PushMessage(String _sourcefile, String _folder, Map<String, Variant<?>> _args) throws BluezInvalidArgumentsException, BluezFailedException;
 
 }

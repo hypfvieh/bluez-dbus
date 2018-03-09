@@ -1,10 +1,12 @@
 package org.bluez.obex;
 
-import org.freedesktop.dbus.interfaces.DBusInterface;
 import java.util.Map;
+
 import org.bluez.exceptions.BluezFailedException;
 import org.bluez.exceptions.BluezInvalidArgumentsException;
 import org.bluez.exceptions.BluezNotAuthorizedException;
+import org.freedesktop.dbus.interfaces.DBusInterface;
+import org.freedesktop.dbus.types.Variant;
 
 /**
  * File generated - 2018-03-08.<br>
@@ -47,7 +49,7 @@ public interface Client1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezFailedException
      */
-    Object CreateSession(String _destination, Map<?, ?> _args) throws BluezInvalidArgumentsException, BluezFailedException;
+    DBusInterface CreateSession(String _destination, Map<String, Variant<?>> _args) throws BluezInvalidArgumentsException, BluezFailedException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -60,6 +62,6 @@ public interface Client1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezNotAuthorizedException
      */
-    void RemoveSession(Object _session) throws BluezInvalidArgumentsException, BluezNotAuthorizedException;
+    void RemoveSession(DBusInterface _session) throws BluezInvalidArgumentsException, BluezNotAuthorizedException;
 
 }

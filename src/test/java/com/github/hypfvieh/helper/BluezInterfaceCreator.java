@@ -577,7 +577,7 @@ public class BluezInterfaceCreator {
             dataType = split[0];
             varname = "_" + StringUtil.lowerCaseFirstChar(split[1]);
         } else {
-            dataType = "Object";
+            dataType = "DBusInterface";
             varname = _string;
         }
 
@@ -620,7 +620,7 @@ public class BluezInterfaceCreator {
             _dataType = "FileDescriptor";
         } else if (_dataType.contains(",")) { // tuple
             if (_dataType.equals("object, dict")) {
-                _dataType = "TwoTuple<Object,Map<?,?>>";
+                _dataType = "TwoTuple<Object,Map<String, Variant<?>>>";
             } else {
                 String[] split = _dataType.split(",");
                 List<String> data = new ArrayList<>();

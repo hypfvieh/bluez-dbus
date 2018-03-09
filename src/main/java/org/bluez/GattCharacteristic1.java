@@ -172,7 +172,7 @@ public interface GattCharacteristic1 extends DBusInterface {
      * @throws BluezFailedException
      * @throws BluezNotSupportedException
      */
-    TwoTuple<FileDescriptor, UInt16> AcquireWrite(Map<?, ?> _options) throws BluezFailedException, BluezNotSupportedException;
+    TwoTuple<FileDescriptor, UInt16> AcquireWrite(Map<String, Variant<?>> _options) throws BluezFailedException, BluezNotSupportedException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -213,7 +213,7 @@ public interface GattCharacteristic1 extends DBusInterface {
      * @throws BluezFailedException
      * @throws BluezNotSupportedException
      */
-    TwoTuple<FileDescriptor, UInt16> AcquireNotify(Map<?, ?> _options) throws BluezFailedException, BluezNotSupportedException;
+    TwoTuple<FileDescriptor, UInt16> AcquireNotify(Map<String, Variant<?>> _options) throws BluezFailedException, BluezNotSupportedException;
 
     /**
      * <b>From bluez documentation:</b><br>

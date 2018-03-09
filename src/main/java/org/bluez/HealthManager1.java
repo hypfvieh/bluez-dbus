@@ -1,10 +1,12 @@
 package org.bluez;
 
-import org.freedesktop.dbus.interfaces.DBusInterface;
 import java.util.Map;
+
 import org.bluez.exceptions.BluezInvalidArgumentsException;
 import org.bluez.exceptions.BluezNotAllowedException;
 import org.bluez.exceptions.BluezNotFoundException;
+import org.freedesktop.dbus.interfaces.DBusInterface;
+import org.freedesktop.dbus.types.Variant;
 
 /**
  * File generated - 2018-03-08.<br>
@@ -50,7 +52,7 @@ public interface HealthManager1 extends DBusInterface {
      * 
      * @throws BluezInvalidArgumentsException
      */
-    Object CreateApplication(Map<?, ?> _config) throws BluezInvalidArgumentsException;
+    DBusInterface CreateApplication(Map<String, Variant<?>> _config) throws BluezInvalidArgumentsException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -67,6 +69,6 @@ public interface HealthManager1 extends DBusInterface {
      * @throws BluezNotFoundException
      * @throws BluezNotAllowedException
      */
-    void DestroyApplication(Object _application) throws BluezInvalidArgumentsException, BluezNotFoundException, BluezNotAllowedException;
+    void DestroyApplication(DBusInterface _application) throws BluezInvalidArgumentsException, BluezNotFoundException, BluezNotAllowedException;
 
 }

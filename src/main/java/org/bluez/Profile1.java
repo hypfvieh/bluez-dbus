@@ -1,9 +1,11 @@
 package org.bluez;
 
-import org.freedesktop.dbus.interfaces.DBusInterface;
 import java.util.Map;
+
 import org.bluez.exceptions.BluezCanceledException;
 import org.bluez.exceptions.BluezRejectedException;
+import org.freedesktop.dbus.interfaces.DBusInterface;
+import org.freedesktop.dbus.types.Variant;
 
 /**
  * File generated - 2018-03-08.<br>
@@ -49,7 +51,7 @@ public interface Profile1 extends DBusInterface {
      * @throws BluezRejectedException
      * @throws BluezCanceledException
      */
-    void NewConnection(Object _device, Object fd, Map<?, ?> _fd_properties) throws BluezRejectedException, BluezCanceledException;
+    void NewConnection(DBusInterface _device, DBusInterface fd, Map<String, Variant<?>> _fd_properties) throws BluezRejectedException, BluezCanceledException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -72,6 +74,6 @@ public interface Profile1 extends DBusInterface {
      * @throws BluezRejectedException
      * @throws BluezCanceledException
      */
-    void RequestDisconnection(Object _device) throws BluezRejectedException, BluezCanceledException;
+    void RequestDisconnection(DBusInterface _device) throws BluezRejectedException, BluezCanceledException;
 
 }

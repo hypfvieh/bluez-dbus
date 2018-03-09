@@ -6,6 +6,7 @@ import org.bluez.exceptions.BluezAlreadyExistsException;
 import org.bluez.exceptions.BluezDoesNotExistException;
 import org.bluez.exceptions.BluezInvalidArgumentsException;
 import org.freedesktop.dbus.interfaces.DBusInterface;
+import org.freedesktop.dbus.types.Variant;
 
 /**<br>
  * File generated - 2018-03-08.<br>
@@ -102,7 +103,7 @@ public interface GattManager1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezAlreadyExistsException
      */
-    void RegisterApplication(Object _application, Map<?, ?> _options) throws BluezInvalidArgumentsException, BluezAlreadyExistsException;
+    void RegisterApplication(DBusInterface _application, Map<String, Variant<?>> _options) throws BluezInvalidArgumentsException, BluezAlreadyExistsException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -118,6 +119,6 @@ public interface GattManager1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezDoesNotExistException
      */
-    void UnregisterApplication(Object _application) throws BluezInvalidArgumentsException, BluezDoesNotExistException;
+    void UnregisterApplication(DBusInterface _application) throws BluezInvalidArgumentsException, BluezDoesNotExistException;
 
 }

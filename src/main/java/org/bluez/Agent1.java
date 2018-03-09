@@ -46,7 +46,7 @@ public interface Agent1 extends DBusInterface {
      * @throws BluezRejectedException
      * @throws BluezCanceledException
      */
-    String RequestPinCode(Object _device) throws BluezRejectedException, BluezCanceledException;
+    String RequestPinCode(DBusInterface _device) throws BluezRejectedException, BluezCanceledException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -77,7 +77,7 @@ public interface Agent1 extends DBusInterface {
      * @throws BluezRejectedException
      * @throws BluezCanceledException
      */
-    void DisplayPinCode(Object _device, String _pincode) throws BluezRejectedException, BluezCanceledException;
+    void DisplayPinCode(DBusInterface _device, String _pincode) throws BluezRejectedException, BluezCanceledException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -94,7 +94,7 @@ public interface Agent1 extends DBusInterface {
      * @throws BluezRejectedException
      * @throws BluezCanceledException
      */
-    UInt32 RequestPasskey(Object _device) throws BluezRejectedException, BluezCanceledException;
+    UInt32 RequestPasskey(DBusInterface _device) throws BluezRejectedException, BluezCanceledException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -121,7 +121,7 @@ public interface Agent1 extends DBusInterface {
      * @param _passkey
      * @param _entered
      */
-    void DisplayPasskey(Object _device, UInt32 _passkey, UInt16 _entered);
+    void DisplayPasskey(DBusInterface _device, UInt32 _passkey, UInt16 _entered);
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -143,7 +143,7 @@ public interface Agent1 extends DBusInterface {
      * @throws BluezRejectedException
      * @throws BluezCanceledException
      */
-    void RequestConfirmation(Object _device, UInt32 _passkey) throws BluezRejectedException, BluezCanceledException;
+    void RequestConfirmation(DBusInterface _device, UInt32 _passkey) throws BluezRejectedException, BluezCanceledException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -162,7 +162,7 @@ public interface Agent1 extends DBusInterface {
      * @throws BluezRejectedException
      * @throws BluezCanceledException
      */
-    void RequestAuthorization(Object _device) throws BluezRejectedException, BluezCanceledException;
+    void RequestAuthorization(DBusInterface _device) throws BluezRejectedException, BluezCanceledException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -177,7 +177,7 @@ public interface Agent1 extends DBusInterface {
      * @throws BluezRejectedException
      * @throws BluezCanceledException
      */
-    void AuthorizeService(Object _device, String _uuid) throws BluezRejectedException, BluezCanceledException;
+    void AuthorizeService(DBusInterface _device, String _uuid) throws BluezRejectedException, BluezCanceledException;
 
     /**
      * <b>From bluez documentation:</b><br>

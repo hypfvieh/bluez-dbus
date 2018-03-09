@@ -56,7 +56,7 @@ public interface AgentManager1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezAlreadyExistsException
      */
-    void RegisterAgent(Object _agent, String _capability) throws BluezInvalidArgumentsException, BluezAlreadyExistsException;
+    void RegisterAgent(DBusInterface _agent, String _capability) throws BluezInvalidArgumentsException, BluezAlreadyExistsException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -70,7 +70,7 @@ public interface AgentManager1 extends DBusInterface {
      *
      * @throws BluezDoesNotExistException
      */
-    void UnregisterAgent(Object _agent) throws BluezDoesNotExistException;
+    void UnregisterAgent(DBusInterface _agent) throws BluezDoesNotExistException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -87,6 +87,6 @@ public interface AgentManager1 extends DBusInterface {
      *
      * @throws BluezDoesNotExistException
      */
-    void RequestDefaultAgent(Object _agent) throws BluezDoesNotExistException;
+    void RequestDefaultAgent(DBusInterface _agent) throws BluezDoesNotExistException;
 
 }

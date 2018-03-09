@@ -63,7 +63,7 @@ public interface HealthDevice1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezHealthErrorException
      */
-    Object CreateChannel(Object _application, String _configuration) throws BluezInvalidArgumentsException, BluezHealthErrorException;
+    DBusInterface CreateChannel(Object _application, String _configuration) throws BluezInvalidArgumentsException, BluezHealthErrorException;
 
     /**
      * <b>From bluez documentation:</b><br>

@@ -18,6 +18,7 @@ import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.UInt16;
 import org.freedesktop.dbus.types.UInt32;
+import org.freedesktop.dbus.types.Variant;
 
 /**
  * Wrapper class which represents an bluetooth adapter.
@@ -328,9 +329,9 @@ public class BluetoothAdapter extends AbstractBluetoothObject {
      * @throws BluezNotSupportedException if operation not supported
      * @throws BluezFailedException any other error
      */
-    public void setDiscoveryFilter(Map<String, Object> _filter) throws BluezInvalidArgumentsException, BluezNotReadyException, BluezNotSupportedException, BluezFailedException {
+    public void setDiscoveryFilter(Map<String, Variant<?>> _filter) throws BluezInvalidArgumentsException, BluezNotReadyException, BluezNotSupportedException, BluezFailedException {
 
-        for (Entry<String, Object> entry : _filter.entrySet()) {
+        for (Entry<String, Variant<?>> entry : _filter.entrySet()) {
             if (!supportedFilterOptions.containsKey(entry.getKey())) {
                 throw new BluezInvalidArgumentsException("Key " + entry.getKey() + " is not supported by Bluez library");
             }
@@ -341,7 +342,8 @@ public class BluetoothAdapter extends AbstractBluetoothObject {
             }
         }
         if (_filter.containsKey("Transport")) {
-            String transportType = (String) _filter.get("Transport");
+            @SuppressWarnings("unchecked")
+            String transportType = ((Variant<String>) _filter.get("Transport")).getValue();
             if (!Arrays.asList(supportedTransportValues).contains(transportType)) {
                 throw new BluezInvalidArgumentsException("Transport option " + transportType + " is unsupported.");
             }

@@ -8,6 +8,7 @@ import org.bluez.exceptions.BluezFailedException;
 import org.bluez.exceptions.BluezInvalidArgumentsException;
 import org.bluez.exceptions.BluezNotSupportedException;
 import org.freedesktop.dbus.interfaces.DBusInterface;
+import org.freedesktop.dbus.types.Variant;
 
 /**
  * File generated - 2018-03-08.<br>
@@ -81,7 +82,7 @@ public interface MediaFolder1 extends DBusInterface {
      * @throws BluezNotSupportedException
      * @throws BluezFailedException
      */
-    Object Search(String _value, Map<?, ?> _filter) throws BluezNotSupportedException, BluezFailedException;
+    MediaFolder1 Search(String _value, Map<String, Variant<?>> _filter) throws BluezNotSupportedException, BluezFailedException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -95,7 +96,7 @@ public interface MediaFolder1 extends DBusInterface {
      * @throws BluezNotSupportedException
      * @throws BluezFailedException
      */
-    TwoTuple<Object, Properties>[] ListItems(Map<?, ?> _filter) throws BluezInvalidArgumentsException, BluezNotSupportedException, BluezFailedException;
+    TwoTuple<DBusInterface, Properties>[] ListItems(Map<String, Variant<?>> _filter) throws BluezInvalidArgumentsException, BluezNotSupportedException, BluezFailedException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -114,6 +115,6 @@ public interface MediaFolder1 extends DBusInterface {
      * @throws BluezNotSupportedException
      * @throws BluezFailedException
      */
-    void ChangeFolder(Object _folder) throws BluezInvalidArgumentsException, BluezNotSupportedException, BluezFailedException;
+    void ChangeFolder(MediaFolder1 _folder) throws BluezInvalidArgumentsException, BluezNotSupportedException, BluezFailedException;
 
 }

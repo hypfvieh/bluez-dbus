@@ -29,7 +29,7 @@ public interface AgentManager1 extends DBusInterface {
      * 
      * @throws BluezAlreadyExistsException
      */
-    void RegisterAgent(Object _agent) throws BluezAlreadyExistsException;
+    void RegisterAgent(DBusInterface _agent) throws BluezAlreadyExistsException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -43,6 +43,6 @@ public interface AgentManager1 extends DBusInterface {
      * 
      * @throws BluezDoesNotExistException
      */
-    void UnregisterAgent(Object _agent) throws BluezDoesNotExistException;
+    void UnregisterAgent(DBusInterface _agent) throws BluezDoesNotExistException;
 
 }

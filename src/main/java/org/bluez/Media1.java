@@ -1,9 +1,11 @@
 package org.bluez;
 
-import org.freedesktop.dbus.interfaces.DBusInterface;
 import java.util.Map;
+
 import org.bluez.exceptions.BluezInvalidArgumentsException;
 import org.bluez.exceptions.BluezNotSupportedException;
+import org.freedesktop.dbus.interfaces.DBusInterface;
+import org.freedesktop.dbus.types.Variant;
 
 /**
  * File generated - 2018-03-08.<br>
@@ -52,7 +54,7 @@ public interface Media1 extends DBusInterface {
      * 
      * @throws BluezInvalidArgumentsException
      */
-    void RegisterEndpoint(Object _endpoint, Map<?, ?> _properties) throws BluezInvalidArgumentsException;
+    void RegisterEndpoint(DBusInterface _endpoint, Map<String, Variant<?>> _properties) throws BluezInvalidArgumentsException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -62,7 +64,7 @@ public interface Media1 extends DBusInterface {
      * 
      * @param _endpoint
      */
-    void UnregisterEndpoint(Object _endpoint);
+    void UnregisterEndpoint(DBusInterface _endpoint);
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -86,7 +88,7 @@ public interface Media1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezNotSupportedException
      */
-    void RegisterPlayer(Object _player, Map<?, ?> _properties) throws BluezInvalidArgumentsException, BluezNotSupportedException;
+    void RegisterPlayer(MediaPlayer1 _player, Map<String, Variant<?>> _properties) throws BluezInvalidArgumentsException, BluezNotSupportedException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -97,6 +99,6 @@ public interface Media1 extends DBusInterface {
      * 
      * @param _player
      */
-    void UnregisterPlayer(Object _player);
+    void UnregisterPlayer(MediaPlayer1 _player);
 
 }

@@ -1,12 +1,14 @@
 package org.bluez;
 
-import org.freedesktop.dbus.interfaces.DBusInterface;
 import java.util.Map;
+
 import org.bluez.exceptions.BluezFailedException;
 import org.bluez.exceptions.BluezInvalidArgumentsException;
 import org.bluez.exceptions.BluezNotAuthorizedException;
 import org.bluez.exceptions.BluezNotReadyException;
 import org.bluez.exceptions.BluezNotSupportedException;
+import org.freedesktop.dbus.interfaces.DBusInterface;
+import org.freedesktop.dbus.types.Variant;
 
 /**
  * File generated - 2018-03-08.<br>
@@ -194,7 +196,7 @@ public interface Adapter1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezFailedException
      */
-    void RemoveDevice(Object _device) throws BluezInvalidArgumentsException, BluezFailedException;
+    void RemoveDevice(DBusInterface _device) throws BluezInvalidArgumentsException, BluezFailedException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -293,7 +295,7 @@ public interface Adapter1 extends DBusInterface {
      * @throws BluezNotSupportedException
      * @throws BluezFailedException
      */
-    void SetDiscoveryFilter(Map<?, ?> _filter) throws BluezNotReadyException, BluezNotSupportedException, BluezFailedException;
+    void SetDiscoveryFilter(Map<String, Variant<?>> _filter) throws BluezNotReadyException, BluezNotSupportedException, BluezFailedException;
 
     /**
      * <b>From bluez documentation:</b><br>

@@ -1,12 +1,14 @@
 package org.bluez;
 
-import org.freedesktop.dbus.interfaces.DBusInterface;
 import java.util.Map;
+
 import org.bluez.exceptions.BluezAlreadyExistsException;
 import org.bluez.exceptions.BluezDoesNotExistException;
 import org.bluez.exceptions.BluezInvalidArgumentsException;
 import org.bluez.exceptions.BluezInvalidLengthException;
 import org.bluez.exceptions.BluezNotPermittedException;
+import org.freedesktop.dbus.interfaces.DBusInterface;
+import org.freedesktop.dbus.types.Variant;
 
 /**
  * File generated - 2018-03-08.<br>
@@ -70,7 +72,7 @@ public interface LEAdvertisingManager1 extends DBusInterface {
      * @throws BluezInvalidLengthException
      * @throws BluezNotPermittedException
      */
-    void RegisterAdvertisement(Object _advertisement, Map<?, ?> _options) throws BluezInvalidArgumentsException, BluezAlreadyExistsException, BluezInvalidLengthException, BluezNotPermittedException;
+    void RegisterAdvertisement(DBusInterface _advertisement, Map<String, Variant<?>> _options) throws BluezInvalidArgumentsException, BluezAlreadyExistsException, BluezInvalidLengthException, BluezNotPermittedException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -85,6 +87,6 @@ public interface LEAdvertisingManager1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezDoesNotExistException
      */
-    void UnregisterAdvertisement(Object _advertisement) throws BluezInvalidArgumentsException, BluezDoesNotExistException;
+    void UnregisterAdvertisement(DBusInterface _advertisement) throws BluezInvalidArgumentsException, BluezDoesNotExistException;
 
 }

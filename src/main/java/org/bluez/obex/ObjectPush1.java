@@ -1,10 +1,12 @@
 package org.bluez.obex;
 
-import org.freedesktop.dbus.interfaces.DBusInterface;
 import java.util.Map;
+
 import org.bluez.datatypes.TwoTuple;
 import org.bluez.exceptions.BluezFailedException;
 import org.bluez.exceptions.BluezInvalidArgumentsException;
+import org.freedesktop.dbus.interfaces.DBusInterface;
+import org.freedesktop.dbus.types.Variant;
 
 /**
  * File generated - 2018-03-08.<br>
@@ -37,7 +39,7 @@ public interface ObjectPush1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezFailedException
      */
-    TwoTuple<Object,Map<?,?>> SendFile(String _sourcefile) throws BluezInvalidArgumentsException, BluezFailedException;
+    TwoTuple<DBusInterface, Map<String, Variant<?>>> SendFile(String _sourcefile) throws BluezInvalidArgumentsException, BluezFailedException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -61,7 +63,7 @@ public interface ObjectPush1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezFailedException
      */
-    TwoTuple<Object,Map<?,?>> PullBusinessCard(String _targetfile) throws BluezInvalidArgumentsException, BluezFailedException;
+    TwoTuple<DBusInterface, Map<String, Variant<?>>> PullBusinessCard(String _targetfile) throws BluezInvalidArgumentsException, BluezFailedException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -87,6 +89,6 @@ public interface ObjectPush1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezFailedException
      */
-    TwoTuple<Object,Map<?,?>> ExchangeBusinessCards(String _clientfile, String _targetfile) throws BluezInvalidArgumentsException, BluezFailedException;
+    TwoTuple<DBusInterface, Map<String, Variant<?>>> ExchangeBusinessCards(String _clientfile, String _targetfile) throws BluezInvalidArgumentsException, BluezFailedException;
 
 }
