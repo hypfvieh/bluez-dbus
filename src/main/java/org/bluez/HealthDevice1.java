@@ -5,6 +5,7 @@ import org.bluez.exceptions.BluezInvalidArgumentsException;
 import org.bluez.exceptions.BluezNotAllowedException;
 import org.bluez.exceptions.BluezNotFoundException;
 import org.bluez.exceptions.BluezOutOfRangeException;
+import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.messages.DBusSignal;
@@ -63,7 +64,7 @@ public interface HealthDevice1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezHealthErrorException
      */
-    DBusInterface CreateChannel(Object _application, String _configuration) throws BluezInvalidArgumentsException, BluezHealthErrorException;
+    DBusPath CreateChannel(DBusPath _application, String _configuration) throws BluezInvalidArgumentsException, BluezHealthErrorException;
 
     /**
      * <b>From bluez documentation:</b><br>

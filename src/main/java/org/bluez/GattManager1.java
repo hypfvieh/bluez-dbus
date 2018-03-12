@@ -5,6 +5,7 @@ import java.util.Map;
 import org.bluez.exceptions.BluezAlreadyExistsException;
 import org.bluez.exceptions.BluezDoesNotExistException;
 import org.bluez.exceptions.BluezInvalidArgumentsException;
+import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
 
@@ -97,13 +98,13 @@ public interface GattManager1 extends DBusInterface {
      * service or profile.<br>
      * <br>
      *
-     * @param _application
+     * @param _objPath
      * @param _options
      *
      * @throws BluezInvalidArgumentsException
      * @throws BluezAlreadyExistsException
      */
-    void RegisterApplication(DBusInterface _application, Map<String, Variant<?>> _options) throws BluezInvalidArgumentsException, BluezAlreadyExistsException;
+    void RegisterApplication(DBusPath _objPath, Map<String, Variant<?>> _options) throws BluezInvalidArgumentsException, BluezAlreadyExistsException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -114,11 +115,11 @@ public interface GattManager1 extends DBusInterface {
      * on registration.<br>
      * <br>
      *
-     * @param _application
+     * @param _objPath
      *
      * @throws BluezInvalidArgumentsException
      * @throws BluezDoesNotExistException
      */
-    void UnregisterApplication(DBusInterface _application) throws BluezInvalidArgumentsException, BluezDoesNotExistException;
+    void UnregisterApplication(DBusPath _objPath) throws BluezInvalidArgumentsException, BluezDoesNotExistException;
 
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 import org.bluez.exceptions.BluezInvalidArgumentsException;
 import org.bluez.exceptions.BluezNotAllowedException;
 import org.bluez.exceptions.BluezNotFoundException;
+import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
 
@@ -69,6 +70,6 @@ public interface HealthManager1 extends DBusInterface {
      * @throws BluezNotFoundException
      * @throws BluezNotAllowedException
      */
-    void DestroyApplication(DBusInterface _application) throws BluezInvalidArgumentsException, BluezNotFoundException, BluezNotAllowedException;
+    void DestroyApplication(DBusPath _application) throws BluezInvalidArgumentsException, BluezNotFoundException, BluezNotAllowedException;
 
 }

@@ -7,6 +7,7 @@ import org.bluez.exceptions.BluezInvalidArgumentsException;
 import org.bluez.exceptions.BluezNotAuthorizedException;
 import org.bluez.exceptions.BluezNotReadyException;
 import org.bluez.exceptions.BluezNotSupportedException;
+import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
 
@@ -196,7 +197,7 @@ public interface Adapter1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezFailedException
      */
-    void RemoveDevice(DBusInterface _device) throws BluezInvalidArgumentsException, BluezFailedException;
+    void RemoveDevice(DBusPath _device) throws BluezInvalidArgumentsException, BluezFailedException;
 
     /**
      * <b>From bluez documentation:</b><br>

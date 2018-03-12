@@ -3,6 +3,7 @@ package org.bluez;
 import org.bluez.exceptions.BluezAlreadyExistsException;
 import org.bluez.exceptions.BluezDoesNotExistException;
 import org.bluez.exceptions.BluezInvalidArgumentsException;
+import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 
 /**
@@ -56,7 +57,7 @@ public interface AgentManager1 extends DBusInterface {
      * @throws BluezInvalidArgumentsException
      * @throws BluezAlreadyExistsException
      */
-    void RegisterAgent(DBusInterface _agent, String _capability) throws BluezInvalidArgumentsException, BluezAlreadyExistsException;
+    void RegisterAgent(DBusPath _agent, String _capability) throws BluezInvalidArgumentsException, BluezAlreadyExistsException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -70,7 +71,7 @@ public interface AgentManager1 extends DBusInterface {
      *
      * @throws BluezDoesNotExistException
      */
-    void UnregisterAgent(DBusInterface _agent) throws BluezDoesNotExistException;
+    void UnregisterAgent(DBusPath _agent) throws BluezDoesNotExistException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -87,6 +88,6 @@ public interface AgentManager1 extends DBusInterface {
      *
      * @throws BluezDoesNotExistException
      */
-    void RequestDefaultAgent(DBusInterface _agent) throws BluezDoesNotExistException;
+    void RequestDefaultAgent(DBusPath _agent) throws BluezDoesNotExistException;
 
 }

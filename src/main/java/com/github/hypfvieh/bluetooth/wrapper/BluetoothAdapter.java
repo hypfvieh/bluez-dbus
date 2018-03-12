@@ -14,6 +14,7 @@ import org.bluez.exceptions.BluezInvalidArgumentsException;
 import org.bluez.exceptions.BluezNotAuthorizedException;
 import org.bluez.exceptions.BluezNotReadyException;
 import org.bluez.exceptions.BluezNotSupportedException;
+import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.UInt16;
@@ -295,7 +296,7 @@ public class BluetoothAdapter extends AbstractBluetoothObject {
      * @throws BluezInvalidArgumentsException when device was invalid
      */
     public void removeDevice(Device1 _device) throws BluezFailedException, BluezInvalidArgumentsException {
-        adapter.RemoveDevice(_device);
+        adapter.RemoveDevice(new DBusPath(_device.getObjectPath()));
     }
 
     /**

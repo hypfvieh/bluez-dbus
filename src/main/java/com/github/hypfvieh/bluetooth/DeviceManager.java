@@ -14,11 +14,11 @@ import org.bluez.exceptions.BluezFailedException;
 import org.bluez.exceptions.BluezInvalidArgumentsException;
 import org.bluez.exceptions.BluezNotReadyException;
 import org.bluez.exceptions.BluezNotSupportedException;
-import org.freedesktop.dbus.AbstractPropertiesHandler;
-import org.freedesktop.dbus.SignalAwareProperties;
 import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.connections.impl.DBusConnection.DBusBusType;
 import org.freedesktop.dbus.exceptions.DBusException;
+import org.freedesktop.dbus.handlers.AbstractPropertiesChangedHandler;
+import org.freedesktop.dbus.interfaces.SignalAwareProperties;
 import org.freedesktop.dbus.types.Variant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -363,7 +363,7 @@ public class DeviceManager {
      * @param _handler callback class instance
      * @throws DBusException on error
      */
-    public void registerPropertyHandler(AbstractPropertiesHandler _handler) throws DBusException {
+    public void registerPropertyHandler(AbstractPropertiesChangedHandler _handler) throws DBusException {
         dbusConnection.addSigHandler(SignalAwareProperties.PropertiesChanged.class, _handler);
     }
 }
