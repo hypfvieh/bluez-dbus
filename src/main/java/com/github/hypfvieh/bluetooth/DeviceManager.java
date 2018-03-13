@@ -1,11 +1,15 @@
 package com.github.hypfvieh.bluetooth;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bluez.Adapter1;
 import org.bluez.Device1;
@@ -17,13 +21,20 @@ import org.bluez.exceptions.BluezNotSupportedException;
 import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.connections.impl.DBusConnection.DBusBusType;
 import org.freedesktop.dbus.exceptions.DBusException;
-import org.freedesktop.dbus.handlers.AbstractPropertiesChangedHandler;
-import org.freedesktop.dbus.interfaces.SignalAwareProperties;
+import org.freedesktop.dbus.handlers.AbstractInterfacesAddedHandler;
+import org.freedesktop.dbus.handlers.AbstractInterfacesRemovedHandler;
+import org.freedesktop.dbus.handlers.AbstractSignalHandlerBase;
+import org.freedesktop.dbus.interfaces.ObjectManager.InterfacesAdded;
+import org.freedesktop.dbus.interfaces.ObjectManager.InterfacesRemoved;
+import org.freedesktop.dbus.interfaces.Properties.PropertiesChanged;
+import org.freedesktop.dbus.messages.DBusSignal;
 import org.freedesktop.dbus.types.Variant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.hypfvieh.DbusHelper;
+import com.github.hypfvieh.bluetooth.container.BtAdapterContainer;
+import com.github.hypfvieh.bluetooth.container.CallbackSignalContainer;
 import com.github.hypfvieh.bluetooth.wrapper.BluetoothAdapter;
 import com.github.hypfvieh.bluetooth.wrapper.BluetoothDevice;
 import com.github.hypfvieh.system.NativeLibraryLoader;
@@ -34,25 +45,29 @@ import com.github.hypfvieh.system.NativeLibraryLoader;
  * @author hypfvieh
  *
  */
-public class DeviceManager {
+public class DeviceManager implements Closeable {
 
     private static DeviceManager INSTANCE;
     private DBusConnection dbusConnection;
 
-    /** MacAddress of BT-adapter <-> adapter object */
-    private final Map<String, BluetoothAdapter> bluetoothAdaptersByMac = new LinkedHashMap<>();
-    /** BT-adapter name <-> adapter object */
-    private final Map<String, BluetoothAdapter> bluetoothAdaptersByAdapterName = new LinkedHashMap<>();
-
+    private final BtAdapterContainer btAdapters = new BtAdapterContainer();
+    
     /** MacAddress of BT-adapter <-> List of connected bluetooth device objects */
     private final Map<String, List<BluetoothDevice>> bluetoothDeviceByAdapterMac = new LinkedHashMap<>();
 
+    /**
+     * MacAddress of BT-Adapter <-> Registerd callbacks (only internally created callbacks, not user defined callbacks)
+     */
+    private final Map<String, CallbackSignalContainer> internalCallbacks = new ConcurrentHashMap<>();
+    
     private String defaultAdapterMac;
 
     private static boolean libraryLoaded = false;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    private CallbackSignalContainer adapterSignals;
+    
     static {
         // disable automatic loading of unix-socket library, we will load it if we need it
         NativeLibraryLoader.setEnabled(false);
@@ -76,6 +91,7 @@ public class DeviceManager {
      */
     private DeviceManager(DBusConnection _connection) {
         dbusConnection = _connection;
+        registerAdapterCallbacks();
     }
 
     /**
@@ -92,14 +108,7 @@ public class DeviceManager {
         INSTANCE = new DeviceManager(DBusConnection.getConnection(_sessionConnection ? DBusBusType.SESSION : DBusBusType.SYSTEM));
         return INSTANCE;
     }
-
-    /**
-     * Close current connection.
-     */
-    public void closeConnection() {
-        dbusConnection.disconnect();
-    }
-
+   
     /**
      * Create a new {@link DeviceManager} instance using the given DBus address (e.g. tcp://127.0.0.1:13245)
      * @param _address address to connect to
@@ -116,6 +125,160 @@ public class DeviceManager {
         }
         INSTANCE = new DeviceManager(DBusConnection.getConnection(_address));
         return INSTANCE;
+    }
+
+    private void registerCallbacks(String _adapterMac) {
+        if (internalCallbacks.containsKey(_adapterMac)) { // signals already registered
+            return;
+        }
+        
+        AbstractInterfacesAddedHandler deviceAdded = new AbstractInterfacesAddedHandler() {
+            
+            @Override
+            public void handle(InterfacesAdded _s) {
+                if (_s != null) {
+                    Map<String, Map<String, Variant<?>>> interfaces = _s.getInterfaces();
+                    interfaces.entrySet().stream().filter(e -> e.getKey().equals(Device1.class.getName()))
+                        .forEach(e -> {
+                            Variant<?> address = e.getValue().get("Address");
+                            if (address != null && address.getValue() != null) {
+                                logger.debug("New bluetooth device: {}", _s.getSignalSource().getPath());
+                                Device1 device1;
+                                try {
+                                    device1 = dbusConnection.getRemoteObject("org.bluez", _s.getSignalSource().getPath(), Device1.class);
+                                    bluetoothDeviceByAdapterMac.get(_adapterMac).add(new BluetoothDevice(device1, getAdapter(_adapterMac), _s.getSignalSource().getPath(), dbusConnection));
+                                    logger.debug("New bluetooth device: {} added to internal list for adapter {}", _s.getSignalSource().getPath(), _adapterMac);
+                                } catch (DBusException _ex) {
+                                    logger.warn("Cannot create Device1 object for added bluez device {}", _s.getSignalSource().getPath(), _ex);
+                                }
+
+                            }
+                        });
+                }
+            }
+        };
+        
+        AbstractInterfacesRemovedHandler deviceRemoved = new AbstractInterfacesRemovedHandler() {
+            @Override
+            public void handle(InterfacesRemoved _s) {
+                if (_s != null) {
+                    if (_s.getInterfaces().contains(Device1.class.getName())) {     
+                        logger.debug("Bluetooth device {} removed", _s.getSignalSource().getPath());
+                        
+                        List<BluetoothDevice> list = bluetoothDeviceByAdapterMac.get(_adapterMac);
+                        Iterator<BluetoothDevice> iterator = list.iterator();
+                        while (iterator.hasNext()) {
+                            BluetoothDevice dev = iterator.next();
+                            if (dev.getDbusPath().equals(_s.getSignalSource().getPath())) {
+                                logger.debug("Bluetooth device {} removed from internal list", _s.getSignalSource().getPath());
+                                iterator.remove();
+                                break; // devices should only appear once
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        
+        try {            
+            dbusConnection.addSigHandler(deviceAdded.getImplementationClass(), deviceAdded);
+            dbusConnection.addSigHandler(deviceRemoved.getImplementationClass(), deviceRemoved);
+            internalCallbacks.put(_adapterMac, new CallbackSignalContainer(deviceAdded, deviceRemoved));
+        } catch (DBusException _ex) {
+            logger.error("Could not register signal handlers.", _ex);
+        }
+    }
+    
+    private void registerAdapterCallbacks() {
+        AbstractInterfacesAddedHandler adapterAdded = new AbstractInterfacesAddedHandler() {
+            
+            @Override
+            public void handle(InterfacesAdded _s) {
+                if (_s == null) {
+                    return;
+                }
+                
+                Map<String, Map<String, Variant<?>>> interfaces = _s.getInterfaces();
+                interfaces.entrySet().stream().filter(e -> e.getKey().equals(Adapter1.class.getName())).forEach(e -> {
+                    Variant<?> address = e.getValue().get("Address");
+                    if (address != null && address.getValue() != null) {
+                        logger.debug("New bluetooth adapter: {}, MAC: {}", _s.getSignalSource().getPath(), address.getValue());
+                        
+                        Adapter1 adapter1 = DbusHelper.getRemoteObject(dbusConnection, _s.getSignalSource().getPath(), Adapter1.class);
+                        if (adapter1 != null) {
+                            BluetoothAdapter bluetoothAdapter = new BluetoothAdapter(adapter1, _s.getSignalSource().getPath(), dbusConnection);
+
+                            btAdapters.addAdapter(bluetoothAdapter);
+                            registerCallbacks(bluetoothAdapter.getAddress());
+                            logger.debug("New bluetooth adapter: {}, MAC: {} successfully added to adapter list", _s.getSignalSource().getPath(), address.getValue());
+                        }
+                    }
+                });                
+            }
+        };
+        
+        AbstractInterfacesRemovedHandler adapterRemoved = new AbstractInterfacesRemovedHandler() {
+            
+            @Override
+            public void handle(InterfacesRemoved _s) {
+                if (_s != null) {
+                    if (_s.getInterfaces().contains(Adapter1.class.getName())) {     
+                        logger.debug("Bluetooth adapter {} removed", _s.getSignalSource().getPath());
+                        
+                        if (btAdapters.removeAdapterByDbusPath(_s.getSignalSource().getPath())) {
+                            logger.debug("Bluetooth adapter {} removed from internal list", _s.getSignalSource().getPath());
+                        }
+                    }
+                }                
+            }
+        };
+        
+        try {
+            dbusConnection.addSigHandler(adapterRemoved.getImplementationClass(), adapterRemoved);
+            dbusConnection.addSigHandler(adapterAdded.getImplementationClass(), adapterAdded);
+            adapterSignals = new CallbackSignalContainer(adapterAdded, adapterRemoved);
+        } catch (DBusException _ex) {
+            logger.error("Unable to register signal handlers.", _ex);
+        }
+    }
+    
+
+    private void unregisterCallbacks() {
+        for (CallbackSignalContainer csc : internalCallbacks.values()) {
+            try {
+                dbusConnection.removeSigHandler(csc.getAddedHandler().getImplementationClass(), csc.getAddedHandler());
+                dbusConnection.removeSigHandler(csc.getRemovedHandler().getImplementationClass(), csc.getRemovedHandler());
+            } catch (DBusException _ex) {
+                logger.error("Unable to remove signal handler.", _ex);
+            }
+        }
+        
+        internalCallbacks.clear();
+        
+        if (adapterSignals != null) {
+            try {
+                dbusConnection.removeSigHandler(adapterSignals.getAddedHandler().getImplementationClass(), adapterSignals.getAddedHandler());
+                dbusConnection.removeSigHandler(adapterSignals.getRemovedHandler().getImplementationClass(), adapterSignals.getRemovedHandler());
+                adapterSignals = null;
+            } catch (DBusException _ex) {
+                logger.error("Unable to remove signal handler.", _ex);
+            }
+        }
+    }
+    
+    /**
+     * Close connection, removes all cached device and adapter instances.
+     */
+    @Override
+    public void close() throws IOException {
+        unregisterCallbacks();
+        
+        bluetoothDeviceByAdapterMac.clear();
+        btAdapters.clear();
+        defaultAdapterMac = null;
+        
+        dbusConnection.disconnect();
+        dbusConnection = null;
     }
 
 
@@ -137,27 +300,26 @@ public class DeviceManager {
      *
      * @return List of adapters, maybe empty, never null
      */
-    public List<BluetoothAdapter> scanForBluetoothAdapters() {
-        bluetoothAdaptersByAdapterName.clear();
-        bluetoothAdaptersByMac.clear();
-
+    public List<BluetoothAdapter> findBluetoothAdapters() {
         Set<String> scanObjectManager = DbusHelper.findNodes(dbusConnection, "/org/bluez");
         for (String hci : scanObjectManager) {
             Adapter1 adapter = DbusHelper.getRemoteObject(dbusConnection, "/org/bluez/" + hci, Adapter1.class);
             if (adapter != null) {
                 BluetoothAdapter bt2 = new BluetoothAdapter(adapter, "/org/bluez/" + hci, dbusConnection);
-                bluetoothAdaptersByMac.put(bt2.getAddress(), bt2);
-                bluetoothAdaptersByAdapterName.put(hci, bt2);
+                btAdapters.addAdapter(bt2);
+                registerCallbacks(bt2.getAddress());
+                
+                bluetoothDeviceByAdapterMac.put(bt2.getAddress(), new ArrayList<>());                
             }
         }
 
-        ArrayList<BluetoothAdapter> adapterList = new ArrayList<>(bluetoothAdaptersByAdapterName.values());
-
-        if (defaultAdapterMac == null && !bluetoothAdaptersByMac.isEmpty()) {
-            defaultAdapterMac = new ArrayList<>(bluetoothAdaptersByMac.keySet()).get(0);
+        List<BluetoothAdapter> allAdapters = btAdapters.getAllAdapters();
+        
+        if (defaultAdapterMac == null && !allAdapters.isEmpty()) {
+            defaultAdapterMac = allAdapters.get(0).getAddress();
         }
 
-        return adapterList;
+        return allAdapters;
     }
 
     /**
@@ -245,61 +407,51 @@ public class DeviceManager {
      * @return the adapter currently in use, maybe null
      */
     public BluetoothAdapter getAdapter() {
-        if (defaultAdapterMac != null && bluetoothAdaptersByMac.containsKey(defaultAdapterMac)) {
-            return bluetoothAdaptersByMac.get(defaultAdapterMac);
+        if (defaultAdapterMac != null && btAdapters.getAdapterByMac(defaultAdapterMac) != null) {
+            return btAdapters.getAdapterByMac(defaultAdapterMac);
         } else {
-            return scanForBluetoothAdapters().get(0);
+            return findBluetoothAdapters().get(0);
         }
     }
 
     /**
      * Find an adapter by the given identifier (either MAC or device name).
-     * Will scan for devices if no default device is given and given ident is also null.
-     * Will also scan for devices if the requested device could not be found in device map.
+     * Will scan for devices if no default device is given and given ident is null.
      *
      * @param _ident mac address or device name
      * @return device, maybe null if no device could be found with the given ident
      */
     private BluetoothAdapter getAdapter(String _ident) {
         if (_ident == null && defaultAdapterMac == null) {
-            scanForBluetoothAdapters();
+            findBluetoothAdapters();
         }
 
         if (_ident == null) {
             _ident = defaultAdapterMac;
         }
 
-        if (bluetoothAdaptersByMac.containsKey(_ident)) {
-            return bluetoothAdaptersByMac.get(_ident);
+        
+        BluetoothAdapter adapter = btAdapters.getAdapterByMac(_ident);
+        if (adapter == null) {
+            adapter = btAdapters.getAdapterByDeviceName(_ident);
         }
-        if (bluetoothAdaptersByAdapterName.containsKey(_ident)) {
-            return bluetoothAdaptersByAdapterName.get(_ident);
+        if (adapter == null) {
+            adapter = btAdapters.getAdapterByDbusPath(_ident);
         }
-        // adapter not found by any identification, search for new adapters
-        List<BluetoothAdapter> scanForBluetoothAdapters = scanForBluetoothAdapters();
-        if (!scanForBluetoothAdapters.isEmpty()) { // there are new candidates, try once more
-            if (bluetoothAdaptersByMac.containsKey(_ident)) {
-                return bluetoothAdaptersByMac.get(_ident);
-            }
-            if (bluetoothAdaptersByAdapterName.containsKey(_ident)) {
-                return bluetoothAdaptersByAdapterName.get(_ident);
-            }
 
-        }
-        // no luck, no adapters found which are matching the given identification
-        return null;
+        return adapter;
     }
 
     /**
      * Returns all found bluetooth adapters.
-     * Will query for adapters if {@link #scanForBluetoothAdapters()} was not called before.
+     * Will query for adapters if {@link #findBluetoothAdapters()} was not called before.
      * @return list, maybe empty
      */
     public List<BluetoothAdapter> getAdapters() {
-        if (bluetoothAdaptersByMac.isEmpty()) {
-            scanForBluetoothAdapters();
+        if (!btAdapters.hasAdapters()) {
+            findBluetoothAdapters();
         }
-        return new ArrayList<>(bluetoothAdaptersByMac.values());
+        return btAdapters.getAllAdapters();
     }
 
     /**
@@ -332,14 +484,15 @@ public class DeviceManager {
      * @param _adapterMac MAC address of the bluetooth adapter
      * @throws BluezDoesNotExistException if there is no bluetooth adapter with the given MAC
      */
-    public void setDefaultAdapter(String _adapterMac) throws BluezDoesNotExistException {
-        if (bluetoothAdaptersByMac.isEmpty()) {
-            scanForBluetoothAdapters();
+    public void setDefaultAdapter(String _adapterIdent) throws BluezDoesNotExistException {
+        if (!btAdapters.hasAdapters()) {
+            findBluetoothAdapters();
         }
-        if (bluetoothAdaptersByMac.containsKey(_adapterMac)) {
-            defaultAdapterMac = _adapterMac;
+        BluetoothAdapter adapter = getAdapter(_adapterIdent);
+        if (adapter != null) {
+            defaultAdapterMac = adapter.getAddress();
         } else {
-            throw new BluezDoesNotExistException("Could not find bluetooth adapter with MAC address: " + _adapterMac);
+            throw new BluezDoesNotExistException("Could not find bluetooth adapter with identifier: " + _adapterIdent);
         }
     }
 
@@ -358,12 +511,24 @@ public class DeviceManager {
     }
 
     /**
-     * Register a PropertiesChanged callback handler on the DBusConnection.
-     *
-     * @param _handler callback class instance
-     * @throws DBusException on error
+     * Register a callback signal handler.
+     * This can either a {@link InterfacesAdded}, {@link InterfacesRemoved} or {@link PropertiesChanged} signal handler.
+     * 
+     * @param _handler
+     * @throws DBusException
      */
-    public void registerPropertyHandler(AbstractPropertiesChangedHandler _handler) throws DBusException {
-        dbusConnection.addSigHandler(SignalAwareProperties.PropertiesChanged.class, _handler);
+    public <T extends DBusSignal> void registerSignalHandler(AbstractSignalHandlerBase<T> _handler) throws DBusException {
+        dbusConnection.addSigHandler(_handler.getImplementationClass(), _handler);
     }
+    
+    /**
+     * Remove the given signal handler from the DBus session so signals are no longer received by that handler.
+     * 
+     * @param _handler
+     * @throws DBusException
+     */
+    public <T extends DBusSignal> void unregisterSignalHandler(AbstractSignalHandlerBase<T> _handler) throws DBusException {
+        dbusConnection.removeSigHandler(_handler.getImplementationClass(), _handler);
+    }
+    
 }

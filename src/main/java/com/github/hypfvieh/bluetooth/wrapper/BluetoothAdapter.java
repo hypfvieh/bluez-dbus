@@ -32,10 +32,14 @@ public class BluetoothAdapter extends AbstractBluetoothObject {
     private final Map<String, Class<?>> supportedFilterOptions = new HashMap<>();
     private final String[] supportedTransportValues = new String[] {"auto", "bredr", "le"};
 
+    /** MAC address of this adapter, final because it can never change. */
+    private final String address;
+    
     private final Adapter1 adapter;
 
     /** Used to toggle discovery-mode because {@link #isDiscovering()} not always working as expected. */
     private boolean internalDiscover;
+    
 
     public BluetoothAdapter(Adapter1 _adapter, String _dbusPath, DBusConnection _dbusConnection) {
         super(BluetoothDeviceType.ADAPTER, _dbusConnection, _dbusPath);
@@ -45,6 +49,8 @@ public class BluetoothAdapter extends AbstractBluetoothObject {
         supportedFilterOptions.put("RSSI", short.class);
         supportedFilterOptions.put("Pathloss", UInt16.class);
         supportedFilterOptions.put("Transport", String.class);
+        
+        address = getTyped("Address", String.class);
     }
 
     /**
@@ -184,7 +190,7 @@ public class BluetoothAdapter extends AbstractBluetoothObject {
      * @return mac address, maybe null
      */
     public String getAddress() {
-        return getTyped("Address", String.class);
+        return address;
     }
 
     /**
