@@ -235,9 +235,9 @@
     </dependencies>
 
     <scm>
-        <connection>scm:git:https://github.com/hypfvieh/dbus-java.git</connection>
-        <developerConnection>scm:git:https://github.com/hypfvieh/dbus-java.git</developerConnection>
-        <url>https://github.com/hypfvieh/dbus-java.git</url>
+        <connection>scm:git:https://github.com/hypfvieh/bluez-dbus.git</connection>
+        <developerConnection>scm:git:https://github.com/hypfvieh/bluez-dbus.git</developerConnection>
+        <url>https://github.com/hypfvieh/bluez-dbus.git</url>
       <tag>HEAD</tag>
   </scm>
 
