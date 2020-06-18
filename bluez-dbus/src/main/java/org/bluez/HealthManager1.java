@@ -10,7 +10,7 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: health-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -49,7 +49,9 @@ public interface HealthManager1 extends DBusInterface {
      * 		values: "reliable", "streaming"<br>
      * <br>
      * 
-     * @param _config
+     * @param _config config
+     * 
+     * @return DBusPath - maybe null
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      */
@@ -64,7 +66,7 @@ public interface HealthManager1 extends DBusInterface {
      * application will be able to destroy it.<br>
      * <br>
      * 
-     * @param _application
+     * @param _application application
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezNotFoundException when item not found

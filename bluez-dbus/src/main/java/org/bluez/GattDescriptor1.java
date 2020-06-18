@@ -12,7 +12,7 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: gatt-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -78,7 +78,9 @@ public interface GattDescriptor1 extends DBusInterface {
      * 		  "link": Link type (Server only)<br>
      * <br>
      * 
-     * @param _flags
+     * @param _flags flags
+     * 
+     * @return byte[] - maybe null
      * 
      * @throws BluezFailedException on failure
      * @throws BluezInProgressException when operation already in progress
@@ -102,8 +104,8 @@ public interface GattDescriptor1 extends DBusInterface {
      * 	       request<br>
      * <br>
      * 
-     * @param _value
-     * @param _flags
+     * @param _value value
+     * @param _flags flags
      * 
      * @throws BluezFailedException on failure
      * @throws BluezInProgressException when operation already in progress

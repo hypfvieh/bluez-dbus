@@ -9,7 +9,7 @@ import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.types.Variant;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: obex-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez.obex<br>
@@ -34,7 +34,9 @@ public interface ObjectPush1 extends DBusInterface {
      * with the object path, to avoid a call to GetProperties.<br>
      * <br>
      * 
-     * @param _sourcefile
+     * @param _sourcefile sourcefile
+     * 
+     * @return TwoTuple&lt;DBusPath, Map&lt;String,Variant&lt;?&gt;&gt;&gt; - maybe null
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezFailedException on failure
@@ -58,7 +60,9 @@ public interface ObjectPush1 extends DBusInterface {
      * with the object path, to avoid a call to GetProperties.<br>
      * <br>
      * 
-     * @param _targetfile
+     * @param _targetfile targetfile
+     * 
+     * @return TwoTuple&lt;DBusPath, Map&lt;String,Variant&lt;?&gt;&gt;&gt; - maybe null
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezFailedException on failure
@@ -83,8 +87,10 @@ public interface ObjectPush1 extends DBusInterface {
      * with the object path, to avoid a call to GetProperties.<br>
      * <br>
      * 
-     * @param _clientfile
-     * @param _targetfile
+     * @param _clientfile clientfile
+     * @param _targetfile targetfile
+     * 
+     * @return TwoTuple&lt;DBusPath, Map&lt;String,Variant&lt;?&gt;&gt;&gt; - maybe null
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezFailedException on failure

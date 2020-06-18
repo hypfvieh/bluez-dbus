@@ -12,7 +12,7 @@ import org.freedesktop.dbus.types.UInt16;
 import org.freedesktop.dbus.types.Variant;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: obex-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez.obex<br>
@@ -82,8 +82,8 @@ public interface PhonebookAccess1 extends DBusInterface {
      * 	"fav":	favorites entry ( only for "internal" )<br>
      * <br>
      * 
-     * @param _location
-     * @param _phonebook
+     * @param _location location
+     * @param _phonebook phonebook
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezFailedException on failure
@@ -111,8 +111,10 @@ public interface PhonebookAccess1 extends DBusInterface {
      * Fields<br>
      * <br>
      * 
-     * @param _targetfile
-     * @param _filters
+     * @param _targetfile targetfile
+     * @param _filters filters
+     * 
+     * @return TwoTuple&lt;DBusPath, Map&lt;String,Variant&lt;?&gt;&gt;&gt; - maybe null
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezForbiddenException on BluezForbiddenException
@@ -130,12 +132,14 @@ public interface PhonebookAccess1 extends DBusInterface {
      * Possible filters: Order, Offset and MaxCount<br>
      * <br>
      * 
-     * @param _filters
+     * @param _filters filters
+     * 
+     * @return TwoTuple&lt;String, String&gt;[] - maybe null
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezForbiddenException on BluezForbiddenException
      */
-    TwoTuple<String,String[]> List(Map<String, Variant<?>> _filters) throws BluezInvalidArgumentsException, BluezForbiddenException;
+    TwoTuple<String, String>[] List(Map<String, Variant<?>> _filters) throws BluezInvalidArgumentsException, BluezForbiddenException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -156,9 +160,11 @@ public interface PhonebookAccess1 extends DBusInterface {
      * Possbile filters: Format and Fields<br>
      * <br>
      * 
-     * @param _vcard
-     * @param _targetfile
-     * @param _filters
+     * @param _vcard vcard
+     * @param _targetfile targetfile
+     * @param _filters filters
+     * 
+     * @return TwoTuple&lt;DBusPath, Map&lt;String,Variant&lt;?&gt;&gt;&gt; - maybe null
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezForbiddenException on BluezForbiddenException
@@ -184,15 +190,17 @@ public interface PhonebookAccess1 extends DBusInterface {
      * Possible filters: Order, Offset and MaxCount<br>
      * <br>
      * 
-     * @param _field
-     * @param _value
-     * @param _filters
+     * @param _field field
+     * @param _value value
+     * @param _filters filters
+     * 
+     * @return TwoTuple&lt;String, String[]&gt; - maybe null
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezForbiddenException on BluezForbiddenException
      * @throws BluezFailedException on failure
      */
-    TwoTuple<String, String[]> Search(String _field, String _value, Map<?, ?> _filters) throws BluezInvalidArgumentsException, BluezForbiddenException, BluezFailedException;
+    TwoTuple<String, String[]> Search(String _field, String _value, Map<String, Variant<?>> _filters) throws BluezInvalidArgumentsException, BluezForbiddenException, BluezFailedException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -201,6 +209,8 @@ public interface PhonebookAccess1 extends DBusInterface {
      * object that are actually used (i.e. indexes that<br>
      * correspond to non-NULL entries).<br>
      * <br>
+     * 
+     * @return UInt16 - maybe null
      * 
      * @throws BluezForbiddenException on BluezForbiddenException
      * @throws BluezFailedException on failure
@@ -225,6 +235,8 @@ public interface PhonebookAccess1 extends DBusInterface {
      * Return All Available fields that can be used in Fields<br>
      * filter.<br>
      * <br>
+     * 
+     * @return String[] - maybe null
      */
     String[] ListFilterFields();
 

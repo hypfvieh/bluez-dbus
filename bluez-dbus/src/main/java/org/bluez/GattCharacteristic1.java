@@ -16,7 +16,7 @@ import org.freedesktop.dbus.types.UInt16;
 import org.freedesktop.dbus.types.Variant;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: gatt-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -119,7 +119,9 @@ public interface GattCharacteristic1 extends DBusInterface {
      * 		  "device": Object Device (Server only)<br>
      * <br>
      * 
-     * @param _options
+     * @param _options options
+     * 
+     * @return byte[] - maybe null
      * 
      * @throws BluezFailedException on failure
      * @throws BluezInProgressException when operation already in progress
@@ -151,8 +153,8 @@ public interface GattCharacteristic1 extends DBusInterface {
      * 	       request<br>
      * <br>
      * 
-     * @param _value
-     * @param _options
+     * @param _value value
+     * @param _options options
      * 
      * @throws BluezFailedException on failure
      * @throws BluezInProgressException when operation already in progress
@@ -192,7 +194,9 @@ public interface GattCharacteristic1 extends DBusInterface {
      * 		  "link": Link type (Server only)<br>
      * <br>
      * 
-     * @param _options
+     * @param _options options
+     * 
+     * @return TwoTuple&lt;FileDescriptor, UInt16&gt; - maybe null
      * 
      * @throws BluezFailedException on failure
      * @throws BluezNotSupportedException when operation not supported
@@ -234,7 +238,9 @@ public interface GattCharacteristic1 extends DBusInterface {
      * 		  "link": Link type (Server only)<br>
      * <br>
      * 
-     * @param _options
+     * @param _options options
+     * 
+     * @return TwoTuple&lt;FileDescriptor, UInt16&gt; - maybe null
      * 
      * @throws BluezFailedException on failure
      * @throws BluezNotSupportedException when operation not supported

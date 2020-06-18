@@ -9,7 +9,7 @@ import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.types.Variant;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: obex-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez.obex<br>
@@ -43,8 +43,10 @@ public interface Client1 extends DBusInterface {
      * 	"sync"<br>
      * <br>
      * 
-     * @param _destination
-     * @param _args
+     * @param _destination destination
+     * @param _args args
+     * 
+     * @return DBusPath - maybe null
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezFailedException on failure
@@ -57,7 +59,7 @@ public interface Client1 extends DBusInterface {
      * Unregister session and abort pending transfers.<br>
      * <br>
      * 
-     * @param _session
+     * @param _session session
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezNotAuthorizedException when not authorized

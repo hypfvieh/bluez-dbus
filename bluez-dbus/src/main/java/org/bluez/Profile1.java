@@ -10,7 +10,7 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: profile-api.txt.<br>
  * <br>
  * <b>Service:</b> unique name<br>
@@ -46,9 +46,9 @@ public interface Profile1 extends DBusInterface {
      * uint16 Features		Profile features (optional)<br>
      * <br>
      * 
-     * @param _device
-     * @param fd
-     * @param _fd_properties
+     * @param _device device
+     * @param fd fd
+     * @param _fd_properties fd_properties
      * 
      * @throws BluezRejectedException when operation rejected
      * @throws BluezCanceledException when operation canceled
@@ -71,7 +71,7 @@ public interface Profile1 extends DBusInterface {
      * method call.<br>
      * <br>
      * 
-     * @param _device
+     * @param _device device
      * 
      * @throws BluezRejectedException when operation rejected
      * @throws BluezCanceledException when operation canceled

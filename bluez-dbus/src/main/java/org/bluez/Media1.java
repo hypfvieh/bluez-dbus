@@ -2,6 +2,8 @@ package org.bluez;
 
 import java.util.Map;
 
+import org.bluez.exceptions.BluezAlreadyExistsException;
+import org.bluez.exceptions.BluezDoesNotExistException;
 import org.bluez.exceptions.BluezInvalidArgumentsException;
 import org.bluez.exceptions.BluezNotSupportedException;
 import org.freedesktop.dbus.DBusPath;
@@ -9,7 +11,7 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: media-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -50,8 +52,8 @@ public interface Media1 extends DBusInterface {
      * 		so the size and byte order must match.<br>
      * <br>
      * 
-     * @param _endpoint
-     * @param _properties
+     * @param _endpoint endpoint
+     * @param _properties properties
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      */
@@ -63,7 +65,7 @@ public interface Media1 extends DBusInterface {
      * Unregister sender end point.<br>
      * <br>
      * 
-     * @param _endpoint
+     * @param _endpoint endpoint
      */
     void UnregisterEndpoint(DBusPath _endpoint);
 
@@ -83,8 +85,8 @@ public interface Media1 extends DBusInterface {
      * automatically unregistered.<br>
      * <br>
      * 
-     * @param _player
-     * @param _properties
+     * @param _player player
+     * @param _properties properties
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezNotSupportedException when operation not supported
@@ -96,10 +98,44 @@ public interface Media1 extends DBusInterface {
      * <br>
      * Unregister sender media player.<br>
      * <br>
-     * <br>
      * 
-     * @param _player
+     * @param _player player
      */
     void UnregisterPlayer(DBusPath _player);
+
+    /**
+     * <b>From bluez documentation:</b><br>
+     * <br>
+     * Register endpoints an player objects within root<br>
+     * object which must implement ObjectManager.<br>
+     * <br>
+     * The application object path together with the D-Bus<br>
+     * system bus connection ID define the identification of<br>
+     * the application.<br>
+     * <br>
+     * 
+     * @param _root root
+     * @param _options options
+     * 
+     * @throws BluezInvalidArgumentsException when argument is invalid
+     * @throws BluezAlreadyExistsException when item already exists
+     */
+    void RegisterApplication(DBusPath _root, Map<String, Variant<?>> _options) throws BluezInvalidArgumentsException, BluezAlreadyExistsException;
+
+    /**
+     * <b>From bluez documentation:</b><br>
+     * <br>
+     * This unregisters the services that has been<br>
+     * previously registered. The object path parameter<br>
+     * must match the same value that has been used<br>
+     * on registration.<br>
+     * <br>
+     * 
+     * @param _application application
+     * 
+     * @throws BluezInvalidArgumentsException when argument is invalid
+     * @throws BluezDoesNotExistException when item does not exist
+     */
+    void UnregisterApplication(DBusPath _application) throws BluezInvalidArgumentsException, BluezDoesNotExistException;
 
 }

@@ -7,7 +7,7 @@ import org.freedesktop.dbus.FileDescriptor;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: health-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -44,6 +44,8 @@ public interface HealthChannel1 extends DBusInterface {
      * the data channel is not connected it will also<br>
      * reconnect.<br>
      * <br>
+     * 
+     * @return FileDescriptor - maybe null
      * 
      * @throws BluezNotConnectedException when bluez not connected
      * @throws BluezNotAllowedException when operation not allowed

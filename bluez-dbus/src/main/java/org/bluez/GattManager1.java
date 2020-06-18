@@ -10,7 +10,7 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: gatt-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -101,8 +101,8 @@ public interface GattManager1 extends DBusInterface {
      * service or profile.<br>
      * <br>
      * 
-     * @param _application
-     * @param _options
+     * @param _application application
+     * @param _options options
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezAlreadyExistsException when item already exists
@@ -118,7 +118,7 @@ public interface GattManager1 extends DBusInterface {
      * on registration.<br>
      * <br>
      * 
-     * @param _application
+     * @param _application application
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezDoesNotExistException when item does not exist

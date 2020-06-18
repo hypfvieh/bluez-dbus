@@ -7,7 +7,7 @@ import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: agent-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -51,8 +51,8 @@ public interface AgentManager1 extends DBusInterface {
      * "KeyboardDisplay".<br>
      * <br>
      * 
-     * @param _agent
-     * @param _capability
+     * @param _agent agent
+     * @param _capability capability
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezAlreadyExistsException when item already exists
@@ -67,7 +67,7 @@ public interface AgentManager1 extends DBusInterface {
      * same value that has been used on registration.<br>
      * <br>
      * 
-     * @param _agent
+     * @param _agent agent
      * 
      * @throws BluezDoesNotExistException when item does not exist
      */
@@ -84,7 +84,7 @@ public interface AgentManager1 extends DBusInterface {
      * the default agent.<br>
      * <br>
      * 
-     * @param _agent
+     * @param _agent agent
      * 
      * @throws BluezDoesNotExistException when item does not exist
      */
