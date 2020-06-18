@@ -2,16 +2,21 @@
 bluetooth library for linux OSes using [DBus](https://dbus.freedesktop.org/) and [bluez](http://www.bluez.org/).
 
 This project was inspired by [tinyb](https://github.com/intel-iot-devkit/tinyb),
-but does not require any wrapper library except the
-unix-domain-socket library of [Matthew Johnson](http://www.matthew.ath.cx/projects/java/).
+but does not require any wrapper library as it is based on a newer version of dbus-java which uses jnr-unixsocket.
 
-This wrapper library is included in debian based systems (can be installed with: apt-get install libmatthew-io-java), so
-no self-compiling of any stuff is required.
-
-This library has been tested with Ubuntu 16.04.4 (AMD64) and bluez library 5.50.
+This library has been tested with Ubuntu 16.04.4 (AMD64) and bluez library 5.54.
 
 Starting with version 0.1.0 of this library Java 8 is required (previous version used Java 7).
 
+If you want to use filedescriptor passing in any bluez method, you have to add [Robert Middleton's dbus-java-nativefd](https://github.com/rm5248/dbus-java-nativefd) library to your project:
+
+```
+<dependency>
+    <groupId>com.rm5248</groupId>
+    <artifactId>dbus-java-nativefd</artifactId>
+    <version>1.0</version>
+</dependency>
+```
 
 ##### To build a newer bluez-library for Ubuntu (16.04 has an older version than 5.50):
 -------------
@@ -36,8 +41,9 @@ Starting with version 0.1.0 of this library Java 8 is required (previous version
 
 # Changelog:
 
-#### Version 0.1.2 (not released yet):
+#### Version 0.1.2:
 - Multi module maven project
 - Provide a new artifact for usage with OSGi (bluez-java-osgi)
 - Changed visibility of some methods to public
 - Smaller bugfixes
+- Updated interface classes to match with bluez 5.54 - Please note: mesh classes are still missing, PRs welcome

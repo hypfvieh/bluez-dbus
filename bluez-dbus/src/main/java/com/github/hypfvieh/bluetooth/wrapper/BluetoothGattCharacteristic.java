@@ -101,7 +101,7 @@ public class BluetoothGattCharacteristic extends AbstractBluetoothObject {
      * @throws BluezNotPermittedException if operation is not permitted
      * @throws BluezNotAuthorizedException when not authorized if not authorized
      * @throws BluezNotSupportedException when operation not supported if not supported
-     * @throws BluezInvalidValueLengthException
+     * @throws BluezInvalidValueLengthException if invalid length
      */
     public void writeValue(byte[] _value, Map<String, Object> _options) throws BluezFailedException, BluezInProgressException, BluezNotPermittedException, BluezNotAuthorizedException, BluezNotSupportedException, BluezInvalidValueLengthException {
         gattCharacteristic.WriteValue(_value, optionsToVariantMap(_options));
@@ -224,7 +224,7 @@ public class BluetoothGattCharacteristic extends AbstractBluetoothObject {
      * @throws BluezFailedException on failure if operation failed
      * @throws BluezInProgressException when operation already in progress if operation already in progress
      * @throws BluezNotSupportedException when operation not supported if operation is not supported
-     * @throws BluezNotPermittedException
+     * @throws BluezNotPermittedException if access is not permitted
      */
     public void startNotify() throws BluezFailedException, BluezInProgressException, BluezNotSupportedException, BluezNotPermittedException {
         gattCharacteristic.StartNotify();

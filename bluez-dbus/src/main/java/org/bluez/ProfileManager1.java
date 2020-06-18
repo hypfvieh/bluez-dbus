@@ -10,7 +10,7 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: profile-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -30,10 +30,33 @@ public interface ProfileManager1 extends DBusInterface {
      * If an application disconnects from the bus all<br>
      * its registered profiles will be removed.<br>
      * <br>
+     * Some predefined services:<br>
+     * <br>
+     * HFP AG UUID: 0000111f-0000-1000-8000-00805f9b34fb<br>
+     * <br>
+     * 	Default profile Version is 1.7, profile Features<br>
+     * 	is 0b001001 and RFCOMM channel is 13.<br>
+     * 	Authentication is required.<br>
+     * <br>
      * HFP HS UUID: 0000111e-0000-1000-8000-00805f9b34fb<br>
      * <br>
-     * 	Default RFCOMM channel is 6. And this requires<br>
-     * 	authentication.<br>
+     * 	Default profile Version is 1.7, profile Features<br>
+     * 	is 0b000000 and RFCOMM channel is 7.<br>
+     * 	Authentication is required.<br>
+     * <br>
+     * HSP AG UUID: 00001112-0000-1000-8000-00805f9b34fb<br>
+     * <br>
+     * 	Default profile Version is 1.2, RFCOMM channel<br>
+     * 	is 12 and Authentication is required. Does not<br>
+     * 	support any Features, option is ignored.<br>
+     * <br>
+     * HSP HS UUID: 00001108-0000-1000-8000-00805f9b34fb<br>
+     * <br>
+     * 	Default profile Version is 1.2, profile Features<br>
+     * 	is 0b0 and RFCOMM channel is 6. Authentication<br>
+     * 	is required. Features is one bit value, specify<br>
+     * 	capability of Remote Audio Volume Control<br>
+     * 	(by default turned off).<br>
      * <br>
      * Available options:<br>
      * <br>
@@ -104,9 +127,9 @@ public interface ProfileManager1 extends DBusInterface {
      * 		Profile features (for SDP record)<br>
      * <br>
      * 
-     * @param _profile
-     * @param _uuid
-     * @param _options
+     * @param _profile profile
+     * @param _uuid uuid
+     * @param _options options
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezAlreadyExistsException when item already exists
@@ -121,7 +144,7 @@ public interface ProfileManager1 extends DBusInterface {
      * same value that has been used on registration.<br>
      * <br>
      * 
-     * @param _profile
+     * @param _profile profile
      * 
      * @throws BluezDoesNotExistException when item does not exist
      */

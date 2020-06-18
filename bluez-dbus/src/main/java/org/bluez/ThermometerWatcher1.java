@@ -6,7 +6,7 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: thermometer-api.txt.<br>
  * <br>
  * <b>Service:</b> unique name<br>
@@ -72,7 +72,7 @@ public interface ThermometerWatcher1 extends DBusInterface {
      * 		Possible values: "final" or<br>
      * 	"intermediate"<br>
      * 
-     * @param _measurement
+     * @param _measurement measurement
      */
     void MeasurementReceived(Map<String, Variant<?>> _measurement);
 

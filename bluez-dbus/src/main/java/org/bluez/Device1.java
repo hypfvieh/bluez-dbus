@@ -18,7 +18,7 @@ import org.bluez.exceptions.BluezNotSupportedException;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: device-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -170,11 +170,11 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
  * 			application are exposed.<br>
  * <br>
  * 			Possible values:<br>
- * 				<type> <byte array><br>
+ * 				&lt;type&gt; &lt;byte array&gt;<br>
  * 				...<br>
  * <br>
  * 			Example:<br>
- * 				<Transport Discovery> <Organization Flags...><br>
+ * 				&lt;Transport Discovery&gt; &lt;Organization Flags...&gt;<br>
  * 				0x26                   0x01         0x01...<br>
  * <br>
  */
@@ -245,7 +245,7 @@ public interface Device1 extends DBusInterface {
      * UUID for the profile.<br>
      * <br>
      * 
-     * @param _uuid
+     * @param _uuid uuid
      * 
      * @throws BluezFailedException on failure
      * @throws BluezInProgressException when operation already in progress
@@ -267,7 +267,7 @@ public interface Device1 extends DBusInterface {
      * succeed.<br>
      * <br>
      * 
-     * @param _uuid
+     * @param _uuid uuid
      * 
      * @throws BluezFailedException on failure
      * @throws BluezInProgressException when operation already in progress

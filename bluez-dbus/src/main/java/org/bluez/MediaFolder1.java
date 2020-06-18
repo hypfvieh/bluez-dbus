@@ -12,7 +12,7 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: media-api.txt.<br>
  * <br>
  * <b>Service:</b> unique name (Target role)<br>
@@ -20,6 +20,8 @@ import org.freedesktop.dbus.types.Variant;
  * <br>
  * <b>Object path:</b><br>
  *             freely definable (Target role)<br>
+ *             [variable prefix]/{hci0,hci1,...}/dev_XX_XX_XX_XX_XX_XX/playerX<br>
+ *             (Controller role)
  * <br>
  * <b>Supported properties:</b> <br>
  * <br>
@@ -75,8 +77,10 @@ public interface MediaFolder1 extends DBusInterface {
      * and pass to ChangeFolder.<br>
      * <br>
      * 
-     * @param _value
-     * @param _filter
+     * @param _value value
+     * @param _filter filter
+     * 
+     * @return DBusPath - maybe null
      * 
      * @throws BluezNotSupportedException when operation not supported
      * @throws BluezFailedException on failure
@@ -89,7 +93,9 @@ public interface MediaFolder1 extends DBusInterface {
      * Return a list of items found<br>
      * <br>
      * 
-     * @param _filter
+     * @param _filter filter
+     * 
+     * @return TwoTuple&lt;DBusPath, Properties&gt;[] - maybe null
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezNotSupportedException when operation not supported
@@ -108,7 +114,7 @@ public interface MediaFolder1 extends DBusInterface {
      * present while the player is active.<br>
      * <br>
      * 
-     * @param _folder
+     * @param _folder folder
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezNotSupportedException when operation not supported

@@ -9,7 +9,7 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.UInt16;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: media-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -76,6 +76,8 @@ public interface MediaTransport1 extends DBusInterface {
      * and write respectively.<br>
      * <br>
      * 
+     * @return ThreeTuple&lt;FileDescriptor, UInt16, UInt16&gt; - maybe null
+     * 
      * @throws BluezNotAuthorizedException when not authorized
      * @throws BluezFailedException on failure
      */
@@ -90,6 +92,8 @@ public interface MediaTransport1 extends DBusInterface {
      * to the remote device and the function will just fail<br>
      * with org.bluez.Error.NotAvailable.<br>
      * <br>
+     * 
+     * @return ThreeTuple&lt;FileDescriptor, UInt16, UInt16&gt; - maybe null
      * 
      * @throws BluezNotAuthorizedException when not authorized
      * @throws BluezFailedException on failure

@@ -8,7 +8,7 @@ import org.freedesktop.dbus.types.UInt16;
 import org.freedesktop.dbus.types.UInt32;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: agent-api.txt.<br>
  * <br>
  * <b>Service:</b> unique name<br>
@@ -42,7 +42,9 @@ public interface Agent1 extends DBusInterface {
      * length. The string can be alphanumeric.<br>
      * <br>
      * 
-     * @param _device
+     * @param _device device
+     * 
+     * @return String - maybe null
      * 
      * @throws BluezRejectedException when operation rejected
      * @throws BluezCanceledException when operation canceled
@@ -72,8 +74,8 @@ public interface Agent1 extends DBusInterface {
      * the later specification.<br>
      * <br>
      * 
-     * @param _device
-     * @param _pincode
+     * @param _device device
+     * @param _pincode pincode
      * 
      * @throws BluezRejectedException when operation rejected
      * @throws BluezCanceledException when operation canceled
@@ -90,7 +92,9 @@ public interface Agent1 extends DBusInterface {
      * between 0-999999.<br>
      * <br>
      * 
-     * @param _device
+     * @param _device device
+     * 
+     * @return UInt32 - maybe null
      * 
      * @throws BluezRejectedException when operation rejected
      * @throws BluezCanceledException when operation canceled
@@ -118,9 +122,9 @@ public interface Agent1 extends DBusInterface {
      * the value contains less than 6 digits.<br>
      * <br>
      * 
-     * @param _device
-     * @param _passkey
-     * @param _entered
+     * @param _device device
+     * @param _passkey passkey
+     * @param _entered entered
      */
     void DisplayPasskey(DBusPath _device, UInt32 _passkey, UInt16 _entered);
 
@@ -138,8 +142,8 @@ public interface Agent1 extends DBusInterface {
      * the value contains less than 6 digits.<br>
      * <br>
      * 
-     * @param _device
-     * @param _passkey
+     * @param _device device
+     * @param _passkey passkey
      * 
      * @throws BluezRejectedException when operation rejected
      * @throws BluezCanceledException when operation canceled
@@ -158,7 +162,7 @@ public interface Agent1 extends DBusInterface {
      * Bluetooth yet.<br>
      * <br>
      * 
-     * @param _device
+     * @param _device device
      * 
      * @throws BluezRejectedException when operation rejected
      * @throws BluezCanceledException when operation canceled
@@ -172,8 +176,8 @@ public interface Agent1 extends DBusInterface {
      * needs to authorize a connection/service request.<br>
      * <br>
      * 
-     * @param _device
-     * @param _uuid
+     * @param _device device
+     * @param _uuid uuid
      * 
      * @throws BluezRejectedException when operation rejected
      * @throws BluezCanceledException when operation canceled

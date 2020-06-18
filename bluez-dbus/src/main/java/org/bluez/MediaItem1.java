@@ -5,7 +5,7 @@ import org.bluez.exceptions.BluezNotSupportedException;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: media-api.txt.<br>
  * <br>
  * <b>Service:</b> unique name (Target role)<br>
@@ -13,6 +13,8 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
  * <br>
  * <b>Object path:</b><br>
  *             freely definable (Target role)<br>
+ *             [variable prefix]/{hci0,hci1,...}/dev_XX_XX_XX_XX_XX_XX/playerX/itemX<br>
+ *             (Controller role)<br>
  * <br>
  * <b>Supported properties:</b> <br>
  * <br>

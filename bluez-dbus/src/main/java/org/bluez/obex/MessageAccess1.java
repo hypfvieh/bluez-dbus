@@ -9,7 +9,7 @@ import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.types.Variant;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: obex-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez.obex<br>
@@ -28,7 +28,7 @@ public interface MessageAccess1 extends DBusInterface {
      * be the directory name or '..[/dir]'.<br>
      * <br>
      * 
-     * @param _name
+     * @param _name name
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezFailedException on failure
@@ -48,7 +48,9 @@ public interface MessageAccess1 extends DBusInterface {
      * Possible filters: Offset and MaxCount<br>
      * <br>
      * 
-     * @param _filter
+     * @param _filter filter
+     * 
+     * @return Map&lt;String, Variant&lt;?&gt;&gt;[] - maybe null
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezFailedException on failure
@@ -61,6 +63,8 @@ public interface MessageAccess1 extends DBusInterface {
      * Return all available fields that can be used in Fields<br>
      * filter.<br>
      * <br>
+     * 
+     * @return String[] - maybe null
      */
     String[] ListFilterFields();
 
@@ -158,8 +162,10 @@ public interface MessageAccess1 extends DBusInterface {
      * 		Message protected flag<br>
      * <br>
      * 
-     * @param _folder
-     * @param _filter
+     * @param _folder folder
+     * @param _filter filter
+     * 
+     * @return TwoTuple&lt;DBusPath, Map&lt;String,Variant&lt;?&gt;&gt;&gt;[] - maybe null
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezFailedException on failure
@@ -196,9 +202,11 @@ public interface MessageAccess1 extends DBusInterface {
      * with the object path, to avoid a call to GetAll.<br>
      * <br>
      * 
-     * @param _sourcefile
-     * @param _folder
-     * @param _args
+     * @param _sourcefile sourcefile
+     * @param _folder folder
+     * @param _args args
+     * 
+     * @return TwoTuple&lt;DBusPath, Map&lt;String,Variant&lt;?&gt;&gt;&gt; - maybe null
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezFailedException on failure

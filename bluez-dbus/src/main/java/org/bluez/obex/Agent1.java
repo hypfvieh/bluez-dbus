@@ -6,7 +6,7 @@ import org.bluez.exceptions.BluezRejectedException;
 import org.freedesktop.dbus.DBusPath;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: obex-agent-api.txt.<br>
  * <br>
  * <b>Service:</b> unique name<br>
@@ -42,7 +42,9 @@ public interface Agent1 extends DBusInterface {
      * location and name that can be returned.<br>
      * <br>
      * 
-     * @param _transfer
+     * @param _transfer transfer
+     * 
+     * @return String - maybe null
      * 
      * @throws BluezRejectedException when operation rejected
      * @throws BluezCanceledException when operation canceled

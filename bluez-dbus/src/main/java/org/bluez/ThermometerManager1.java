@@ -6,7 +6,7 @@ import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: thermometer-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -26,7 +26,7 @@ public interface ThermometerManager1 extends DBusInterface {
      * measurements.<br>
      * <br>
      * 
-     * @param _agent
+     * @param _agent agent
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      */
@@ -38,7 +38,7 @@ public interface ThermometerManager1 extends DBusInterface {
      * Unregisters a watcher.<br>
      * <br>
      * 
-     * @param _agent
+     * @param _agent agent
      */
     void UnregisterWatcher(DBusPath _agent);
 
@@ -50,7 +50,7 @@ public interface ThermometerManager1 extends DBusInterface {
      * be enabled only for thermometers which support it.<br>
      * <br>
      * 
-     * @param _agent
+     * @param _agent agent
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      */
@@ -65,7 +65,7 @@ public interface ThermometerManager1 extends DBusInterface {
      * watcher for intermediate measurements.<br>
      * <br>
      * 
-     * @param _agent
+     * @param _agent agent
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezNotFoundException when item not found

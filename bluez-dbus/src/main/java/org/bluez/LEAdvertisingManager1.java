@@ -12,7 +12,7 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: advertising-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -75,8 +75,8 @@ public interface LEAdvertisingManager1 extends DBusInterface {
      * reached it will result in NotPermitted error.<br>
      * <br>
      * 
-     * @param _advertisement
-     * @param _options
+     * @param _advertisement advertisement
+     * @param _options options
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezAlreadyExistsException when item already exists
@@ -93,7 +93,7 @@ public interface LEAdvertisingManager1 extends DBusInterface {
      * match the same value that has been used on registration.<br>
      * <br>
      * 
-     * @param _advertisement
+     * @param _advertisement advertisement
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezDoesNotExistException when item does not exist

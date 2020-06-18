@@ -7,14 +7,42 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: media-api.txt.<br>
  * <br>
  * <b>Service:</b> unique name (Server role)<br>
  * <b>Interface:</b> org.bluez.MediaEndpoint1<br>
  * <br>
  * <b>Object path:</b><br>
- *             freely definable<br>
+ *             freely definable (Server role)<br>
+ *             [variable prefix]/{hci0,hci1,...}/dev_XX_XX_XX_XX_XX_XX/sepX<br>
+ *             (Client role) <br>
+ * <br>
+ * <b>Supported properties:</b> <br>
+ * <br>
+ * 		string UUID [readonly, optional]:<br>
+ * <br>
+ * 			UUID of the profile which the endpoint is for.<br>
+ * <br>
+ * 		byte Codec [readonly, optional]:<br>
+ * <br>
+ * 			Assigned number of codec that the endpoint implements.<br>
+ * 			The values should match the profile specification which<br>
+ * 			is indicated by the UUID.<br>
+ * <br>
+ * 		array{byte} Capabilities [readonly, optional]:<br>
+ * <br>
+ * 			Capabilities blob, it is used as it is so the size and<br>
+ * 			byte order must match.<br>
+ * <br>
+ * 		object Device [readonly, optional]:<br>
+ * <br>
+ * 			Device object which the endpoint is belongs to.<br>
+ * <br>
+ * 		bool DelayReporting [readonly, optional]:<br>
+ * <br>
+ * 			Indicates if endpoint supports Delay Reporting.<br>
+ * <br>
  * <br>
  */
 public interface MediaEndpoint1 extends DBusInterface {
@@ -31,8 +59,8 @@ public interface MediaEndpoint1 extends DBusInterface {
      * 	array{byte} Capabilities<br>
      * <br>
      * 
-     * @param _transport
-     * @param _properties
+     * @param _transport transport
+     * @param _properties properties
      */
     void SetConfiguration(DBusPath _transport, Map<String, Variant<?>> _properties);
 
@@ -50,7 +78,9 @@ public interface MediaEndpoint1 extends DBusInterface {
      * send back as parameter of SetConfiguration.<br>
      * <br>
      * 
-     * @param _capabilities
+     * @param _capabilities capabilities
+     * 
+     * @return byte[] - maybe null
      */
     byte[] SelectConfiguration(byte[] _capabilities);
 
@@ -60,7 +90,7 @@ public interface MediaEndpoint1 extends DBusInterface {
      * Clear transport configuration.<br>
      * <br>
      * 
-     * @param _transport
+     * @param _transport transport
      */
     void ClearConfiguration(DBusPath _transport);
 

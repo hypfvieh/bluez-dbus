@@ -9,7 +9,7 @@ import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.types.Variant;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: obex-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez.obex<br>
@@ -27,7 +27,7 @@ public interface FileTransfer extends DBusInterface {
      * Change the current folder of the remote device.<br>
      * <br>
      * 
-     * @param _folder
+     * @param _folder folder
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezFailedException on failure
@@ -40,7 +40,7 @@ public interface FileTransfer extends DBusInterface {
      * Create a new folder in the remote device.<br>
      * <br>
      * 
-     * @param _folder
+     * @param _folder folder
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezFailedException on failure
@@ -66,6 +66,8 @@ public interface FileTransfer extends DBusInterface {
      * 	uint64 Created : Creation date<br>
      * <br>
      * 
+     * @return Map&lt;String, Variant&lt;?&gt;&gt;[] - maybe null
+     * 
      * @throws BluezFailedException on failure
      */
     Map<String, Variant<?>>[] ListFolder() throws BluezFailedException;
@@ -87,8 +89,10 @@ public interface FileTransfer extends DBusInterface {
      * with the object path, to avoid a call to GetProperties.<br>
      * <br>
      * 
-     * @param _targetfile
-     * @param _sourcefile
+     * @param _targetfile targetfile
+     * @param _sourcefile sourcefile
+     * 
+     * @return TwoTuple&lt;DBusPath, Map&lt;String,Variant&lt;?&gt;&gt;&gt; - maybe null
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezFailedException on failure
@@ -109,8 +113,10 @@ public interface FileTransfer extends DBusInterface {
      * with the object path, to avoid a call to GetProperties.<br>
      * <br>
      * 
-     * @param _sourcefile
-     * @param _targetfile
+     * @param _sourcefile sourcefile
+     * @param _targetfile targetfile
+     * 
+     * @return TwoTuple&lt;DBusPath, Map&lt;String,Variant&lt;?&gt;&gt;&gt; - maybe null
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezFailedException on failure
@@ -124,8 +130,8 @@ public interface FileTransfer extends DBusInterface {
      * to target file.<br>
      * <br>
      * 
-     * @param _sourcefile
-     * @param _targetfile
+     * @param _sourcefile sourcefile
+     * @param _targetfile targetfile
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezFailedException on failure
@@ -139,8 +145,8 @@ public interface FileTransfer extends DBusInterface {
      * to the target file.<br>
      * <br>
      * 
-     * @param _sourcefile
-     * @param _targetfile
+     * @param _sourcefile sourcefile
+     * @param _targetfile targetfile
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezFailedException on failure
@@ -153,7 +159,7 @@ public interface FileTransfer extends DBusInterface {
      * Deletes the specified file/folder.<br>
      * <br>
      * 
-     * @param _file
+     * @param _file file
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezFailedException on failure

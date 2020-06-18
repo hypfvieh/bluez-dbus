@@ -53,7 +53,7 @@ public class BluetoothGattDescriptor extends AbstractBluetoothObject {
      * @throws BluezNotPermittedException if operation not permitted
      * @throws BluezNotAuthorizedException when not authorized if not authorized
      * @throws BluezNotSupportedException when operation not supported if not supported
-     * @throws BluezInvalidValueLengthException
+     * @throws BluezInvalidValueLengthException if length is invalid
      */
     public void writeValue(byte[] _value, Map<String, Object> _options) throws BluezFailedException, BluezInProgressException, BluezNotPermittedException, BluezNotAuthorizedException, BluezNotSupportedException, BluezInvalidValueLengthException {
         descriptor.WriteValue(_value, optionsToVariantMap(_options));

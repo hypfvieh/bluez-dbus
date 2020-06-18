@@ -5,7 +5,7 @@ import org.bluez.exceptions.BluezFailedException;
 import org.bluez.exceptions.BluezNotSupportedException;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: obex-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez.obex<br>
@@ -47,6 +47,8 @@ public interface Session1 extends DBusInterface {
      * <br>
      * Get remote device capabilities.<br>
      * <br>
+     * 
+     * @return String - maybe null
      * 
      * @throws BluezNotSupportedException when operation not supported
      * @throws BluezFailedException on failure

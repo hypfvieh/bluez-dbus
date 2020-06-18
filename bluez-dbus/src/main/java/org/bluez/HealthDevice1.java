@@ -11,7 +11,7 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.messages.DBusSignal;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: health-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -42,6 +42,8 @@ public interface HealthDevice1 extends DBusInterface {
      * error is detected False value is returned.<br>
      * <br>
      * 
+     * @return boolean - maybe null
+     * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezOutOfRangeException when value is out of range
      */
@@ -58,8 +60,10 @@ public interface HealthDevice1 extends DBusInterface {
      * channel that is already connected.<br>
      * <br>
      * 
-     * @param _application
-     * @param _configuration
+     * @param _application application
+     * @param _configuration configuration
+     * 
+     * @return DBusPath - maybe null
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezHealthErrorException when operation fails
@@ -75,7 +79,7 @@ public interface HealthDevice1 extends DBusInterface {
      * it.<br>
      * <br>
      * 
-     * @param _channel
+     * @param _channel channel
      * 
      * @throws BluezInvalidArgumentsException when argument is invalid
      * @throws BluezNotFoundException when item not found

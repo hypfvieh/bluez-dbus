@@ -3,7 +3,7 @@ package org.bluez;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 
 /**
- * File generated - 2020-02-12.<br>
+ * File generated - 2020-06-18.<br>
  * Based on bluez Documentation: network-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -30,8 +30,8 @@ public interface NetworkServer1 extends DBusInterface {
      * connections.<br>
      * <br>
      * 
-     * @param _uuid
-     * @param _bridge
+     * @param _uuid uuid
+     * @param _bridge bridge
      */
     void Register(String _uuid, String _bridge);
 
@@ -43,7 +43,7 @@ public interface NetworkServer1 extends DBusInterface {
      * All servers will be automatically unregistered when<br>
      * the calling application terminates.<br>
      * 
-     * @param _uuid
+     * @param _uuid uuid
      */
     void Unregister(String _uuid);
 
