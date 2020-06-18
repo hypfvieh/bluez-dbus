@@ -76,7 +76,7 @@ public class BluezInterfaceCreator {
     }
     
     public static void main(String[] _args) throws IOException {
-        if (_args.length < 2) {
+        if (_args.length < 1) {
             System.out.println("Usage: " + BluezInterfaceCreator.class.getName() + " path-to-bluez-doc-directory output-directory");
             System.exit(1);
         }
@@ -91,7 +91,7 @@ public class BluezInterfaceCreator {
         try (Stream<Path> walk = Files.walk(docPath.toPath())) {
             fileList = walk
                 .map(p -> p.toFile())
-    //            .filter(f -> f.getName().contains("agent-api"))
+                //.filter(f -> f.getName().contains("mesh-api"))
                 .filter(p -> SystemUtil.getFileExtension(p.getAbsolutePath()).equals("txt"))
                 .collect(Collectors.toList());
         }
@@ -177,7 +177,7 @@ public class BluezInterfaceCreator {
             sb.append(" * ").append("Based on bluez Documentation: ").append(is.bluezDocFile).append(".<br>").append(nl);
             sb.append(" * <br>").append(nl);
             if (is.bluezService != null) {
-                sb.append(" * ").append("<b>Service:</b> ").append(is.bluezService).append("<br>").append(nl);
+                sb.append(" * ").append("<b>Service:</b> ").append(fixHtmlTags(is.bluezService)).append("<br>").append(nl);
             }
             if (is.bluezInterface != null) {
                 sb.append(" * ").append("<b>Interface:</b> ").append(is.bluezInterface).append("<br>").append(nl);
@@ -186,7 +186,7 @@ public class BluezInterfaceCreator {
                 sb.append(" * <br>").append(nl);
                 sb.append(" * <b>Object path:</b><br>").append(nl);
                 for (String objPath : is.bluezObjectPath) {
-                    sb.append(" * ").append(indent).append(indent).append(indent).append(objPath).append("<br>").append(nl);
+                    sb.append(" * ").append(indent).append(indent).append(indent).append(fixHtmlTags(objPath)).append("<br>").append(nl);
                 }
             }
             sb.append(" * <br>").append(nl);
@@ -196,7 +196,7 @@ public class BluezInterfaceCreator {
                 sb.append(" * <b>Supported properties:</b> <br>").append(nl);
                 sb.append(" * <br>").append(nl);
                 for (String docLine : is.propertiesDoc) {
-                    sb.append(" * ").append(docLine).append("<br>").append(nl);
+                    sb.append(" * ").append(fixHtmlTags(docLine)).append("<br>").append(nl);
                 }
                 sb.append(" * <br>").append(nl);
             }
@@ -232,17 +232,34 @@ public class BluezInterfaceCreator {
                 } else {
                     sb.append(indent).append(" * <b>From bluez documentation:</b><br>").append(nl);
                     for (String docLine : im.documentation) {
-                        String cleanedLine = docLine.replace("<", "&lt;");
-                        cleanedLine = cleanedLine.replace(">", "&gt;");
+                        String cleanedLine = fixHtmlTags(docLine);
                         sb.append(indent).append(" * ").append(cleanedLine).append("<br>").append(nl);
                     }
                 }
+                
                 if (!methodParametersWithoutType.isEmpty()) {
                     sb.append(indent).append(" * ").append(nl);
                     for (String string : methodParametersWithoutType) {
-                        sb.append(indent).append(" * ").append("@param ").append(string).append(nl);
+                        sb.append(indent).append(" * ").append("@param ").append(string)
+                            .append(" ")
+                            .append(string.replaceFirst("_", ""))
+                            .append(nl);                        
                     }
                 }
+                
+                if (im.returnType != null && !im.returnType.isEmpty() && !"void".equals(im.returnType)) {
+                    sb.append(indent)
+                        .append(" * ")
+                        .append(nl)
+                        .append(indent)
+                        .append(" * ")
+                        .append("@return")
+                        .append(" ")
+                        .append(fixHtmlTags(im.returnType))
+                        .append(" - maybe null")
+                        .append(nl);
+                }
+                
                 if (!im.exceptions.isEmpty()) {
                     sb.append(indent).append(" * ").append(nl);
                     for (String ex : im.exceptions) {
@@ -337,13 +354,23 @@ public class BluezInterfaceCreator {
                 System.err.println(is);
                 continue;
             }
-            File outputPath = new File(_args[1] + File.separator + is.packageName.replace(".", File.separator));
+            
+            String outputDir = _args.length < 2 || _args[1] == null || _args[1].isEmpty() ? System.getProperty("java.io.tmpdir") : _args[1];
+            
+            File outputPath = new File(outputDir + File.separator + is.packageName.replace(".", File.separator));
             System.out.println("-> Writing: " + outputPath + File.separator + is.interfaceName + ".java");
 
             Files.createDirectories(outputPath.toPath());
             FileIoUtil.writeTextFile(outputPath + File.separator + is.interfaceName + ".java", result, false);
 
         }
+    }
+
+    private static String fixHtmlTags(String _docLine) {
+        if (_docLine == null) {
+            return null;
+        }
+        return _docLine.replace(">", "&gt;").replace("<", "&lt;");
     }
 
     private static void createSignals(StringBuilder _sb, InterfaceStructure _is, String _indent, String _nl) {
@@ -411,6 +438,8 @@ public class BluezInterfaceCreator {
                 continue;
             } else if (line.startsWith("Signal")) {
                 i += readSignals(_is, _list.subList(i, _list.size()));
+                continue;
+            } else if (line.startsWith("Methods:") && line.matches(".*Methods:[\\s|\\t]*")) {
                 continue;
             } else if (!line.startsWith("Methods") && !line.contains(")") && line.matches("^[A-Za-z0-9].+")) {
                 return i;
@@ -598,7 +627,7 @@ public class BluezInterfaceCreator {
                     continue;
                 }
                 if (!readError) {
-                    _im.documentation.add(line.replaceAll("^\t\t\t", ""));
+                    _im.documentation.add(fixHtmlTags(line.replaceAll("^\t\t\t", "")));
                 } else {
                     line = line.trim();
                     if (!StringUtil.isBlank(line)) {
@@ -626,23 +655,19 @@ public class BluezInterfaceCreator {
         String dataType;
         String varname;
         if (split.length == 2) {
-            dataType = split[0];
+            dataType = convertDataType(split[0]);
             varname = "_" + StringUtil.lowerCaseFirstChar(split[1]);
-        } else {
-            if (_string.trim().equals("void")) {
+        } else { // no type
+            
+            dataType = convertDataType(_string);
+            varname = _string;
+            
+            if (_string.trim().equals("void")) { // void method
                 dataType = "";
                 varname = "";
-            } else {
-                dataType = "Object";
-                varname = _string;
             }
-
         }
-
-        if (!StringUtils.isBlank(dataType)) {
-            dataType = convertDataType(dataType);
-        }
-
+       
         if (!StringUtils.isBlank(varname) && !StringUtils.isBlank(dataType)) {
             m.put(dataType, varname);
         }
@@ -680,22 +705,27 @@ public class BluezInterfaceCreator {
             _dataType = "long";
         } else if (_dataType.equals("object")) {
             _dataType = "DBusPath";
+        } else if (_dataType.equals("objects")) {
+            _dataType = "DBusPath";
         } else if (_dataType.equals("fd")) {
             _dataType = "FileDescriptor";
         } else if (_dataType.contains(",")) { // tuple
             if (_dataType.equals("object, dict")) {
                 _dataType = "TwoTuple<DBusPath, Map<String,Variant<?>>>";
             } else {
-                String[] split = _dataType.split(",");
+                String[] typeSplit = _dataType.split(",");
                 List<String> data = new ArrayList<>();
-                for (String string : split) {
-                    String[] split2 = string.split(" ");
-                    if (split2.length == 2) {
-                        data.add(StringUtil.isBlank(split2[0]) ? split2[1] : split2[0]);
-                    } else if (split2.length == 1) {
-                        data.add(split[0]);
+                
+                for (String string : typeSplit) {
+                    string = string.trim();
+                    String[] innerSplit = string.split(" ");
+                    if (innerSplit.length == 2) {
+                        data.add(StringUtil.isBlank(innerSplit[0]) ? innerSplit[1] : innerSplit[0]);
+                    } else if (innerSplit.length == 1) {
+                        data.add(innerSplit[0]);
                     }
                 }
+                
                 if (data.size() == 2) {
                     String type1 = convertDataType(data.get(0));
                     String type2 = convertDataType(data.get(1));
