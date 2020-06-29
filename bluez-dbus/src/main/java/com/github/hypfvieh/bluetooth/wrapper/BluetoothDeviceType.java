@@ -2,9 +2,17 @@ package com.github.hypfvieh.bluetooth.wrapper;
 
 /**
  * Bluetooth device ObjectType identifier.
- * @author hypfvieh
  *
+ * @author hypfvieh
  */
 public enum BluetoothDeviceType {
-    NONE, ADAPTER, DEVICE, GATT_SERVICE, GATT_CHARACTERISTIC, GATT_DESCRIPTOR, BATTERY
+    NONE,
+    ADAPTER,
+    DEVICE,
+    GATT_SERVICE,
+    GATT_CHARACTERISTIC,
+    GATT_DESCRIPTOR,
+    BATTERY,
+    PROFILE,
+    PROFILE_MANAGER;
 }
