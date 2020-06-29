@@ -1,5 +1,7 @@
 package com.github.hypfvieh.bluetooth.wrapper;
 
+import java.util.Map;
+
 import org.bluez.Profile1;
 import org.bluez.exceptions.BluezCanceledException;
 import org.bluez.exceptions.BluezRejectedException;
@@ -7,20 +9,18 @@ import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.FileDescriptor;
 import org.freedesktop.dbus.types.Variant;
 
-import java.util.Map;
-
 public final class ProfileHandler implements Profile1 {
     private final String objectPath;
     private final ProfileChangeListener profileChangeListener;
 
-    public ProfileHandler(String objectPath, ProfileChangeListener profileChangeListener) {
-        this.objectPath = objectPath;
-        this.profileChangeListener = profileChangeListener;
+    public ProfileHandler(String _objectPath, ProfileChangeListener _profileChangeListener) {
+        this.objectPath = _objectPath;
+        this.profileChangeListener = _profileChangeListener;
     }
 
     @Override
-    public void NewConnection(DBusPath _device, FileDescriptor fd, Map<String, Variant<?>> _fd_properties) throws BluezRejectedException, BluezCanceledException {
-        profileChangeListener.onProfileConnection(_device.getPath(), fd, _fd_properties);
+    public void NewConnection(DBusPath _device, FileDescriptor _fd, Map<String, Variant<?>> _fdProperties) throws BluezRejectedException, BluezCanceledException {
+        profileChangeListener.onProfileConnection(_device.getPath(), _fd, _fdProperties);
     }
 
     @Override

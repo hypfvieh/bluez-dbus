@@ -1,6 +1,8 @@
 package com.github.hypfvieh.bluetooth.wrapper;
 
-import com.github.hypfvieh.DbusHelper;
+import java.util.Map;
+import java.util.UUID;
+
 import org.bluez.ProfileManager1;
 import org.bluez.exceptions.BluezAlreadyExistsException;
 import org.bluez.exceptions.BluezDoesNotExistException;
@@ -11,11 +13,10 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-import java.util.UUID;
+import com.github.hypfvieh.DbusHelper;
 
 public class ProfileManager extends AbstractBluetoothObject {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger          logger = LoggerFactory.getLogger(getClass());
 
     private final ProfileManager1 rawProfileManager;
 
@@ -30,28 +31,27 @@ public class ProfileManager extends AbstractBluetoothObject {
         return ProfileManager1.class;
     }
 
-    public boolean registerProfile(String path, String uuid, Map<String, Object> options) {
+    public boolean registerProfile(String _path, String _uuid, Map<String, Object> _options) {
         try {
-            rawProfileManager.RegisterProfile(new DBusPath(path), uuid, optionsToVariantMap(options));
+            rawProfileManager.RegisterProfile(new DBusPath(_path), _uuid, optionsToVariantMap(_options));
             return true;
         } catch (BluezAlreadyExistsException e) {
-            logger.debug("Profile already exists (UUID: {}, Path: {}).", uuid, path, e);
+            logger.debug("Profile already exists (UUID: {}, Path: {}).", _uuid, _path, e);
             return true;
         } catch (BluezInvalidArgumentsException e) {
-            logger.error("Error while registering Profile (UUID: {}, Path: {}).", uuid, path, e);
+            logger.error("Error while registering Profile (UUID: {}, Path: {}).", _uuid, _path, e);
             return false;
         }
     }
 
-    public boolean unregisterProfile(UUID uuid, String path) {
+    public boolean unregisterProfile(UUID _uuid, String _path) {
         try {
-            rawProfileManager.UnregisterProfile(new DBusPath(path));
+            rawProfileManager.UnregisterProfile(new DBusPath(_path));
             return true;
         } catch (BluezDoesNotExistException e) {
-            logger.trace("Profile does not exist (UUID: {}, Path: {}).", uuid, path, e);
+            logger.trace("Profile does not exist (UUID: {}, Path: {}).", _uuid, _path, e);
             return false;
         }
     }
-
 
 }
