@@ -115,7 +115,7 @@ public class BluetoothGattDescriptor extends AbstractBluetoothObject {
      * @return byte array, maybe null
      */
     public byte[] getValue() {
-        List<?> typed = getTyped("UUIDs", ArrayList.class);
+        List<?> typed = getTyped("Value", ArrayList.class);
         if (typed != null) {
             return byteListToByteArray(typed);
         }
@@ -138,10 +138,15 @@ public class BluetoothGattDescriptor extends AbstractBluetoothObject {
      *      "secure-read" (Server Only)
      *      "secure-write" (Server Only)
      * </pre>
-     * @return string, maybe null
+     * @return List of String, maybe null
      */
-    public String getFlags() {
-        return getTyped("Flags", String.class);
+    @SuppressWarnings("unchecked")
+    public List<String> getFlags() {
+        List<?> typed = getTyped("Flags", ArrayList.class);
+        if (typed != null) {
+            return (List<String>) typed;
+        }
+        return null;
     }
 
     @Override
