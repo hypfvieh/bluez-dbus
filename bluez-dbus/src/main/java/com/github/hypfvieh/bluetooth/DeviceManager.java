@@ -258,7 +258,7 @@ public class DeviceManager {
      * @param _ident mac address or device name
      * @return device, maybe null if no device could be found with the given ident
      */
-    private BluetoothAdapter getAdapter(String _ident) {
+    public BluetoothAdapter getAdapter(String _ident) {
         if (_ident == null && defaultAdapterMac == null) {
             scanForBluetoothAdapters();
         }
