@@ -270,9 +270,10 @@ public class BluetoothAdapter extends AbstractBluetoothObject {
     public boolean startDiscovery() {
         if (!isDiscovering()) {
             try {
-                adapter.StartDiscovery();
                 internalDiscover = true;
+                adapter.StartDiscovery();
             } catch (Exception _ex) {
+                internalDiscover = false;
                 return false;
             }
         }
@@ -287,10 +288,11 @@ public class BluetoothAdapter extends AbstractBluetoothObject {
     public boolean stopDiscovery() {
         if (isDiscovering()) {
             try {
-                adapter.StopDiscovery();
                 internalDiscover = false;
+                adapter.StopDiscovery();
                 return true;
             } catch (BluezNotReadyException | BluezFailedException | BluezNotAuthorizedException _ex) {
+                internalDiscover = false;
                 return false;
             }
         }
