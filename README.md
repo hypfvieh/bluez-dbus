@@ -41,6 +41,10 @@ If you want to use filedescriptor passing in any bluez method, you have to add [
 
 # Changelog:
 
+#### Version 0.1.3:
+- Various bugfixes: [#35](https://github.com/hypfvieh/bluez-dbus/issues/35), [#36](https://github.com/hypfvieh/bluez-dbus/issues/36), [#38](https://github.com/hypfvieh/bluez-dbus/issues/38)
+- Updated dependency versions
+
 #### Version 0.1.2:
 - Multi module maven project
 - Provide a new artifact for usage with OSGi (bluez-java-osgi)
