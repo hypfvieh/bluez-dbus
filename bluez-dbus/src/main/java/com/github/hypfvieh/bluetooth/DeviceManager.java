@@ -190,9 +190,9 @@ public class DeviceManager {
         // remove all devices from previous calls so unavailable devices will be removed
         // and only devices found in the current introspection result will be used
         if (bluetoothDeviceByAdapterMac.containsKey(adapterMac)) {
-            bluetoothDeviceByAdapterMac.get(adapterMac).clear();    
+            bluetoothDeviceByAdapterMac.get(adapterMac).clear();
         }
-        
+
         for (String path : scanObjectManager) {
             String devicePath = "/org/bluez/" + adapter.getDeviceName() + "/" + path;
             Device1 device = DbusHelper.getRemoteObject(dbusConnection, devicePath, Device1.class);
@@ -386,14 +386,35 @@ public class DeviceManager {
     }
 
     /**
+     * Unregister a PropertiesChanged callback handler on the DBusConnection.
+     *
+     * @param _handler callback class instance
+     * @throws DBusException on error
+     */
+    public void unRegisterPropertyHandler(AbstractPropertiesChangedHandler _handler) throws DBusException {
+        dbusConnection.removeSigHandler(_handler.getImplementationClass(), _handler);
+    }
+
+    /**
      * Register a signal handler callback on the connection.
      * @param _handler callback class extending {@link AbstractSignalHandlerBase}
      * @throws DBusException on DBus error
-     * 
-     * @param <T> a {@link DBusSignal} or a subclass of it 
+     *
+     * @param <T> a {@link DBusSignal} or a subclass of it
      */
     public <T extends DBusSignal> void registerSignalHandler(AbstractSignalHandlerBase<T> _handler) throws DBusException {
         dbusConnection.addSigHandler(_handler.getImplementationClass(), _handler);
+    }
+
+    /**
+     * Unregister a signal handler callback on the connection.
+     * @param _handler callback class extending {@link AbstractSignalHandlerBase}
+     * @throws DBusException on DBus error
+     *
+     * @param <T> a {@link DBusSignal} or a subclass of it
+     */
+    public <T extends DBusSignal> void unRegisterSignalHandler(AbstractSignalHandlerBase<T> _handler) throws DBusException {
+        dbusConnection.removeSigHandler(_handler.getImplementationClass(), _handler);
     }
 
     /**
@@ -404,5 +425,5 @@ public class DeviceManager {
         return dbusConnection;
     }
 
-    
+
 }

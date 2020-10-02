@@ -41,6 +41,9 @@ If you want to use filedescriptor passing in any bluez method, you have to add [
 
 # Changelog:
 
+#### Version 0.1.4 (not yet released):
+- Issue [#48](https://github.com/hypfvieh/bluez-dbus/issues/48) allow unregistering of signal handlers
+
 #### Version 0.1.3:
 - Various bugfixes: [#35](https://github.com/hypfvieh/bluez-dbus/issues/35), [#36](https://github.com/hypfvieh/bluez-dbus/issues/36), [#38](https://github.com/hypfvieh/bluez-dbus/issues/38)
 - Updated dependency versions
