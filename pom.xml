@@ -250,11 +250,6 @@
 
     <developers>
         <developer>
-            <id>matthew</id>
-            <name>Matthew Johnson</name>
-            <email>src@matthew.ath.cx</email>
-        </developer>
-        <developer>
             <id>hypfvieh</id>
             <name>David M.</name>
             <email>hypfvieh@googlemail.com</email>
