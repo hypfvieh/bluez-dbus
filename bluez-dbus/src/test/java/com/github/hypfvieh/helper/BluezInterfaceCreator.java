@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.StringUtils;
 import org.bluez.datatypes.ThreeTuple;
 import org.bluez.datatypes.TwoTuple;
 import org.freedesktop.dbus.DBusPath;
@@ -62,19 +61,19 @@ public class BluezInterfaceCreator {
         EXCEPTION_DESCRIPTIONS.put("BluezNotConnectedException", "when bluez not connected");
         EXCEPTION_DESCRIPTIONS.put("BluezAlreadyConnectedException", "when already connected");
         EXCEPTION_DESCRIPTIONS.put("BluezInProgressException", "when operation already in progress");
-        
+
         EXCEPTION_DESCRIPTIONS.put("BluezNotAvailableException", "when not available");
         EXCEPTION_DESCRIPTIONS.put("BluezAuthenticationTimeoutException", "when authentication timed out");
         EXCEPTION_DESCRIPTIONS.put("BluezAuthenticationFailedException", "when authentication failed");
         EXCEPTION_DESCRIPTIONS.put("BluezConnectionAttemptFailedException", "when connection attempt failed");
-        
+
         EXCEPTION_DESCRIPTIONS.put("BluezNotAllowedException", "when operation not allowed");
         EXCEPTION_DESCRIPTIONS.put("BluezNotFoundException", "when item not found");
         EXCEPTION_DESCRIPTIONS.put("BluezHealthErrorException", "when operation fails");
         EXCEPTION_DESCRIPTIONS.put("BluezOutOfRangeException", "when value is out of range");
         EXCEPTION_DESCRIPTIONS.put("BluezNotAcquiredException", "when item is not acquired");
     }
-    
+
     public static void main(String[] _args) throws IOException {
         if (_args.length < 1) {
             System.out.println("Usage: " + BluezInterfaceCreator.class.getName() + " path-to-bluez-doc-directory output-directory");
@@ -236,17 +235,17 @@ public class BluezInterfaceCreator {
                         sb.append(indent).append(" * ").append(cleanedLine).append("<br>").append(nl);
                     }
                 }
-                
+
                 if (!methodParametersWithoutType.isEmpty()) {
                     sb.append(indent).append(" * ").append(nl);
                     for (String string : methodParametersWithoutType) {
                         sb.append(indent).append(" * ").append("@param ").append(string)
                             .append(" ")
                             .append(string.replaceFirst("_", ""))
-                            .append(nl);                        
+                            .append(nl);
                     }
                 }
-                
+
                 if (im.returnType != null && !im.returnType.isEmpty() && !"void".equals(im.returnType)) {
                     sb.append(indent)
                         .append(" * ")
@@ -259,7 +258,7 @@ public class BluezInterfaceCreator {
                         .append(" - maybe null")
                         .append(nl);
                 }
-                
+
                 if (!im.exceptions.isEmpty()) {
                     sb.append(indent).append(" * ").append(nl);
                     for (String ex : im.exceptions) {
@@ -354,9 +353,9 @@ public class BluezInterfaceCreator {
                 System.err.println(is);
                 continue;
             }
-            
+
             String outputDir = _args.length < 2 || _args[1] == null || _args[1].isEmpty() ? System.getProperty("java.io.tmpdir") : _args[1];
-            
+
             File outputPath = new File(outputDir + File.separator + is.packageName.replace(".", File.separator));
             System.out.println("-> Writing: " + outputPath + File.separator + is.interfaceName + ".java");
 
@@ -658,17 +657,17 @@ public class BluezInterfaceCreator {
             dataType = convertDataType(split[0]);
             varname = "_" + StringUtil.lowerCaseFirstChar(split[1]);
         } else { // no type
-            
+
             dataType = convertDataType(_string);
             varname = _string;
-            
+
             if (_string.trim().equals("void")) { // void method
                 dataType = "";
                 varname = "";
             }
         }
-       
-        if (!StringUtils.isBlank(varname) && !StringUtils.isBlank(dataType)) {
+
+        if ((varname != null && !varname.trim().isEmpty()) && (dataType != null && !dataType.trim().isEmpty())) {
             m.put(dataType, varname);
         }
 
@@ -715,7 +714,7 @@ public class BluezInterfaceCreator {
             } else {
                 String[] typeSplit = _dataType.split(",");
                 List<String> data = new ArrayList<>();
-                
+
                 for (String string : typeSplit) {
                     string = string.trim();
                     String[] innerSplit = string.split(" ");
@@ -725,7 +724,7 @@ public class BluezInterfaceCreator {
                         data.add(innerSplit[0]);
                     }
                 }
-                
+
                 if (data.size() == 2) {
                     String type1 = convertDataType(data.get(0));
                     String type2 = convertDataType(data.get(1));

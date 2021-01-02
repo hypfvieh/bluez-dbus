@@ -4,9 +4,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 
-import org.apache.commons.lang3.ClassUtils;
 import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.exceptions.DBusExecutionException;
@@ -87,10 +87,13 @@ public abstract class AbstractBluetoothObject {
      * @return value of _field as _type class or null
      */
     protected <T> T getTyped(String _field, Class<T> _type) {
+        Objects.requireNonNull(_type, "Class required");
+        Objects.requireNonNull(_field, "Property name required");
+
         try {
             Properties remoteObject = dbusConnection.getRemoteObject("org.bluez", dbusPath, Properties.class);
             Object obj = remoteObject.Get(getInterfaceClass().getName(), _field);
-            if (ClassUtils.isAssignable(_type, obj.getClass())) {
+            if (_type.isAssignableFrom(obj.getClass())) {
                 return _type.cast(obj);
             }
 
@@ -147,7 +150,8 @@ public abstract class AbstractBluetoothObject {
             return new byte[] {};
         }
 
-        if (!ClassUtils.isAssignable(byte.class, _list.get(0).getClass())) {
+        if (!Byte.class.isAssignableFrom(_list.get(0).getClass())
+                && !byte.class.isAssignableFrom(_list.get(0).getClass())) {
             return null;
         }
 
