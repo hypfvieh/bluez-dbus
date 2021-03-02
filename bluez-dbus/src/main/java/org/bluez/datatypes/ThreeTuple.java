@@ -17,6 +17,12 @@ public class ThreeTuple<A, B, C> extends Tuple {
     @Position(2)
     private C thirdValue;
 
+    public ThreeTuple(A _firstValue, B _secondValue, C _thirdValue) {
+        firstValue = _firstValue;
+        secondValue = _secondValue;
+        thirdValue = _thirdValue;
+    }
+
     public A getFirstValue() {
         return firstValue;
     }
