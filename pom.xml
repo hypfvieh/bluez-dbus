@@ -188,7 +188,7 @@
             <dependency>
                 <groupId>com.github.hypfvieh</groupId>
                 <artifactId>dbus-java</artifactId>
-                <version>3.2.4</version>
+                <version>3.3.0</version>
             </dependency>
             
         </dependencies>        

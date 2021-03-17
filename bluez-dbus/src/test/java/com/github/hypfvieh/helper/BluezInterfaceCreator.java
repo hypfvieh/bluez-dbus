@@ -1,7 +1,16 @@
 package com.github.hypfvieh.helper;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -31,10 +40,7 @@ import org.freedesktop.dbus.types.UInt16;
 import org.freedesktop.dbus.types.UInt32;
 import org.freedesktop.dbus.types.UInt64;
 import org.freedesktop.dbus.types.Variant;
-
-import com.github.hypfvieh.util.FileIoUtil;
-import com.github.hypfvieh.util.StringUtil;
-import com.github.hypfvieh.util.SystemUtil;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility to generate interface classes from bluez documentation (doc/ directory of bluez source).
@@ -91,7 +97,7 @@ public class BluezInterfaceCreator {
             fileList = walk
                 .map(p -> p.toFile())
                 //.filter(f -> f.getName().contains("mesh-api"))
-                .filter(p -> SystemUtil.getFileExtension(p.getAbsolutePath()).equals("txt"))
+                .filter(p -> getFileExtension(p.getAbsolutePath()).equals("txt"))
                 .collect(Collectors.toList());
         }
         Set<InterfaceStructure> structure = new LinkedHashSet<>();
@@ -99,7 +105,7 @@ public class BluezInterfaceCreator {
         for (File file : fileList) {
             System.out.println("-> Reading: " + file);
 
-            List<String> fileContent = FileIoUtil.readFileToList(file);
+            List<String> fileContent = getTextfileFromUrl(file.toURI().toURL().toExternalForm(), StandardCharsets.UTF_8, true);
             InterfaceStructure is = null;
 
 
@@ -130,10 +136,10 @@ public class BluezInterfaceCreator {
                         } else if (line.startsWith("Object path")) {
                             is.bluezObjectPath.add(line.replaceAll("Object path\\s*", ""));
                             objectPath = true;
-                        } else if (objectPath && !StringUtil.isBlank(line)) {
+                        } else if (objectPath && !isBlank(line)) {
                             is.bluezObjectPath.add(line.trim());
                             continue;
-                        } else if (StringUtil.isBlank(line)) {
+                        } else if (isBlank(line)) {
                             objectPath = false;
                         }
 
@@ -360,7 +366,7 @@ public class BluezInterfaceCreator {
             System.out.println("-> Writing: " + outputPath + File.separator + is.interfaceName + ".java");
 
             Files.createDirectories(outputPath.toPath());
-            FileIoUtil.writeTextFile(outputPath + File.separator + is.interfaceName + ".java", result, false);
+            writeTextFile(outputPath + File.separator + is.interfaceName + ".java", result, StandardCharsets.UTF_8);
 
         }
     }
@@ -405,7 +411,7 @@ public class BluezInterfaceCreator {
             _sb.append(_nl);
             for (Map<String, String> fld : signal.fields) {
                 Entry<String, String> next = fld.entrySet().iterator().next();
-                _sb.append(_indent).append(_indent).append("public ").append(next.getKey()).append(" ").append("get").append(StringUtil.upperCaseFirstChar(next.getValue().replaceFirst("_", ""))).append("() {").append(_nl);
+                _sb.append(_indent).append(_indent).append("public ").append(next.getKey()).append(" ").append("get").append(upperCaseFirstChar(next.getValue().replaceFirst("_", ""))).append("() {").append(_nl);
                 _sb.append(_indent).append(_indent).append(_indent).append("return ").append(next.getValue().replaceFirst("_", "")).append(";").append(_nl);
                 _sb.append(_indent).append(_indent).append("}").append(_nl);
             }
@@ -424,7 +430,7 @@ public class BluezInterfaceCreator {
                 requireNext = null;
             }
 
-            if (StringUtil.isBlank(line)) {
+            if (isBlank(line)) {
                 continue;
             }
 
@@ -464,7 +470,7 @@ public class BluezInterfaceCreator {
                 line = line.replace("[Deprecated]", "");
             }
                 line = line.replaceFirst("^\\s+", "");
-                if (StringUtil.isBlank(line)) {
+                if (isBlank(line)) {
                     continue;
                 }
 
@@ -473,7 +479,7 @@ public class BluezInterfaceCreator {
                 String methodParams = null;
                 if (matcher.matches()) {
 
-                    if (StringUtil.isBlank(matcher.group(2))) {
+                    if (isBlank(matcher.group(2))) {
                         im.returnType = "void";
                         im.methodName = matcher.group(1);
                     } else {
@@ -569,7 +575,7 @@ public class BluezInterfaceCreator {
                 line = line.replace("Properties", "\t");
             } else if (line.startsWith("=")) { // next structure begins
                 return i;
-            } else if (StringUtil.isBlank(line)) {
+            } else if (isBlank(line)) {
                 _is.propertiesDoc.add(line); // preserve empty lines
                 continue;
             } else if (!line.startsWith("\t\t")) {
@@ -607,7 +613,7 @@ public class BluezInterfaceCreator {
         int i;
         for (i = 0; i < _subList.size(); i++) {
             String line = _subList.get(i);
-            if (StringUtil.isBlank(line) && !readError) {
+            if (isBlank(line) && !readError) {
                 _im.documentation.add(line);
                 continue;
             }
@@ -629,7 +635,7 @@ public class BluezInterfaceCreator {
                     _im.documentation.add(fixHtmlTags(line.replaceAll("^\t\t\t", "")));
                 } else {
                     line = line.trim();
-                    if (!StringUtil.isBlank(line)) {
+                    if (!isBlank(line)) {
                         if (line.matches("\\s*\\w+(\\.\\w+)+\\s*")) {
                             line = line.replaceAll("([^\\s]+).*", "$1");
                             _im.exceptions.add(toJavaExceptionClass(line));
@@ -646,7 +652,7 @@ public class BluezInterfaceCreator {
     private static Map<String, String> createMethodParam(String _string) {
         Map<String,String> m = new HashMap<>();
 
-        if (StringUtil.isBlank(_string)) {
+        if (isBlank(_string)) {
             return m;
         }
 
@@ -655,7 +661,7 @@ public class BluezInterfaceCreator {
         String varname;
         if (split.length == 2) {
             dataType = convertDataType(split[0]);
-            varname = "_" + StringUtil.lowerCaseFirstChar(split[1]);
+            varname = "_" + lowerCaseFirstChar(split[1]);
         } else { // no type
 
             dataType = convertDataType(_string);
@@ -719,7 +725,7 @@ public class BluezInterfaceCreator {
                     string = string.trim();
                     String[] innerSplit = string.split(" ");
                     if (innerSplit.length == 2) {
-                        data.add(StringUtil.isBlank(innerSplit[0]) ? innerSplit[1] : innerSplit[0]);
+                        data.add(isBlank(innerSplit[0]) ? innerSplit[1] : innerSplit[0]);
                     } else if (innerSplit.length == 1) {
                         data.add(innerSplit[0]);
                     }
@@ -739,9 +745,131 @@ public class BluezInterfaceCreator {
                 }
             }
         } else {
-            _dataType = StringUtil.upperCaseFirstChar(_dataType);
+            _dataType = upperCaseFirstChar(_dataType);
         }
         return _dataType;
+    }
+
+    static boolean isBlank(String _str) {
+        if (_str == null) {
+            return true;
+        }
+
+        return _str.trim().isEmpty();
+    }
+
+    static String upperCaseFirstChar(String _str) {
+        if (_str == null) {
+            return null;
+        }
+        if (_str.isEmpty()) {
+            return _str;
+        }
+        return _str.substring(0, 1).toUpperCase() + _str.substring(1);
+    }
+
+    static String lowerCaseFirstChar(String _str) {
+        if (_str == null) {
+            return null;
+        }
+        if (_str.isEmpty()) {
+            return _str;
+        }
+
+        return _str.substring(0, 1).toLowerCase() + _str.substring(1);
+    }
+
+    static String getFileExtension(String _fileName) {
+        if (_fileName == null) {
+            return null;
+        }
+        int lastDot = _fileName.lastIndexOf('.');
+        if (lastDot == -1) {
+            return "";
+        }
+        return _fileName.substring(lastDot + 1);
+    }
+
+    static boolean writeTextFile(String _fileName, String _fileContent, Charset _charset) {
+        if (isBlank(_fileName)) {
+            return false;
+        }
+        String allText = _fileContent;
+
+        OutputStreamWriter writer = null;
+        try {
+            writer = new OutputStreamWriter(new FileOutputStream(_fileName), _charset);
+            writer.write(allText);
+        } catch (IOException _ex) {
+            LoggerFactory.getLogger(BluezInterfaceCreator.class).error("Could not write file to '" + _fileName + "'", _ex);
+            return false;
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (IOException _ex) {
+                LoggerFactory.getLogger(BluezInterfaceCreator.class).error("Error while closing file '" + _fileName + "'", _ex);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    static List<String> getTextfileFromUrl(String _url, Charset _charset, boolean _silent) {
+        if (_url == null) {
+            return null;
+        }
+        String fileUrl = _url;
+        if (!fileUrl.contains("://")) {
+            fileUrl = "file://" + fileUrl;
+        }
+
+        try {
+            URL dlUrl;
+            if (fileUrl.startsWith("file:/")) {
+                dlUrl = new URL("file", "", fileUrl.replaceFirst("file:\\/{1,2}", ""));
+            } else {
+                dlUrl = new URL(fileUrl);
+            }
+            URLConnection urlConn = dlUrl.openConnection();
+            urlConn.setDoInput(true);
+            urlConn.setUseCaches(false);
+
+            return readTextFileFromStream(urlConn.getInputStream(), _charset, _silent);
+
+        } catch (IOException _ex) {
+            if (!_silent) {
+                LoggerFactory.getLogger(BluezInterfaceCreator.class).warn("Error while reading file:", _ex);
+            }
+        }
+
+        return null;
+    }
+
+    static List<String> readTextFileFromStream(InputStream _input, Charset _charset, boolean _silent) {
+        if (_input == null) {
+            return null;
+        }
+        try {
+            List<String> fileContent;
+            try (BufferedReader dis = new BufferedReader(new InputStreamReader(_input, _charset))) {
+                String s;
+                fileContent = new ArrayList<>();
+                while ((s = dis.readLine()) != null) {
+                    fileContent.add(s);
+                }
+            }
+
+            return fileContent.size() > 0 ? fileContent : null;
+        } catch (IOException _ex) {
+            if (!_silent) {
+                LoggerFactory.getLogger(BluezInterfaceCreator.class).warn("Error while reading file:", _ex);
+            }
+        }
+
+        return null;
     }
 
     static class InterfaceStructure {
