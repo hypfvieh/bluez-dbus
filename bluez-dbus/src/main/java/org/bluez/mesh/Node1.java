@@ -20,7 +20,7 @@ import org.freedesktop.dbus.types.Variant;
  * <br>
  * <b>Object path:</b><br>
  *             /org/bluez/mesh/node&lt;uuid&gt;<br>
- *             where <uuid> is the Device UUID passed to Join(),<br>
+ *             where &lt;uuid6gt; is the Device UUID passed to Join(),<br>
  *             CreateNetwork() or Import()<br>
  * <br>
  * <b>Supported properties:</b> <br>
