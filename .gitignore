@@ -5,3 +5,5 @@
 target
 
 bluez-dbus-osgi/META-INF
+/.idea
+*.iml

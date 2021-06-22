@@ -14,5 +14,7 @@ public enum BluetoothDeviceType {
     GATT_DESCRIPTOR,
     BATTERY,
     PROFILE,
-    PROFILE_MANAGER;
+    PROFILE_MANAGER,
+    AGENT,
+    AGENT_MANAGER
 }
