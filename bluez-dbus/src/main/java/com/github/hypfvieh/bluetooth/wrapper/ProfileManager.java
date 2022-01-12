@@ -1,8 +1,6 @@
 package com.github.hypfvieh.bluetooth.wrapper;
 
-import java.util.Map;
-import java.util.UUID;
-
+import com.github.hypfvieh.DbusHelper;
 import org.bluez.ProfileManager1;
 import org.bluez.exceptions.BluezAlreadyExistsException;
 import org.bluez.exceptions.BluezDoesNotExistException;
@@ -13,10 +11,11 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.hypfvieh.DbusHelper;
+import java.util.Map;
+import java.util.UUID;
 
 public class ProfileManager extends AbstractBluetoothObject {
-    private final Logger          logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final ProfileManager1 rawProfileManager;
 
