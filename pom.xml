@@ -17,7 +17,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit.version>5.7.0</junit.version>
+        <junit.version>5.8.2</junit.version>
     </properties>
 
     <modules>
@@ -101,7 +101,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.1.2</version>
+                    <version>3.2.0</version>
                     <executions>
                         <execution>
                             <goals>
@@ -162,7 +162,7 @@
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <version>3.2.0</version>
                         <configuration>
-                            <additionalparam>-Xdoclint:none</additionalparam>
+							<doclint>none</doclint>
                         </configuration>
                         <executions>
                             <execution>
@@ -220,21 +220,9 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.30</version>
+                <version>1.7.32</version>
             </dependency>
-
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>1.2.3</version>
-            </dependency>
-
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-core</artifactId>
-                <version>1.2.3</version>
-            </dependency>
-
+         
             <!-- JUnit testing framework. -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
@@ -258,13 +246,13 @@
             <dependency>
                 <groupId>org.junit.platform</groupId>
                 <artifactId>junit-platform-launcher</artifactId>
-                <version>1.7.0</version>
+                <version>1.8.2</version>
             </dependency>
                         
             <dependency>
                 <groupId>com.github.hypfvieh</groupId>
                 <artifactId>dbus-java</artifactId>
-                <version>3.3.0</version>
+                <version>3.3.1</version>
             </dependency>
             
         </dependencies>        
