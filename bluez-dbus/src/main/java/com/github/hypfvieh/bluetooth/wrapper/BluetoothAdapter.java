@@ -1,25 +1,15 @@
 package com.github.hypfvieh.bluetooth.wrapper;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.bluez.Adapter1;
 import org.bluez.Device1;
-import org.bluez.exceptions.BluezFailedException;
-import org.bluez.exceptions.BluezInvalidArgumentsException;
-import org.bluez.exceptions.BluezNotAuthorizedException;
-import org.bluez.exceptions.BluezNotReadyException;
-import org.bluez.exceptions.BluezNotSupportedException;
+import org.bluez.exceptions.*;
 import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.interfaces.DBusInterface;
-import org.freedesktop.dbus.types.UInt16;
-import org.freedesktop.dbus.types.UInt32;
-import org.freedesktop.dbus.types.Variant;
+import org.freedesktop.dbus.types.*;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Wrapper class which represents an bluetooth adapter.

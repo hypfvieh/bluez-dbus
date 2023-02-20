@@ -1,22 +1,16 @@
 package org.bluez;
 
-import java.util.Map;
-
 import org.bluez.datatypes.TwoTuple;
-import org.bluez.exceptions.BluezFailedException;
-import org.bluez.exceptions.BluezInProgressException;
-import org.bluez.exceptions.BluezInvalidOffsetException;
-import org.bluez.exceptions.BluezInvalidValueLengthException;
-import org.bluez.exceptions.BluezNotAuthorizedException;
-import org.bluez.exceptions.BluezNotPermittedException;
-import org.bluez.exceptions.BluezNotSupportedException;
+import org.bluez.exceptions.*;
 import org.freedesktop.dbus.FileDescriptor;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.UInt16;
 import org.freedesktop.dbus.types.Variant;
 
+import java.util.Map;
+
 /**
- * File generated - 2020-06-18.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: gatt-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -75,7 +69,14 @@ import org.freedesktop.dbus.types.Variant;
  * 			Defines how the characteristic value can be used. See<br>
  * 			Core spec "Table 3.5: Characteristic Properties bit<br>
  * 			field", and "Table 3.8: Characteristic Extended<br>
- * 			Properties bit field". Allowed values:<br>
+ * 			Properties bit field".<br>
+ * <br>
+ * 			The "x-notify" and "x-indicate" flags restrict access<br>
+ * 			to notifications and indications by imposing write<br>
+ * 			restrictions on a characteristic's client<br>
+ * 			characteristic configuration descriptor.<br>
+ * <br>
+ * 			Allowed values:<br>
  * <br>
  * 				"broadcast"<br>
  * 				"read"<br>
@@ -89,10 +90,16 @@ import org.freedesktop.dbus.types.Variant;
  * 				"writable-auxiliaries"<br>
  * 				"encrypt-read"<br>
  * 				"encrypt-write"<br>
+ * 				"encrypt-notify" (Server only)<br>
+ * 				"encrypt-indicate" (Server only)<br>
  * 				"encrypt-authenticated-read"<br>
  * 				"encrypt-authenticated-write"<br>
+ * 				"encrypt-authenticated-notify" (Server only)<br>
+ * 				"encrypt-authenticated-indicate" (Server only)<br>
  * 				"secure-read" (Server only)<br>
  * 				"secure-write" (Server only)<br>
+ * 				"secure-notify" (Server only)<br>
+ * 				"secure-indicate" (Server only)<br>
  * 				"authorize"<br>
  * <br>
  * 		uint16 Handle [read-write, optional] (Server Only)<br>
@@ -102,6 +109,12 @@ import org.freedesktop.dbus.types.Variant;
  * 			which may fail, to auto allocate the value 0x0000<br>
  * 			shall be used which will cause the allocated handle to<br>
  * 			be set once registered.<br>
+ * <br>
+ * 		uint16 MTU [read-only]<br>
+ * <br>
+ * 			Characteristic MTU, this is valid both for ReadValue<br>
+ * 			and WriteValue but either method can use long<br>
+ * 			procedures when supported.<br>
  * <br>
  * <br>
  */
@@ -257,9 +270,10 @@ public interface GattCharacteristic1 extends DBusInterface {
      * @throws BluezFailedException on failure
      * @throws BluezNotPermittedException on BluezNotPermittedException
      * @throws BluezInProgressException when operation already in progress
+     * @throws BluezNotConnectedException when bluez not connected
      * @throws BluezNotSupportedException when operation not supported
      */
-    void StartNotify() throws BluezFailedException, BluezNotPermittedException, BluezInProgressException, BluezNotSupportedException;
+    void StartNotify() throws BluezFailedException, BluezNotPermittedException, BluezInProgressException, BluezNotConnectedException, BluezNotSupportedException;
 
     /**
      * <b>From bluez documentation:</b><br>

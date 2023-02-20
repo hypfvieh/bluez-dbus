@@ -1,18 +1,11 @@
 package com.github.hypfvieh.bluetooth.wrapper;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.bluez.GattDescriptor1;
-import org.bluez.exceptions.BluezFailedException;
-import org.bluez.exceptions.BluezInProgressException;
-import org.bluez.exceptions.BluezInvalidValueLengthException;
-import org.bluez.exceptions.BluezNotAuthorizedException;
-import org.bluez.exceptions.BluezNotPermittedException;
-import org.bluez.exceptions.BluezNotSupportedException;
+import org.bluez.exceptions.*;
 import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.interfaces.DBusInterface;
+
+import java.util.*;
 
 /**
  * Wrapper class which represents a GATT descriptor on a remote device.

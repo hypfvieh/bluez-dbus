@@ -1,11 +1,10 @@
 package org.bluez;
 
-import org.bluez.exceptions.BluezFailedException;
-import org.bluez.exceptions.BluezNotSupportedException;
+import org.bluez.exceptions.*;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 
 /**
- * File generated - 2020-06-18.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: media-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez (Controller role)<br>
@@ -227,5 +226,50 @@ public interface MediaPlayer1 extends DBusInterface {
      * @throws BluezFailedException on failure
      */
     void Rewind() throws BluezNotSupportedException, BluezFailedException;
+
+    /**
+     * <b>From bluez documentation:</b><br>
+     * <br>
+     * Press a specific key to send as passthrough command.<br>
+     * The key will be released automatically. Use Hold()<br>
+     * instead if the intention is to hold down the key.<br>
+     * <br>
+     * 
+     * @param _avc_key avc_key
+     * 
+     * @throws BluezInvalidArgumentsException when argument is invalid
+     * @throws BluezNotSupportedException when operation not supported
+     * @throws BluezFailedException on failure
+     */
+    void Press(byte _avc_key) throws BluezInvalidArgumentsException, BluezNotSupportedException, BluezFailedException;
+
+    /**
+     * <b>From bluez documentation:</b><br>
+     * <br>
+     * Press and hold a specific key to send as passthrough<br>
+     * command. It is your responsibility to make sure that<br>
+     * Release() is called after calling this method. The held<br>
+     * key will also be released when any other method in this<br>
+     * interface is called.<br>
+     * <br>
+     * 
+     * @param _avc_key avc_key
+     * 
+     * @throws BluezInvalidArgumentsException when argument is invalid
+     * @throws BluezNotSupportedException when operation not supported
+     * @throws BluezFailedException on failure
+     */
+    void Hold(byte _avc_key) throws BluezInvalidArgumentsException, BluezNotSupportedException, BluezFailedException;
+
+    /**
+     * <b>From bluez documentation:</b><br>
+     * <br>
+     * Release the previously held key invoked using Hold().<br>
+     * <br>
+     * 
+     * @throws BluezNotSupportedException when operation not supported
+     * @throws BluezFailedException on failure
+     */
+    void Release() throws BluezNotSupportedException, BluezFailedException;
 
 }

@@ -3,7 +3,7 @@ package org.bluez;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 
 /**
- * File generated - 2020-06-18.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: advertising-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -100,9 +100,9 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
  * <br>
  * 		uint16_t Duration<br>
  * <br>
- * 			Duration of the advertisement in seconds. If there are<br>
- * 			other applications advertising no duration is set the<br>
- * 			default is 2 seconds.<br>
+ * 			Rotation duration of the advertisement in seconds. If<br>
+ * 			there are other applications advertising no duration is<br>
+ * 			set the default is 2 seconds.<br>
  * <br>
  * 		uint16_t Timeout<br>
  * <br>
@@ -117,6 +117,31 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
  * 			Possible value: "1M" (default)<br>
  * 					"2M"<br>
  * 					"Coded"<br>
+ * <br>
+ * 		uint32 MinInterval [Experimental]<br>
+ * <br>
+ * 			Minimum advertising interval to be used by the<br>
+ * 			advertising set, in milliseconds. Acceptable values<br>
+ * 			are in the range [20ms, 10,485s]. If the provided<br>
+ * 			MinInterval is larger than the provided MaxInterval,<br>
+ * 			the registration will return failure.<br>
+ * <br>
+ * 		uint32 MaxInterval [Experimental]<br>
+ * <br>
+ * 			Maximum advertising interval to be used by the<br>
+ * 			advertising set, in milliseconds. Acceptable values<br>
+ * 			are in the range [20ms, 10,485s]. If the provided<br>
+ * 			MinInterval is larger than the provided MaxInterval,<br>
+ * 			the registration will return failure.<br>
+ * <br>
+ * 		int16 TxPower [Experimental]<br>
+ * <br>
+ * 			Requested transmission power of this advertising set.<br>
+ * 			The provided value is used only if the "CanSetTxPower"<br>
+ * 			feature is enabled on the Advertising Manager. The<br>
+ * 			provided value must be in range [-127 to +20], where<br>
+ * 			units are in dBm.<br>
+ * <br>
  * <br>
  * <br>
  */

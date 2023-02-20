@@ -1,12 +1,10 @@
 package org.bluez;
 
-import org.bluez.exceptions.BluezAlreadyConnectedException;
-import org.bluez.exceptions.BluezConnectionAttemptFailedException;
-import org.bluez.exceptions.BluezFailedException;
+import org.bluez.exceptions.*;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 
 /**
- * File generated - 2020-06-18.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: network-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>

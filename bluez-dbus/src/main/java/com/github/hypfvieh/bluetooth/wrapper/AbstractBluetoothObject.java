@@ -1,12 +1,6 @@
 package com.github.hypfvieh.bluetooth.wrapper;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Set;
-
+import com.github.hypfvieh.DbusHelper;
 import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.exceptions.DBusExecutionException;
@@ -16,7 +10,8 @@ import org.freedesktop.dbus.types.Variant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.hypfvieh.DbusHelper;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Base class of all bluetooth wrapper object classes.

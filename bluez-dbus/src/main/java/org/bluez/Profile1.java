@@ -1,7 +1,5 @@
 package org.bluez;
 
-import java.util.Map;
-
 import org.bluez.exceptions.BluezCanceledException;
 import org.bluez.exceptions.BluezRejectedException;
 import org.freedesktop.dbus.DBusPath;
@@ -9,8 +7,10 @@ import org.freedesktop.dbus.FileDescriptor;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
 
+import java.util.Map;
+
 /**
- * File generated - 2020-06-18.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: profile-api.txt.<br>
  * <br>
  * <b>Service:</b> unique name<br>

@@ -1,9 +1,9 @@
 package org.bluez;
 
-import java.util.Map;
-
 import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
+
+import java.util.Map;
 
 /**
  * File generated - 2020-06-18.<br>

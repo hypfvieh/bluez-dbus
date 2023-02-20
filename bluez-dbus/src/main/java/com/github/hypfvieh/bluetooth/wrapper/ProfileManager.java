@@ -2,9 +2,7 @@ package com.github.hypfvieh.bluetooth.wrapper;
 
 import com.github.hypfvieh.DbusHelper;
 import org.bluez.ProfileManager1;
-import org.bluez.exceptions.BluezAlreadyExistsException;
-import org.bluez.exceptions.BluezDoesNotExistException;
-import org.bluez.exceptions.BluezInvalidArgumentsException;
+import org.bluez.exceptions.*;
 import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.interfaces.DBusInterface;

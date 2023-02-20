@@ -1,13 +1,11 @@
 package org.bluez;
 
-import org.bluez.exceptions.BluezNotAcquiredException;
-import org.bluez.exceptions.BluezNotAllowedException;
-import org.bluez.exceptions.BluezNotConnectedException;
+import org.bluez.exceptions.*;
 import org.freedesktop.dbus.FileDescriptor;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 
 /**
- * File generated - 2020-06-18.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: health-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>

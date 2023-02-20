@@ -1,13 +1,11 @@
 package org.bluez;
 
-import org.bluez.exceptions.BluezAlreadyExistsException;
-import org.bluez.exceptions.BluezDoesNotExistException;
-import org.bluez.exceptions.BluezInvalidArgumentsException;
+import org.bluez.exceptions.*;
 import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 
 /**
- * File generated - 2020-06-18.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: agent-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>

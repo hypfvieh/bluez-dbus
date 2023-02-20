@@ -105,9 +105,8 @@ public class BluezInterfaceCreator {
         for (File file : fileList) {
             System.out.println("-> Reading: " + file);
 
-            List<String> fileContent = getTextfileFromUrl(file.toURI().toURL().toExternalForm(), StandardCharsets.UTF_8, true);
+            List<String> fileContent = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8); 
             InterfaceStructure is = null;
-
 
             boolean objectPath = false;
             for (int i = 0; i < fileContent.size(); i++) {

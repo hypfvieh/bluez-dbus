@@ -1,15 +1,12 @@
 package org.bluez.mesh;
 
-import java.util.Map;
-
-import org.bluez.exceptions.mesh.BluezMeshDoesNotExistException;
-import org.bluez.exceptions.mesh.BluezMeshInvalidArgumentsException;
-import org.bluez.exceptions.mesh.BluezMeshNotAuthorizedException;
-import org.bluez.exceptions.mesh.BluezMeshNotFoundException;
+import org.bluez.exceptions.mesh.*;
 import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.UInt16;
 import org.freedesktop.dbus.types.Variant;
+
+import java.util.Map;
 
 /**
  * File generated - 2020-12-28.<br>

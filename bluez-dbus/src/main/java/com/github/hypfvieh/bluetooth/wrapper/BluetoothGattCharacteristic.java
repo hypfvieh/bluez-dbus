@@ -1,25 +1,14 @@
 package com.github.hypfvieh.bluetooth.wrapper;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
+import com.github.hypfvieh.DbusHelper;
 import org.bluez.GattCharacteristic1;
 import org.bluez.GattDescriptor1;
-import org.bluez.exceptions.BluezFailedException;
-import org.bluez.exceptions.BluezInProgressException;
-import org.bluez.exceptions.BluezInvalidOffsetException;
-import org.bluez.exceptions.BluezInvalidValueLengthException;
-import org.bluez.exceptions.BluezNotAuthorizedException;
-import org.bluez.exceptions.BluezNotPermittedException;
-import org.bluez.exceptions.BluezNotSupportedException;
+import org.bluez.exceptions.*;
 import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 
-import com.github.hypfvieh.DbusHelper;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Wrapper class which represents a GATT characteristic on a remote device.
@@ -230,8 +219,9 @@ public class BluetoothGattCharacteristic extends AbstractBluetoothObject {
      * @throws BluezInProgressException when operation already in progress if operation already in progress
      * @throws BluezNotSupportedException when operation not supported if operation is not supported
      * @throws BluezNotPermittedException if access is not permitted
+     * @throws BluezNotConnectedException when bluez is not connected
      */
-    public void startNotify() throws BluezFailedException, BluezInProgressException, BluezNotSupportedException, BluezNotPermittedException {
+    public void startNotify() throws BluezFailedException, BluezInProgressException, BluezNotSupportedException, BluezNotPermittedException, BluezNotConnectedException {
         gattCharacteristic.StartNotify();
     }
 

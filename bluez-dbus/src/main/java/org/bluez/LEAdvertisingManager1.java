@@ -1,18 +1,14 @@
 package org.bluez;
 
-import java.util.Map;
-
-import org.bluez.exceptions.BluezAlreadyExistsException;
-import org.bluez.exceptions.BluezDoesNotExistException;
-import org.bluez.exceptions.BluezInvalidArgumentsException;
-import org.bluez.exceptions.BluezInvalidLengthException;
-import org.bluez.exceptions.BluezNotPermittedException;
+import org.bluez.exceptions.*;
 import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
 
+import java.util.Map;
+
 /**
- * File generated - 2020-06-18.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: advertising-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -48,6 +44,47 @@ import org.freedesktop.dbus.types.Variant;
  * 			Possible values: "1M"<br>
  * 					 "2M"<br>
  * 					 "Coded"<br>
+ * <br>
+ * 		dict SupportedCapabilities [Experimental]<br>
+ * <br>
+ * 			Enumerates Advertising-related controller capabilities<br>
+ * 			useful to the client.<br>
+ * <br>
+ * 			Possible Values:<br>
+ * <br>
+ * 				byte MaxAdvLen<br>
+ * <br>
+ * 					Max advertising data length<br>
+ * <br>
+ * 				byte MaxScnRspLen<br>
+ * <br>
+ * 					Max advertising scan response length<br>
+ * <br>
+ * 				int16 MinTxPower<br>
+ * <br>
+ * 					Min advertising tx power (dBm)<br>
+ * <br>
+ * 				int16 MaxTxPower<br>
+ * <br>
+ * 					Max advertising tx power (dBm)<br>
+ * <br>
+ * 		array{string} SupportedFeatures [readonly,optional,Experimental]<br>
+ * <br>
+ * 			List of supported platform features. If no features<br>
+ * 			are available on the platform, the SupportedFeatures<br>
+ * 			array will be empty.<br>
+ * <br>
+ * 			Possible values: "CanSetTxPower"<br>
+ * <br>
+ * 						Indicates whether platform can<br>
+ * 						specify tx power on each<br>
+ * 						advertising instance.<br>
+ * <br>
+ * 					 "HardwareOffload"<br>
+ * <br>
+ * 						Indicates whether multiple<br>
+ * 						advertising will be offloaded<br>
+ * 						to the controller.<br>
  * <br>
  */
 public interface LEAdvertisingManager1 extends DBusInterface {

@@ -1,24 +1,10 @@
 package org.bluez;
 
-import org.bluez.exceptions.BluezAlreadyConnectedException;
-import org.bluez.exceptions.BluezAlreadyExistsException;
-import org.bluez.exceptions.BluezAuthenticationCanceledException;
-import org.bluez.exceptions.BluezAuthenticationFailedException;
-import org.bluez.exceptions.BluezAuthenticationRejectedException;
-import org.bluez.exceptions.BluezAuthenticationTimeoutException;
-import org.bluez.exceptions.BluezConnectionAttemptFailedException;
-import org.bluez.exceptions.BluezDoesNotExistException;
-import org.bluez.exceptions.BluezFailedException;
-import org.bluez.exceptions.BluezInProgressException;
-import org.bluez.exceptions.BluezInvalidArgumentsException;
-import org.bluez.exceptions.BluezNotAvailableException;
-import org.bluez.exceptions.BluezNotConnectedException;
-import org.bluez.exceptions.BluezNotReadyException;
-import org.bluez.exceptions.BluezNotSupportedException;
+import org.bluez.exceptions.*;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 
 /**
- * File generated - 2020-06-18.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: device-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -78,7 +64,16 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
  * <br>
  * 		boolean Paired [readonly]<br>
  * <br>
- * 			Indicates if the remote device is paired.<br>
+ * 			Indicates if the remote device is paired. Paired means<br>
+ * 			the pairing process where devices exchange the<br>
+ * 			information to establish an encrypted connection has<br>
+ * 			been completed.<br>
+ * <br>
+ * 		boolean Bonded [readonly]<br>
+ * <br>
+ * 			Indicates if the remote device is bonded. Bonded means<br>
+ * 			the information exchanged on pairing process has been<br>
+ * 			stored and will be persisted.<br>
  * <br>
  * 		boolean Connected [readonly]<br>
  * <br>
@@ -97,6 +92,11 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
  * 			device will be immediately rejected. Any device<br>
  * 			drivers will also be removed and no new ones will<br>
  * 			be probed as long as the device is blocked.<br>
+ * <br>
+ * 		boolean WakeAllowed [readwrite]<br>
+ * <br>
+ * 			If set to true this device will be allowed to wake the<br>
+ * 			host from system suspend.<br>
  * <br>
  * 		string Alias [readwrite]<br>
  * <br>

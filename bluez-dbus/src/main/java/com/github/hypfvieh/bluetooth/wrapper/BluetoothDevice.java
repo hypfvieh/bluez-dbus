@@ -1,29 +1,9 @@
 package com.github.hypfvieh.bluetooth.wrapper;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
+import com.github.hypfvieh.DbusHelper;
 import org.bluez.Device1;
 import org.bluez.GattService1;
-import org.bluez.exceptions.BluezAlreadyConnectedException;
-import org.bluez.exceptions.BluezAlreadyExistsException;
-import org.bluez.exceptions.BluezAuthenticationCanceledException;
-import org.bluez.exceptions.BluezAuthenticationFailedException;
-import org.bluez.exceptions.BluezAuthenticationRejectedException;
-import org.bluez.exceptions.BluezAuthenticationTimeoutException;
-import org.bluez.exceptions.BluezConnectionAttemptFailedException;
-import org.bluez.exceptions.BluezDoesNotExistException;
-import org.bluez.exceptions.BluezFailedException;
-import org.bluez.exceptions.BluezInProgressException;
-import org.bluez.exceptions.BluezInvalidArgumentsException;
-import org.bluez.exceptions.BluezNotAvailableException;
-import org.bluez.exceptions.BluezNotConnectedException;
-import org.bluez.exceptions.BluezNotReadyException;
-import org.bluez.exceptions.BluezNotSupportedException;
+import org.bluez.exceptions.*;
 import org.freedesktop.dbus.DBusMap;
 import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusExecutionException;
@@ -31,7 +11,8 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.UInt16;
 import org.freedesktop.dbus.types.UInt32;
 
-import com.github.hypfvieh.DbusHelper;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Wrapper class which represents a remote bluetooth device.

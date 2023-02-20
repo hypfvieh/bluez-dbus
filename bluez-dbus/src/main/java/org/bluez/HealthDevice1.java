@@ -1,17 +1,13 @@
 package org.bluez;
 
-import org.bluez.exceptions.BluezHealthErrorException;
-import org.bluez.exceptions.BluezInvalidArgumentsException;
-import org.bluez.exceptions.BluezNotAllowedException;
-import org.bluez.exceptions.BluezNotFoundException;
-import org.bluez.exceptions.BluezOutOfRangeException;
+import org.bluez.exceptions.*;
 import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.messages.DBusSignal;
 
 /**
- * File generated - 2020-06-18.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: health-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>

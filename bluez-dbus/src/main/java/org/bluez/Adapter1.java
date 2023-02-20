@@ -1,19 +1,14 @@
 package org.bluez;
 
-import java.util.Map;
-
-import org.bluez.exceptions.BluezAlreadyExistsException;
-import org.bluez.exceptions.BluezFailedException;
-import org.bluez.exceptions.BluezInvalidArgumentsException;
-import org.bluez.exceptions.BluezNotAuthorizedException;
-import org.bluez.exceptions.BluezNotReadyException;
-import org.bluez.exceptions.BluezNotSupportedException;
+import org.bluez.exceptions.*;
 import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.Variant;
 
+import java.util.Map;
+
 /**
- * File generated - 2020-06-18.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: adapter-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -83,6 +78,21 @@ import org.freedesktop.dbus.types.Variant;
  * 			The value of this property is not persistent. After<br>
  * 			restart or unplugging of the adapter it will reset<br>
  * 			back to false.<br>
+ * <br>
+ * 		string PowerState [readonly, experimental]<br>
+ * <br>
+ * 			The power state of an adapter.<br>
+ * <br>
+ * 			The power state will show whether the adapter is<br>
+ * 			turning off, or turning on, as well as being on<br>
+ * 			or off.<br>
+ * <br>
+ * 			Possible values:<br>
+ * 				"on" - powered on<br>
+ * 				"off" - powered off<br>
+ * 				"off-enabling" - transitioning from "off" to "on"<br>
+ * 				"on-disabling" - transitioning from "on" to "off"<br>
+ * 				"off-blocked" - blocked by rfkill<br>
  * <br>
  * 		boolean Discoverable [readwrite]<br>
  * <br>
@@ -155,6 +165,11 @@ import org.freedesktop.dbus.types.Variant;
  * 				"central-peripheral": Supports both roles<br>
  * 						      concurrently.<br>
  * <br>
+ * 		array{string} ExperimentalFeatures [readonly, optional]<br>
+ * <br>
+ * 			List of 128-bit UUIDs that represents the experimental<br>
+ * 			features currently enabled.<br>
+ * <br>
  */
 public interface Adapter1 extends DBusInterface {
 
@@ -171,11 +186,15 @@ public interface Adapter1 extends DBusInterface {
      * <br>
      * During discovery RSSI delta-threshold is imposed.<br>
      * <br>
+     * Each client can request a single device discovery session<br>
+     * per adapter.<br>
+     * <br>
      * 
      * @throws BluezNotReadyException when bluez not ready
      * @throws BluezFailedException on failure
+     * @throws BluezInProgressException when operation already in progress
      */
-    void StartDiscovery() throws BluezNotReadyException, BluezFailedException;
+    void StartDiscovery() throws BluezNotReadyException, BluezFailedException, BluezInProgressException;
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -185,7 +204,8 @@ public interface Adapter1 extends DBusInterface {
      * <br>
      * Note that a discovery procedure is shared between all<br>
      * discovery sessions thus calling StopDiscovery will only<br>
-     * release a single session.<br>
+     * release a single session and discovery will stop when<br>
+     * all sessions from all clients have finished.<br>
      * <br>
      * 
      * @throws BluezNotReadyException when bluez not ready

@@ -1,13 +1,13 @@
 package com.github.hypfvieh.bluetooth.wrapper;
 
-import java.util.Map;
-
 import org.bluez.Profile1;
 import org.bluez.exceptions.BluezCanceledException;
 import org.bluez.exceptions.BluezRejectedException;
 import org.freedesktop.dbus.DBusPath;
 import org.freedesktop.dbus.FileDescriptor;
 import org.freedesktop.dbus.types.Variant;
+
+import java.util.Map;
 
 public final class ProfileHandler implements Profile1 {
     private final String objectPath;

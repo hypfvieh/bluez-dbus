@@ -1,15 +1,13 @@
 package org.bluez;
 
 import org.bluez.datatypes.ThreeTuple;
-import org.bluez.exceptions.BluezFailedException;
-import org.bluez.exceptions.BluezNotAuthorizedException;
-import org.bluez.exceptions.BluezNotAvailableException;
+import org.bluez.exceptions.*;
 import org.freedesktop.dbus.FileDescriptor;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.UInt16;
 
 /**
- * File generated - 2020-06-18.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: media-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
@@ -65,6 +63,19 @@ import org.freedesktop.dbus.types.UInt16;
  * <br>
  * 			Endpoint object which the transport is associated<br>
  * 			with.<br>
+ * <br>
+ * 		uint32 Location [readonly, ISO only, experimental]<br>
+ * <br>
+ * 			Indicates transport Audio Location.<br>
+ * <br>
+ * 		array{byte} Metadata [ISO Only, experimental]<br>
+ * <br>
+ * 			Indicates transport Metadata.<br>
+ * <br>
+ * 		array{object} Links [readonly, optional, ISO only, experimental]<br>
+ * <br>
+ * 			Linked transport objects which the transport is<br>
+ * 			associated with.<br>
  * <br>
  */
 public interface MediaTransport1 extends DBusInterface {

@@ -3,7 +3,7 @@ package org.bluez;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 
 /**
- * File generated - 2020-06-18.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: input-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez<br>
