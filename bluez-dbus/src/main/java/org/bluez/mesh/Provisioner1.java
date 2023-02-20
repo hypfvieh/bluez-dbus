@@ -9,7 +9,7 @@ import org.freedesktop.dbus.types.Variant;
 import java.util.Map;
 
 /**
- * File generated - 2020-12-28.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: mesh-api.txt.<br>
  * <br>
  * <b>Service:</b> unique name<br>
@@ -80,8 +80,10 @@ public interface Provisioner1 extends DBusInterface {
      * <br>
      * If a beacon with a UUID that has already been reported is<br>
      * recieved by the daemon, it will be silently discarded unless it<br>
-     * was recieved at a higher rssi power level.
-     *
+     * was recieved at a higher rssi power level.<br>
+     * <br>
+     * <br>
+     * 
      * @param _rssi rssi
      * @param _data data
      * @param _options options
@@ -101,8 +103,9 @@ public interface Provisioner1 extends DBusInterface {
      * <br>
      * Return Parameters are from the Mesh Profile Spec:<br>
      * net_index - Subnet index of the net_key<br>
-     * unicast - Primary Unicast address of the new node
-     *
+     * unicast - Primary Unicast address of the new node<br>
+     * <br>
+     * 
      * @param _count count
      *
      * @return Tuple of net_index and unicast, maybe null
@@ -124,8 +127,9 @@ public interface Provisioner1 extends DBusInterface {
      * to the new node.<br>
      * <br>
      * The new node may now be sent messages using the credentials<br>
-     * supplied by the RequestProvData method.
-     *
+     * supplied by the RequestProvData method.<br>
+     * <br>
+     * 
      * @param _uuid uuid
      * @param _unicast unicast
      * @param _count count
@@ -144,8 +148,9 @@ public interface Provisioner1 extends DBusInterface {
      * failure. The defined values are: "aborted", "timeout",<br>
      * "bad-pdu", "confirmation-failed", "out-of-resources",<br>
      * "decryption-error", "unexpected-error",<br>
-     * "cannot-assign-addresses".
-     *
+     * "cannot-assign-addresses".<br>
+     * <br>
+     * 
      * @param _uuid uuid
      * @param _reason reason
      */

@@ -4,7 +4,7 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.UInt64;
 
 /**
- * File generated - 2020-12-28.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: mesh-api.txt.<br>
  * <br>
  * <b>Service:</b> unique name<br>
@@ -15,22 +15,20 @@ import org.freedesktop.dbus.types.UInt64;
  * <br>
  * <b>Supported properties:</b> <br>
  * <br>
- *  uint16 CompanyID [read-only]<br>
- *  <br>
- *      A 16-bit Bluetooth-assigned Company Identifier of the vendor as<br>
- *      defined by Bluetooth SIG<br>
- *  <br>
- *  uint16 ProductID [read-only]<br>
- *  <br>
- *      A 16-bit vendor-assigned product identifier<br>
- *  <br>
- *  uint16 VersionID [read-only]<br>
- *  <br>
- *      A 16-bit vendor-assigned product version identifier<br>
- *  <br>
- *  uint16 CRPL [read-only, optional]<br>
- *  <br>
- *      A 16-bit minimum number of replay protection list entries
+ * 	:<br>
+ * <br>
+ * 		A 16-bit Bluetooth-assigned Company Identifier of the vendor as<br>
+ * 		defined by Bluetooth SIG<br>
+ * <br>
+ * <br>
+ * 		A 16-bit vendor-assigned product identifier<br>
+ * <br>
+ * <br>
+ * 		A 16-bit vendor-assigned product version identifier<br>
+ * <br>
+ * <br>
+ * 		A 16-bit minimum number of replay protection list entries<br>
+ * <br>
  * <br>
  * <br>
  */
@@ -51,12 +49,12 @@ public interface Application1 extends DBusInterface {
      * <br>
      * If this method returns an error, the daemon will assume that the<br>
      * application failed to preserve the token, and will remove the<br>
-     * freshly created node.
-     *
+     * freshly created node.<br>
+     * <br>
+     * 
      * @param _token token
      */
     void JoinComplete(UInt64 _token);
-
 
     /**
      * <b>From bluez documentation:</b><br>
@@ -67,8 +65,9 @@ public interface Application1 extends DBusInterface {
      * The reason parameter identifies the reason for provisioning<br>
      * failure. The defined values are: "timeout", "bad-pdu",<br>
      * "confirmation-failed", "out-of-resources", "decryption-error",<br>
-     * "unexpected-error", "cannot-assign-addresses".
-     *
+     * "unexpected-error", "cannot-assign-addresses".<br>
+     * <br>
+     * 
      * @param _reason reason
      */
     void JoinFailed(String _reason);

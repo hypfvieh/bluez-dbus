@@ -53,6 +53,8 @@ public class BluezInterfaceCreator {
     private static final Pattern METHOD_REGEX_3PARTS = Pattern.compile("([^A-Z]+)\\s*([^\\(]*)\\(([^\\)]*)\\)(?:.*)");
     private static final Pattern METHOD_REGEX_2PARTS = Pattern.compile("([A-Za-z]+)\\s*\\(([^\\)]*)\\)(?:.*)");
 
+    private static String defaultTabIndent = "\t\t";
+    
     private static final Map<String,String> EXCEPTION_DESCRIPTIONS = new HashMap<>();
     static {
         EXCEPTION_DESCRIPTIONS.put("BluezNotReadyException", "when bluez not ready");
@@ -102,9 +104,14 @@ public class BluezInterfaceCreator {
         }
         Set<InterfaceStructure> structure = new LinkedHashSet<>();
 
+        
         for (File file : fileList) {
             System.out.println("-> Reading: " + file);
 
+            if (file.getName().equals("mesh-api.txt")) { // mesh api doc has other indent levels :(
+                defaultTabIndent = "\t";
+            }
+            
             List<String> fileContent = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8); 
             InterfaceStructure is = null;
 
@@ -457,11 +464,10 @@ public class BluezInterfaceCreator {
                 return i;
             }
 
-
             if (line.startsWith("Methods")) {
                 line = line.replaceAll("Methods\\s+", "");
-            } else if (line.startsWith("\t\t") && !line.startsWith("\t\t\t")) { // methods indented twice, three levels mean comment
-                line = line.replaceAll("^\t\t", "");
+            } else if (line.startsWith(defaultTabIndent) && !line.startsWith(defaultTabIndent + "\t")) { // methods indented twice, three levels mean comment
+                line = line.replaceAll("^" + defaultTabIndent, "");
             }
 
             if (line.contains("[Deprecated]")) {
@@ -537,7 +543,7 @@ public class BluezInterfaceCreator {
                 return i-1;
             } else if (line.startsWith("Signal")) {
                 line = line.replaceAll("Signal.?\\s*", "");
-            } else if (line.startsWith("\t\t\t")) {
+            } else if (line.startsWith(defaultTabIndent + "\t")) {
                 line = line.trim();
                 if (signal != null) {
                     signal.documentation.add(line);
@@ -616,10 +622,10 @@ public class BluezInterfaceCreator {
                 _im.documentation.add(line);
                 continue;
             }
-            if (line.startsWith("\t\t\t")) { // comment
-                line = line.replaceFirst("^\t\t\t", "");
+            if (line.startsWith(defaultTabIndent + "\t")) { // comment
+                line = line.replaceFirst("^" + defaultTabIndent + "\t", "");
 
-                if (line.toLowerCase().contains("possible errors:")) {
+                if (line.toLowerCase().contains("possible errors:") || line.contains("PossibleErrors:")) {
                     readError = true;
                     line = line.replaceFirst("[^:]+\\s*:", "");
                     line = line.trim();
@@ -631,7 +637,7 @@ public class BluezInterfaceCreator {
                     continue;
                 }
                 if (!readError) {
-                    _im.documentation.add(fixHtmlTags(line.replaceAll("^\t\t\t", "")));
+                    _im.documentation.add(fixHtmlTags(line.replaceAll("^" + defaultTabIndent + "\t", "")));
                 } else {
                     line = line.trim();
                     if (!isBlank(line)) {
@@ -695,6 +701,8 @@ public class BluezInterfaceCreator {
             _dataType = "void";
         } else if (_dataType.equals("uint16")) {
             _dataType = "UInt16";
+        } else if (_dataType.equals("uint8")) {
+            _dataType = "byte";
         } else if (_dataType.equals("uint32")) {
             _dataType = "UInt32";
         } else if (_dataType.equals("uint64")) {

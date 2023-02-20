@@ -4,7 +4,7 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.UInt32;
 
 /**
- * File generated - 2020-12-28.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: mesh-api.txt.<br>
  * <br>
  * <b>Service:</b> unique name<br>
@@ -14,42 +14,42 @@ import org.freedesktop.dbus.types.UInt32;
  *             freely definable<br>
  * <br>
  * <b>Supported properties:</b> <br>
- * array{string} Capabilities [read-only]<br>
- * An array of strings with the following allowed values:<br>
- * <pre>
- *      "blink"
- *      "beep"
- *      "vibrate"
- *      "out-numeric"
- *      "out-alpha"
- *      "push"
- *      "twist"
- *      "in-numeric"
- *      "in-alpha"
- *      "static-oob"
- *      "public-oob"
- * </pre>
- * array{string} OutOfBandInfo [read-only, optional]<br>
- * Indicates availability of OOB data. An array of strings with the<br>
- *       following allowed values:<br>
- * <pre>
- *       "other"
- *       "uri"
- *       "machine-code-2d"
- *       "bar-code"
- *       "nfc"
- *       "number"
- *       "string"
- *       "on-box"
- *       "in-box"
- *       "on-paper",
- *       "in-manual"
- *       "on-device"
- * </pre>
- *  string URI [read-only, optional]<br>
- *      Uniform Resource Identifier points to out-of-band (OOB)<br>
- *      information (e.g., a public key)<br>
- *
+ * <br>
+ * 	:<br>
+ * <br>
+ * 		An array of strings with the following allowed values:<br>
+ * 			"blink"<br>
+ * 			"beep"<br>
+ * 			"vibrate"<br>
+ * 			"out-numeric"<br>
+ * 			"out-alpha"<br>
+ * 			"push"<br>
+ * 			"twist"<br>
+ * 			"in-numeric"<br>
+ * 			"in-alpha"<br>
+ * 			"static-oob"<br>
+ * 			"public-oob"<br>
+ * <br>
+ * <br>
+ * 		Indicates availability of OOB data. An array of strings with the<br>
+ * 		following allowed values:<br>
+ * 			"other"<br>
+ * 			"uri"<br>
+ * 			"machine-code-2d"<br>
+ * 			"bar-code"<br>
+ * 			"nfc"<br>
+ * 			"number"<br>
+ * 			"string"<br>
+ * 			"on-box"<br>
+ * 			"in-box"<br>
+ * 			"on-paper",<br>
+ * 			"in-manual"<br>
+ * 			"on-device"<br>
+ * <br>
+ * <br>
+ * 		Uniform Resource Identifier points to out-of-band (OOB)<br>
+ * 		information (e.g., a public key)<br>
+ * <br>
  */
 public interface ProvisionAgent1 extends DBusInterface {
 
@@ -66,8 +66,9 @@ public interface ProvisionAgent1 extends DBusInterface {
      * <br>
      * This function will only be called if the Provisioner has<br>
      * requested pre-determined keys to be exchanged Out-of-Band, and<br>
-     * the local role is Unprovisioned device.
-     *
+     * the local role is Unprovisioned device.<br>
+     * <br>
+     * 
      * @return byte[] - maybe null
      */
     byte[] PrivateKey();
@@ -84,9 +85,10 @@ public interface ProvisionAgent1 extends DBusInterface {
      * <br>
      * This function will only be called if the Provisioner has<br>
      * requested pre-determined keys to be exchanged Out-of-Band, and<br>
-     * the local role is Provisioner.
-     *
-     * @return pubkey byte array
+     * the local role is Provisioner.<br>
+     * <br>
+     * 
+     * @return byte[] - maybe null
      */
     byte[] PublicKey();
 
@@ -94,11 +96,12 @@ public interface ProvisionAgent1 extends DBusInterface {
     /**
      * <b>From bluez documentation:</b><br>
      * <br>
-     * This method is called when the Daemon has something important <br>
+     * This method is called when the Daemon has something important<br>
      * for the Agent to Display, but does not require any additional<br>
      * input locally. For instance: "Enter "ABCDE" on remote device".<br>
-     *
-     * @param _value message
+     * <br>
+     * 
+     * @param _value value
      */
     void DisplayString(String _value);
 
@@ -110,18 +113,18 @@ public interface ProvisionAgent1 extends DBusInterface {
      * input locally. For instance: "Enter 14939264 on remote device".<br>
      * <br>
      * The type parameter indicates the display method. Allowed values<br>
-     * are:
-     * <pre>
-     *     "blink" - Locally blink LED
-     *     "beep" - Locally make a noise
-     *     "vibrate" - Locally vibrate
-     *     "out-numeric" - Display value to enter remotely
-     *     "push" - Request pushes on remote button
-     *     "twist" - Request twists on remote knob
-     * </pre>
+     * are:<br>
+     * 	"blink" - Locally blink LED<br>
+     * 	"beep" - Locally make a noise<br>
+     * 	"vibrate" - Locally vibrate<br>
+     * 	"out-numeric" - Display value to enter remotely<br>
+     * 	"push" - Request pushes on remote button<br>
+     * 	"twist" - Request twists on remote knob<br>
+     * <br>
      * The number parameter is the specific value represented by the<br>
-     * Prompt.
-     *
+     * Prompt.<br>
+     * <br>
+     * 
      * @param _type type
      * @param _number number
      */
@@ -134,19 +137,21 @@ public interface ProvisionAgent1 extends DBusInterface {
      * enter a decimal value between 1-99999999.<br>
      * <br>
      * The type parameter indicates the input method. Allowed values<br>
-     * are:
-     * <pre>
-     *     "blink" - Enter times remote LED blinked
-     *     "beep" - Enter times remote device beeped
-     *     "vibrate" - Enter times remote device vibrated
-     *     "in-numeric" - Enter remotely displayed value
-     *     "push" - Push local button remotely requested times
-     *     "twist" - Twist local knob remotely requested times
-     * </pre>
+     * are:<br>
+     * 	"blink" - Enter times remote LED blinked<br>
+     * 	"beep" - Enter times remote device beeped<br>
+     * 	"vibrate" - Enter times remote device vibrated<br>
+     * 	"in-numeric" - Enter remotely displayed value<br>
+     * 	"push" - Push local button remotely requested times<br>
+     * 	"twist" - Twist local knob remotely requested times<br>
+     * <br>
+     * <br>
      * This agent should prompt the user for specific input. For<br>
-     * instance: "Enter value being displayed by remote device".
-     *
+     * instance: "Enter value being displayed by remote device".<br>
+     * <br>
+     * 
      * @param _type type
+     * 
      * @return UInt32 - maybe null
      */
     UInt32 PromptNumeric(String _type);
@@ -158,17 +163,17 @@ public interface ProvisionAgent1 extends DBusInterface {
      * array, as an Out-of-Band authentication.<br>
      * <br>
      * The type parameter indicates the input method. Allowed values<br>
-     * are:
-     * <pre>
-     *     "static-oob" - return 16 octet array
-     *     "in-alpha" - return 16 octet alpha array
-     * </pre>
+     * are:<br>
+     * 	"static-oob" - return 16 octet array<br>
+     * 	"in-alpha" - return 16 octet alpha array<br>
+     * <br>
      * The Static data returned must be 16 octets in size, or the<br>
      * Provisioning procedure will fail and be canceled. If input type<br>
      * is "in-alpha", the printable characters should be<br>
      * left-justified, with trailing 0x00 octets filling the remaining<br>
-     * bytes.
-     *
+     * bytes.<br>
+     * <br>
+     * 
      * @param _type type
      * @return byte array
      */
@@ -179,7 +184,10 @@ public interface ProvisionAgent1 extends DBusInterface {
      * <br>
      * This method gets called by the daemon to cancel any existing<br>
      * Agent Requests. When called, any pending user input should be<br>
-     * canceled, and any display requests removed.
+     * canceled, and any display requests removed.<br>
+     * <br>
+     * <br>
      */
     void Cancel();
+
 }

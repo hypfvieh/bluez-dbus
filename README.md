@@ -44,6 +44,7 @@ If you want to use filedescriptor passing in any bluez method, you have to add [
 #### Version 0.2.0 (not yet released):
 - Requires Java 11
 - Uses dbus-java 4.x
+- Updated interfaces to comply with bluez 5.64
 - Issue [#48](https://github.com/hypfvieh/bluez-dbus/issues/48) allow unregistering of signal handlers
 - Issue [#51](https://github.com/hypfvieh/bluez-dbus/issues/51) added mesh interface classes 
 

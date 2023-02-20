@@ -5,7 +5,7 @@ import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.UInt16;
 
 /**
- * File generated - 2020-12-28.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: mesh-api.txt.<br>
  * <br>
  * <b>Service:</b> unique name<br>
@@ -24,7 +24,7 @@ public interface Attention1 extends DBusInterface {
      * node where the health server model is hosted.<br>
      * <br>
      * The time parameter indicates how many seconds the attention<br>
-     * state shall be on.
+     * state shall be on.<br>
      *
      * @param _elementIndex element_index
      * @param _time time

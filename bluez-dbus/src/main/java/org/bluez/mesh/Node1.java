@@ -9,7 +9,7 @@ import org.freedesktop.dbus.types.Variant;
 import java.util.Map;
 
 /**
- * File generated - 2020-12-28.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: mesh-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez.mesh<br>

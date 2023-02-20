@@ -8,7 +8,7 @@ import org.freedesktop.dbus.types.Variant;
 import java.util.Map;
 
 /**
- * File generated - 2020-12-28.<br>
+ * File generated - 2023-02-20.<br>
  * Based on bluez Documentation: mesh-api.txt.<br>
  * <br>
  * <b>Service:</b> org.bluez.mesh<br>
@@ -18,29 +18,30 @@ import java.util.Map;
  *             /org/bluez/mesh/node&lt;uuid&gt;<br>
  *             where &lt;uuid&gt; is the Device UUID passed to Join(),<br>
  *             CreateNetwork() or Import()<br>
+ * <br>
  */
 public interface Management1 extends DBusInterface {
 
     /**
      * <b>From bluez documentation:</b><br>
      * <br>
-     *  This method is used by the application that supports<br>
-     *  org.bluez.mesh.Provisioner1 interface to start listening<br>
-     *  (scanning) for unprovisioned devices in the area.<br>
-     *  <br>
-     *  The options parameter is a dictionary with the following keys<br>
-     *  defined:<br>
-     *  <pre>
-     *  uint16 Seconds
-     *      Specifies number of seconds for scanning to be active.
-     *      If set to 0 or if this key is not present, then the
-     *      scanning will continue until UnprovisionedScanCancel()
-     *      or AddNode() methods are called.
-     *  </pre>
-     *  <br>
-     *  Each time a unique unprovisioned beacon is heard, the<br>
-     *  ScanResult() method on the app will be called with the result.<br>
-     *
+     * This method is used by the application that supports<br>
+     * org.bluez.mesh.Provisioner1 interface to start listening<br>
+     * (scanning) for unprovisioned devices in the area.<br>
+     * <br>
+     * The options parameter is a dictionary with the following keys<br>
+     * defined:<br>
+     * <br>
+     * uint16 Seconds<br>
+     * 	Specifies number of seconds for scanning to be active.<br>
+     * 	If set to 0 or if this key is not present, then the<br>
+     * 	scanning will continue until UnprovisionedScanCancel()<br>
+     * 	or AddNode() methods are called.<br>
+     * <br>
+     * Each time a unique unprovisioned beacon is heard, the<br>
+     * ScanResult() method on the app will be called with the result.<br>
+     * <br>
+     * 
      * @param _options options
      *
      * @throws BluezMeshInvalidArgumentsException when invalid argument given
@@ -53,9 +54,10 @@ public interface Management1 extends DBusInterface {
      * <b>From bluez documentation:</b><br>
      * <br>
      * This method is used by the application that supports<br>
-     *  org.bluez.mesh.Provisioner1 interface to stop listening<br>
-     *  (scanning) for unprovisioned devices in the area.<br>
-     *
+     * org.bluez.mesh.Provisioner1 interface to stop listening<br>
+     * (scanning) for unprovisioned devices in the area.<br>
+     * <br>
+     * 
      * @throws BluezMeshInvalidArgumentsException when invalid argument given
      * @throws BluezMeshNotAuthorizedException when not authorized
      */
@@ -65,17 +67,18 @@ public interface Management1 extends DBusInterface {
      * <b>From bluez documentation:</b><br>
      * <br>
      * This method is used by the application that supports<br>
-     *  org.bluez.mesh.Provisioner1 interface to add the<br>
-     *  unprovisioned device specified by uuid, to the Network.<br>
-     *  <br>
-     *  The uuid parameter is a 16-byte array that contains Device UUID<br>
-     *  of the unprovisioned device to be added to the network.<br>
-     *  <br>
-     *  The options parameter is a dictionary that may contain<br>
-     *  additional configuration info (currently an empty placeholder<br>
-     *  for forward compatibility).<br>
-     *
-     * @param _uuid uuid (16-byte array)
+     * org.bluez.mesh.Provisioner1 interface to add the<br>
+     * unprovisioned device specified by uuid, to the Network.<br>
+     * <br>
+     * The uuid parameter is a 16-byte array that contains Device UUID<br>
+     * of the unprovisioned device to be added to the network.<br>
+     * <br>
+     * The options parameter is a dictionary that may contain<br>
+     * additional configuration info (currently an empty placeholder<br>
+     * for forward compatibility).<br>
+     * <br>
+     * 
+     * @param _uuid uuid
      * @param _options options
      *
      * @throws BluezMeshInvalidArgumentsException when invalid argument given
@@ -87,13 +90,14 @@ public interface Management1 extends DBusInterface {
      * <b>From bluez documentation:</b><br>
      * <br>
      * This method is used by the application to generate and add a new<br>
-     *  network subnet key.<br>
-     *  <br>
-     *  The net_index parameter is a 12-bit value (0x001-0xFFF)<br>
-     *  specifying which net key to add.<br>
-     *  <br>
-     *  This call affects the local bluetooth-meshd key database only.
-     *
+     * network subnet key.<br>
+     * <br>
+     * The net_index parameter is a 12-bit value (0x001-0xFFF)<br>
+     * specifying which net key to add.<br>
+     * <br>
+     * This call affects the local bluetooth-meshd key database only.<br>
+     * <br>
+     * 
      * @param _netIndex net_index
      *
      * @throws BluezMeshInvalidArgumentsException when invalid argument given
@@ -113,8 +117,9 @@ public interface Management1 extends DBusInterface {
      * The net_key parameter is the 16-byte value of the net key being<br>
      * imported.<br>
      * <br>
-     * This call affects the local bluetooth-meshd key database only.
-     *
+     * This call affects the local bluetooth-meshd key database only.<br>
+     * <br>
+     * 
      * @param _netIndex net_index
      * @param _netKey net_key
      *
@@ -134,8 +139,9 @@ public interface Management1 extends DBusInterface {
      * specifying which net key to update. Note that the subnet must<br>
      * exist prior to updating.<br>
      * <br>
-     * This call affects the local bluetooth-meshd key database only.
-     *
+     * This call affects the local bluetooth-meshd key database only.<br>
+     * <br>
+     * 
      * @param _netIndex net_index
      *
      * @throws BluezMeshFailedException when operation failed
@@ -154,8 +160,9 @@ public interface Management1 extends DBusInterface {
      * specifying which net key to delete. The primary net key (0x000)<br>
      * may not be deleted.<br>
      * <br>
-     * This call affects the local bluetooth-meshd key database only.
-     *
+     * This call affects the local bluetooth-meshd key database only.<br>
+     * <br>
+     * 
      * @param _netIndex net_index
      *
      * @throws BluezMeshInvalidArgumentsException when invalid argument given
@@ -164,8 +171,7 @@ public interface Management1 extends DBusInterface {
 
     /**
      * <b>From bluez documentation:</b><br>
-     * <br>
-     * This method is used to set the master key update phase of the<br>
+     * This method is used to set the flooding key update phase of the<br>
      * given subnet. When finalizing the procedure, it is important<br>
      * to CompleteAppKeyUpdate() on all app keys that have been<br>
      * updated during the procedure prior to setting phase 3.<br>
@@ -174,21 +180,21 @@ public interface Management1 extends DBusInterface {
      * specifying which subnet phase to set.<br>
      * <br>
      * The phase parameter is used to cycle the local key database<br>
-     * through the phases as defined by the Mesh Profile Specification.
-     * <pre>
-     * Allowed values:
-     *      0 - Cancel Key Refresh (May only be called from Phase 1,
-     *          and should never be called once the new key has
-     *          started propagating)
-     *      1 - Invalid Argument (see NetKeyUpdate method)
-     *      2 - Go to Phase 2 (May only be called from Phase 1)
-     *      3 - Complete Key Refresh procedure (May only be called
-     *          from Phase 2)
-     * </pre>
+     * through the phases as defined by the Mesh Profile Specification.<br>
+     * Allowed values:<br>
+     * 	0 - Cancel Key Refresh (May only be called from Phase 1,<br>
+     * and should never be called once the new key has<br>
+     * started propagating)<br>
+     * 	1 - Invalid Argument (see NetKeyUpdate method)<br>
+     * 	2 - Go to Phase 2 (May only be called from Phase 1)<br>
+     * 	3 - Complete Key Refresh procedure (May only be called<br>
+     * from Phase 2)<br>
+     * <br>
      * This call affects the local bluetooth-meshd key database only.<br>
      * It is the responsibility of the application to maintain the key<br>
      * refresh phases per the Mesh Profile Specification.<br>
-     *
+     * <br>
+     * 
      * @param _netIndex net_index
      * @param _phase phase
      *
@@ -210,8 +216,9 @@ public interface Management1 extends DBusInterface {
      * The app_index parameter is a 12-bit value (0x000-0xFFF)<br>
      * specifying which app key to add.<br>
      * <br>
-     * This call affects the local bluetooth-meshd key database only.
-     *
+     * This call affects the local bluetooth-meshd key database only.<br>
+     * <br>
+     * 
      * @param _netIndex net_index
      * @param _appIndex app_index
      *
@@ -237,8 +244,9 @@ public interface Management1 extends DBusInterface {
      * The app_key parameter is the 16-byte value of the key being<br>
      * imported.<br>
      * <br>
-     * This call affects the local bluetooth-meshd key database only.
-     *
+     * This call affects the local bluetooth-meshd key database only.<br>
+     * <br>
+     * 
      * @param _netIndex net_index
      * @param _appIndex app_index
      * @param _appKey app_key
@@ -260,7 +268,9 @@ public interface Management1 extends DBusInterface {
      * specifying which app key to update. Note that the subnet that<br>
      * the key is bound to must exist and be in Phase 1.<br>
      * <br>
-     * This call affects the local bluetooth-meshd key database only.
+     * This call affects the local bluetooth-meshd key database only.<br>
+     * <br>
+     * 
      * @param _appIndex app_index
      *
      * @throws BluezMeshFailedException when operation failed
@@ -279,8 +289,9 @@ public interface Management1 extends DBusInterface {
      * The app_index parameter is a 12-bit value (0x000-0xFFF)<br>
      * specifying which app key to delete.<br>
      * <br>
-     * This call affects the local bluetooth-meshd key database only.
-     *
+     * This call affects the local bluetooth-meshd key database only.<br>
+     * <br>
+     * 
      * @param _appIndex app_index
      *
      * @throws BluezMeshInvalidArgumentsException when invalid argument given
@@ -305,8 +316,9 @@ public interface Management1 extends DBusInterface {
      * This call affects the local bluetooth-meshd key database only.<br>
      * <br>
      * It is an error to call this with address range overlapping<br>
-     * with local element addresses.
-     *
+     * with local element addresses.<br>
+     * <br>
+     * 
      * @param _primary primary
      * @param _count count
      * @param _deviceKey device_key
@@ -331,13 +343,76 @@ public interface Management1 extends DBusInterface {
      * This call affects the local bluetooth-meshd key database only.<br>
      * <br>
      * It is an error to call this with address range overlapping<br>
-     * with local element addresses.
-     *
+     * with local element addresses.<br>
+     * <br>
+     * 
      * @param _primary primary
      * @param _count count
      *
      * @throws BluezMeshInvalidArgumentsException when invalid argument given
      */
     void DeleteRemoteNode(UInt16 _primary, byte _count) throws BluezMeshInvalidArgumentsException;
+
+    /**
+     * <b>From bluez documentation:</b><br>
+     * <br>
+     * This method is used by the application to export information<br>
+     * about network keys, application keys and device keys present<br>
+     * in the local key database.<br>
+     * <br>
+     * dict<br>
+     * 	A dictionary that contains information for the keys<br>
+     * 	stored in the keyring with the following keys defined:<br>
+     * <br>
+     * 	NetKeys:<br>
+     * array{struct} net_keys:<br>
+     * <br>
+     * uint16 index<br>
+     * 	Subnet index<br>
+     * <br>
+     * array{byte}[16] key<br>
+     * <br>
+     * dict:<br>
+     * 	A dictionary that contains optional<br>
+     * 	key info with the following keys<br>
+     * 	defined:<br>
+     * <br>
+     * 	uint8 Phase<br>
+     * 		Key Refresh phase of the subnet<br>
+     * <br>
+     * 	array{byte}[16] OldKey<br>
+     * <br>
+     * 	array{struct} AppKeys:<br>
+     * <br>
+     * 		uint16 index<br>
+     * <br>
+     * 			Application key index<br>
+     * <br>
+     * 		array{byte}[16] key<br>
+     * <br>
+     * 		dict:<br>
+     * 			A dictionary of optional<br>
+     * 			key info with the<br>
+     * 			following keys defined:<br>
+     * <br>
+     * 			array{byte}[16] OldKey<br>
+     * <br>
+     * 	DevKeys:<br>
+     * array{struct} dev_keys:<br>
+     * <br>
+     * Device Key information for known remote<br>
+     * nodes in the configured Mesh network<br>
+     * <br>
+     * uint16 unicast<br>
+     * <br>
+     * 	Unicast address of the node's primary<br>
+     * 	element<br>
+     * <br>
+     * array{byte}[16] key<br>
+     * <br>
+     * 
+     * @return Map&lt;String, Variant&lt;?&gt;&gt; - maybe null
+     */
+    Map<String, Variant<?>> ExportKeys();
 
 }
