@@ -1,22 +1,14 @@
 package com.github.hypfvieh.bluetooth;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Set;
-
+import com.github.hypfvieh.DbusHelper;
+import com.github.hypfvieh.bluetooth.wrapper.BluetoothAdapter;
+import com.github.hypfvieh.bluetooth.wrapper.BluetoothDevice;
 import org.bluez.Adapter1;
 import org.bluez.Device1;
-import org.bluez.exceptions.BluezDoesNotExistException;
-import org.bluez.exceptions.BluezFailedException;
-import org.bluez.exceptions.BluezInvalidArgumentsException;
-import org.bluez.exceptions.BluezNotReadyException;
-import org.bluez.exceptions.BluezNotSupportedException;
+import org.bluez.exceptions.*;
 import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.connections.impl.DBusConnection.DBusBusType;
+import org.freedesktop.dbus.connections.impl.DBusConnectionBuilder;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.handlers.AbstractPropertiesChangedHandler;
 import org.freedesktop.dbus.handlers.AbstractSignalHandlerBase;
@@ -25,9 +17,8 @@ import org.freedesktop.dbus.types.Variant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.hypfvieh.DbusHelper;
-import com.github.hypfvieh.bluetooth.wrapper.BluetoothAdapter;
-import com.github.hypfvieh.bluetooth.wrapper.BluetoothDevice;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * The 'main' class to get access to all DBus/bluez related objects.
@@ -71,7 +62,7 @@ public class DeviceManager {
      * @throws DBusException on error
      */
     public static DeviceManager createInstance(boolean _sessionConnection) throws DBusException {
-        INSTANCE = new DeviceManager(DBusConnection.getConnection(_sessionConnection ? DBusBusType.SESSION : DBusBusType.SYSTEM));
+        INSTANCE = new DeviceManager(DBusConnectionBuilder.forType(_sessionConnection ? DBusBusType.SESSION : DBusBusType.SYSTEM).build());
         return INSTANCE;
     }
 
@@ -93,7 +84,7 @@ public class DeviceManager {
         if (_address == null) {
             throw new DBusException("Null is not a valid address");
         }
-        INSTANCE = new DeviceManager(DBusConnection.getConnection(_address));
+        INSTANCE = new DeviceManager(DBusConnectionBuilder.forAddress(_address).build());
         return INSTANCE;
     }
 

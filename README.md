@@ -4,9 +4,9 @@ bluetooth library for linux OSes using [DBus](https://dbus.freedesktop.org/) and
 This project was inspired by [tinyb](https://github.com/intel-iot-devkit/tinyb),
 but does not require any wrapper library as it is based on a newer version of dbus-java which uses jnr-unixsocket.
 
-This library has been tested with Ubuntu 16.04.4 (AMD64) and bluez library 5.54.
+This library has been tested with Ubuntu 22.04 (AMD64) and bluez library 5.64.
 
-Starting with version 0.1.0 of this library Java 8 is required (previous version used Java 7).
+Starting with version 0.2.0 of this library Java 11 is required (versions before 0.1.x used Java 7, 0.1.x used Java 8).
 
 If you want to use filedescriptor passing in any bluez method, you have to add [Robert Middleton's dbus-java-nativefd](https://github.com/rm5248/dbus-java-nativefd) library to your project:
 
@@ -14,7 +14,7 @@ If you want to use filedescriptor passing in any bluez method, you have to add [
 <dependency>
     <groupId>com.rm5248</groupId>
     <artifactId>dbus-java-nativefd</artifactId>
-    <version>1.0</version>
+    <version>2.0</version>
 </dependency>
 ```
 
@@ -41,7 +41,9 @@ If you want to use filedescriptor passing in any bluez method, you have to add [
 
 # Changelog:
 
-#### Version 0.1.4 (not yet released):
+#### Version 0.2.0 (not yet released):
+- Requires Java 11
+- Uses dbus-java 4.x
 - Issue [#48](https://github.com/hypfvieh/bluez-dbus/issues/48) allow unregistering of signal handlers
 - Issue [#51](https://github.com/hypfvieh/bluez-dbus/issues/51) added mesh interface classes 
 
