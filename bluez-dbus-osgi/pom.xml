@@ -79,7 +79,7 @@
         <!-- Provide some transports for OSGi usage, without any transport OSGi bundle would be useless -->
         <dependency>
             <groupId>com.github.hypfvieh</groupId>
-            <artifactId>dbus-java-transport-jnr-unixsocket</artifactId>
+            <artifactId>dbus-java-transport-junixsocket</artifactId>
         </dependency>
 
         <dependency>

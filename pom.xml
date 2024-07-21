@@ -14,16 +14,16 @@
     <description>Java native bluetooth library which uses bluez via dbus (linux only)</description>
 
     <properties>
-        <maven.compiler.release>11</maven.compiler.release>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
         <junit.version>5.10.3</junit.version>
         <junit.platform.version>1.10.3</junit.platform.version>
         <slf4j.version>2.0.13</slf4j.version>
-        <dbus.java.version>4.3.2</dbus.java.version>
+        <dbus.java.version>5.0.0</dbus.java.version>
         <eclipse.jdt.annotation.version>2.3.0</eclipse.jdt.annotation.version>
 
         <mvn.gpg.plugin.version>3.2.4</mvn.gpg.plugin.version>
@@ -277,7 +277,7 @@
 
 	        <dependency>
 	            <groupId>com.github.hypfvieh</groupId>
-	            <artifactId>dbus-java-transport-jnr-unixsocket</artifactId>
+	            <artifactId>dbus-java-transport-junixsocket</artifactId>
                 <version>${dbus.java.version}</version>
 	        </dependency>
 
