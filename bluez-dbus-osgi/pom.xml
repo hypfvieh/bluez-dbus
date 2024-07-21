@@ -76,6 +76,17 @@
             <artifactId>dbus-java-core</artifactId>
         </dependency>
         
+        <!-- Provide some transports for OSGi usage, without any transport OSGi bundle would be useless -->
+        <dependency>
+            <groupId>com.github.hypfvieh</groupId>
+            <artifactId>dbus-java-transport-jnr-unixsocket</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.hypfvieh</groupId>
+            <artifactId>dbus-java-transport-tcp</artifactId>
+        </dependency>
+        
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
