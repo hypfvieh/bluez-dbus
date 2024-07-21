@@ -14,9 +14,12 @@
     <description>Java native bluetooth library which uses bluez via dbus (linux only)</description>
 
     <properties>
+        <maven.compiler.release>11</maven.compiler.release>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
         <junit.version>5.10.3</junit.version>
         <junit.platform.version>1.10.3</junit.platform.version>
         <slf4j.version>2.0.13</slf4j.version>
@@ -54,10 +57,20 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
             </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                </plugin>            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+
         </plugins>
 
         <pluginManagement>
@@ -180,6 +193,17 @@
                      <groupId>org.apache.maven.plugins</groupId>
                      <artifactId>maven-compiler-plugin</artifactId>
                      <version>${mvn.compiler.plugin.version}</version>
+                     <executions>
+                        <execution>
+                            <id>compile</id>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                            <configuration>
+                                <release>${maven.compiler.source}</release>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                      <groupId>org.apache.maven.plugins</groupId>

@@ -1,4 +1,4 @@
-package org.bluez.mesh;
+    package org.bluez.mesh;
 
 import org.freedesktop.dbus.interfaces.DBusInterface;
 import java.util.Map;
@@ -168,7 +168,7 @@ public interface Element1 extends DBusInterface {
      * 	addresses, or as array{byte} for virtual labels.<br>
      * <br>
      * 
-     * @param _model_id model_id
+     * @param _modelId model_id
      * @param _config config
      */
     void UpdateModelConfiguration(UInt16 _modelId, Map<String, Variant<?>> _config);

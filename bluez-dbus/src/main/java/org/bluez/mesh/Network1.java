@@ -138,12 +138,14 @@ public interface Network1 extends DBusInterface {
      * 	as array{byte} for virtual labels.<br>
      * <br>
      * 
-     * @param uint16 uint16
-     * @param dict dict
+     * @param _appRoot appRoot
+     * @param _token token
      * 
-     * @throws  on 
-     * @throws BluezInvalidArgumentsException when argument is invalid
-     * @throws BluezFailedException on failure
+     * @throws BluezMeshInvalidArgumentsException on invalid mesh argument
+     * @throws BluezMeshNotFoundException when mesh not found
+     * @throws BluezMeshAlreadyExistsException when mesh already exists
+     * @throws BluezMeshBusyException when mesh is busy
+     * @throws BluezMeshFailedException on any other mesh error
      */
     TwoTuple<DBusPath, List<TwoTuple<Byte,List<TwoTuple<UInt16, Map<String, Variant<?>>>>>>>Attach(DBusPath _appRoot, UInt64 _token) throws BluezMeshInvalidArgumentsException, BluezMeshNotFoundException, BluezMeshAlreadyExistsException, BluezMeshBusyException, BluezMeshFailedException;
 
@@ -200,8 +202,8 @@ public interface Network1 extends DBusInterface {
      * @param _app_root app_root
      * @param _uuid uuid
      * 
-     * @throws  on 
-     * @throws BluezInvalidArgumentsException when argument is invalid
+     * @throws BluezMeshInvalidArgumentsException when invalid mesh options used
+     * @throws BluezMeshAlreadyExistsException when mesh already exists
      */
     void CreateNetwork(DBusPath _app_root, byte[] _uuid) throws BluezMeshInvalidArgumentsException, BluezMeshAlreadyExistsException;
 
