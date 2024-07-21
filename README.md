@@ -11,6 +11,7 @@ The different versions of bluez-dbus are using different versions of dbus-java w
 Here is a list of which bluez-dbus versions uses which dbus-java and the required Java version to use.
 
 | bluez-java Version | dbus-java Version | minimum Java Version |
+| ------------------ | ----------------- | -------------------- |
 | 0.0.x              | 2.7.x             | Java 1.7             |
 | 0.1.x              | 3.x               | Java 1.8             |
 | 0.2.x              | 4.3.x             | Java 11              |
@@ -20,12 +21,12 @@ Here is a list of which bluez-dbus versions uses which dbus-java and the require
 When using the library directly, you have to add at least one `dbus-java` transport to your project as well.
 There are different transports available. For usage with DBus you usually need a UnixSocket providing transport.
 
-| Transport                             | Usage                                                                                                                          |
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| dbus-java-transport-jnr-unixsocket    | Use this if you need filedescriptor support as well (see below)
-| dbus-java-transport-junixsocket       | Alternative if you don't want to use jnr (beta support in dbus-java 4.x), supports filedescriptor without additional libraries.
-| dbus-java-transport-native-unixsocket | Use Java native implementation for UnixSockets. Needs at least Java 16, does not support filedescriptor at all.
-| dbus-java-transport-tcp               | TCP implementation, only needed when your DBusDaemon is configured to use TCP as well as/instead of UnixSockets.
+| Transport                             | Usage                                                                                      |
+| ------------------------------------- | ------------------------------------------------------------------------------------------ | 
+| dbus-java-transport-jnr-unixsocket    | Use this if you need filedescriptor support as well (see below)                            |
+| dbus-java-transport-junixsocket       | Alternative if you don't want to use jnr (beta support in dbus-java 4.x), supports<br>filedescriptor without additional libraries. |
+| dbus-java-transport-native-unixsocket | Use Java native implementation for UnixSockets. Needs at least Java 16, does not support<br>filedescriptor at all. |
+| dbus-java-transport-tcp               | TCP implementation, only needed when your DBusDaemon is configured to use TCP as well<br>as/instead of UnixSockets. |
 
 If you use the OSGi bundle, you don't have to add anything.
 The OSGi bundle will use jnr-unixsocket transport as default in bluez-dbus version 0.2.x.
