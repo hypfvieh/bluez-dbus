@@ -4,7 +4,6 @@ import com.github.hypfvieh.DbusHelper;
 import org.bluez.Device1;
 import org.bluez.GattService1;
 import org.bluez.exceptions.*;
-import org.freedesktop.dbus.DBusMap;
 import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusExecutionException;
 import org.freedesktop.dbus.interfaces.DBusInterface;
@@ -245,7 +244,7 @@ public class BluetoothDevice extends AbstractBluetoothObject {
      */
     @SuppressWarnings("unchecked")
     public Map<String, byte[]> getServiceData() {
-        return getTyped("ServiceData", DBusMap.class);
+        return getTyped("ServiceData", LinkedHashMap.class);
     }
 
     /**
@@ -259,7 +258,7 @@ public class BluetoothDevice extends AbstractBluetoothObject {
      */
     @SuppressWarnings("unchecked")
     public Map<UInt16, byte[]> getManufacturerData() {
-        return getTyped("ManufacturerData", DBusMap.class);
+        return getTyped("ManufacturerData", LinkedHashMap.class);
     }
 
     /**
