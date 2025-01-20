@@ -56,7 +56,7 @@
                         <Embed-Dependency>!junit-*,!slf4j*, !mockito*,
                             !logback*, !apiguardian*, !opentest4j*,
                             !objenesis, !org.eclipse.jdt.annotation*,
-                            !byte-buddy*, ;scope=compile|runtime</Embed-Dependency>
+                            !byte-buddy*, *;type=!pom;scope=compile|runtime</Embed-Dependency>
                         <Embed-Transitive>true</Embed-Transitive>
                     </instructions>
                 </configuration>
