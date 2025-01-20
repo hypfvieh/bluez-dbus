@@ -74,10 +74,15 @@ jnr-unixsockets but with a richer feature set out of the box. It supports filede
 
 # Changelog:
 
-#### Version 0.3.0 (not released yet)
+#### Version 0.3.2 (not released yet):
+- Nothing yet
+
+#### Version 0.3.1 (2025-01-20):
+- Fixed issues with OSGi Bundle, [#64](https://github.com/hypfvieh/bluez-dbus/issues/64), [#PR65](https://github.com/hypfvieh/bluez-dbus/pull/65), thanks to [joerg1985](https://github.com/joerg1985)
+
+#### Version 0.3.0 (2024-08-02):
 - Requires Java 17
 - Uses dbus-java 5.x
-
 
 #### Version 0.2.0 (2023-07-21):
 - Requires Java 11
