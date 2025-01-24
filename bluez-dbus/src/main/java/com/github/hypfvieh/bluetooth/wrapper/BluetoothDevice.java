@@ -12,6 +12,7 @@ import org.freedesktop.dbus.types.UInt32;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Wrapper class which represents a remote bluetooth device.
@@ -23,6 +24,7 @@ public class BluetoothDevice extends AbstractBluetoothObject {
     private final Device1 rawdevice;
     private final BluetoothAdapter adapter;
 
+    private final AtomicBoolean servicesDiscovered = new AtomicBoolean();
     private final Map<String, BluetoothGattService> servicesByUuid = new LinkedHashMap<>();
 
     public BluetoothDevice(Device1 _device, BluetoothAdapter _adapter, String _dbusPath, DBusConnection _dbusConnection) {
@@ -46,7 +48,7 @@ public class BluetoothDevice extends AbstractBluetoothObject {
      * @return List, maybe empty but never null
      */
     public List<BluetoothGattService> getGattServices() {
-        if (servicesByUuid.isEmpty()) {
+        if (!servicesDiscovered.get()) {
             refreshGattServices();
         }
 
@@ -57,6 +59,7 @@ public class BluetoothDevice extends AbstractBluetoothObject {
      * Re-queries the list of available {@link BluetoothGattService}'s on this device.
      */
     public void refreshGattServices() {
+        servicesDiscovered.set(true);
         servicesByUuid.clear();
 
         Set<String> findNodes = DbusHelper.findNodes(getDbusConnection(), getDbusPath());
@@ -73,7 +76,7 @@ public class BluetoothDevice extends AbstractBluetoothObject {
      * @return {@link BluetoothGattService}, maybe null if not found
      */
     public BluetoothGattService getGattServiceByUuid(String _uuid) {
-        if (servicesByUuid.isEmpty()) {
+        if (!servicesDiscovered.get()) {
             refreshGattServices();
         }
         return servicesByUuid.get(_uuid);
