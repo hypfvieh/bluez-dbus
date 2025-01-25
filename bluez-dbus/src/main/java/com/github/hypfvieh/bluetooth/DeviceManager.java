@@ -41,6 +41,8 @@ public class DeviceManager {
 
     private String defaultAdapterMac;
 
+    private boolean lazyScan;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -178,25 +180,42 @@ public class DeviceManager {
         Set<String> scanObjectManager = DbusHelper.findNodes(dbusConnection, adapter.getDbusPath());
 
         String adapterMac = adapter.getAddress();
+        List<BluetoothDevice> foundDevices = new ArrayList<>();
+
         // remove all devices from previous calls so unavailable devices will be removed
         // and only devices found in the current introspection result will be used
-        if (bluetoothDeviceByAdapterMac.containsKey(adapterMac)) {
-            bluetoothDeviceByAdapterMac.get(adapterMac).clear();
+        List<BluetoothDevice> knownBefore = bluetoothDeviceByAdapterMac.put(adapterMac, foundDevices);
+
+        if (knownBefore == null) {
+            knownBefore = Collections.emptyList();
         }
 
         for (String path : scanObjectManager) {
             String devicePath = "/org/bluez/" + adapter.getDeviceName() + "/" + path;
+            Optional<BluetoothDevice> knownDevice = knownBefore.stream()
+                    .filter(bd -> devicePath.equals(bd.getDbusPath()))
+                    .findFirst();
+
+            if (lazyScan && knownDevice.isPresent()) {
+                BluetoothDevice btDev = knownDevice.get();
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Found bluetooth device {} on adapter {} again", btDev.getAddress(), adapterMac);
+                }
+
+                foundDevices.add(btDev);
+                continue;
+            }
+
             Device1 device = DbusHelper.getRemoteObject(dbusConnection, devicePath, Device1.class);
             if (device != null) {
                 BluetoothDevice btDev = new BluetoothDevice(device, adapter, devicePath, dbusConnection);
-                logger.debug("Found bluetooth device {} on adapter {}", btDev.getAddress(), adapterMac);
-                if (bluetoothDeviceByAdapterMac.containsKey(adapterMac)) {
-                    bluetoothDeviceByAdapterMac.get(adapterMac).add(btDev);
-                } else {
-                    List<BluetoothDevice> list = new ArrayList<>();
-                    list.add(btDev);
-                    bluetoothDeviceByAdapterMac.put(adapterMac, list);
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Found bluetooth device {} on adapter {}", btDev.getAddress(), adapterMac);
                 }
+
+                foundDevices.add(btDev);
             }
         }
     }
@@ -223,8 +242,6 @@ public class DeviceManager {
             }
 
         }
-
-
 
         getAdapter().setDiscoveryFilter(filters);
     }
@@ -364,6 +381,19 @@ public class DeviceManager {
         } else {
             throw new BluezDoesNotExistException("Null is not a valid bluetooth adapter");
         }
+    }
+
+    /**
+     * Enable/disable lazy scanning.
+     * When looking for new devices already known devices will usually be queried
+     * for GATT services again. <br>
+     * When lazy scan is enabled, re-querying of GATT services will NOT be performed.
+     * <br>
+     * The default is false (lazy scanning disabled)
+     * @param _scan true to enable
+     */
+    public void setLazyScan(boolean _scan) {
+        lazyScan = _scan;
     }
 
     /**
