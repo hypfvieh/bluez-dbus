@@ -41,6 +41,8 @@ public class DeviceManager {
 
     private String defaultAdapterMac;
 
+    private boolean lazyScan;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -194,11 +196,13 @@ public class DeviceManager {
                     .filter(bd -> devicePath.equals(bd.getDbusPath()))
                     .findFirst();
 
-            if (knownDevice.isPresent()) {
+            if (lazyScan && knownDevice.isPresent()) {
                 BluetoothDevice btDev = knownDevice.get();
+
                 if (logger.isDebugEnabled()) {
                     logger.debug("Found bluetooth device {} on adapter {} again", btDev.getAddress(), adapterMac);
                 }
+
                 foundDevices.add(btDev);
                 continue;
             }
@@ -206,9 +210,11 @@ public class DeviceManager {
             Device1 device = DbusHelper.getRemoteObject(dbusConnection, devicePath, Device1.class);
             if (device != null) {
                 BluetoothDevice btDev = new BluetoothDevice(device, adapter, devicePath, dbusConnection);
+
                 if (logger.isDebugEnabled()) {
                     logger.debug("Found bluetooth device {} on adapter {}", btDev.getAddress(), adapterMac);
                 }
+
                 foundDevices.add(btDev);
             }
         }
@@ -236,8 +242,6 @@ public class DeviceManager {
             }
 
         }
-
-
 
         getAdapter().setDiscoveryFilter(filters);
     }
@@ -377,6 +381,19 @@ public class DeviceManager {
         } else {
             throw new BluezDoesNotExistException("Null is not a valid bluetooth adapter");
         }
+    }
+
+    /**
+     * Enable/disable lazy scanning.
+     * When looking for new devices already known devices will usually be queried
+     * for GATT services again. <br>
+     * When lazy scan is enabled, re-querying of GATT services will NOT be performed.
+     * <br>
+     * The default is false (lazy scanning disabled)
+     * @param _scan true to enable
+     */
+    public void setLazyScan(boolean _scan) {
+        lazyScan = _scan;
     }
 
     /**
