@@ -74,7 +74,10 @@ jnr-unixsockets but with a richer feature set out of the box. It supports filede
 
 # Changelog:
 
-#### Version 0.3.2 (not released yet):
+#### Version 0.3.3 (not released yet):
+- nothing so far
+
+#### Version 0.3.2 (2025-04-20):
 - Improved scanning/refreshing behavior of `DeviceManager` [#PR67](https://github.com/hypfvieh/bluez-dbus/pull/67), thanks to [joerg1985](https://github.com/joerg1985)
 - Added new method `setLazyScan` to enable/disable re-querying of GATT services from already known devices when scanning
 
