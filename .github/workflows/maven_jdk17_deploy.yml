@@ -21,7 +21,7 @@ jobs:
         server-password: MAVEN_PASSWORD
     - name: Build and Deploy Snapshot with Maven
       run: |
-        mvn -B clean install deploy --file pom.xml
+        mvn -B clean deploy --file pom.xml
       env:
           MAVEN_USERNAME: ${{ secrets.MVN_SNAPSHOT_USER }}
           MAVEN_PASSWORD: ${{ secrets.MVN_SNAPSHOT_PW }}
