@@ -12,6 +12,7 @@ import org.freedesktop.dbus.connections.impl.DBusConnectionBuilder;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.handlers.AbstractPropertiesChangedHandler;
 import org.freedesktop.dbus.handlers.AbstractSignalHandlerBase;
+import org.freedesktop.dbus.interfaces.ObjectManager;
 import org.freedesktop.dbus.messages.DBusSignal;
 import org.freedesktop.dbus.types.Variant;
 import org.slf4j.Logger;
@@ -52,6 +53,56 @@ public class DeviceManager {
      */
     private DeviceManager(DBusConnection _connection) {
         dbusConnection = Objects.requireNonNull(_connection);
+        registerObjectManagerHandler();
+    }
+
+    /**
+     * Registers a handler for the org.freedesktop.DBus.ObjectManager InterfacesRemoved signal that
+     * BlueZ emits whenever it removes a managed object (e.g. a device that is no longer in range or
+     * was explicitly removed). The cached {@link BluetoothDevice} wrappers hold a fixed
+     * {@link org.bluez.Device1} proxy bound to a DBus object path; once BlueZ removes that object the
+     * proxy is stale (method calls fail and its property-change signals stop arriving). Evicting the
+     * cached wrapper here makes the next introspection create a fresh wrapper bound to the current
+     * object, recovering transparently from BlueZ object churn.
+     */
+    private void registerObjectManagerHandler() {
+        try {
+            registerSignalHandler(new AbstractSignalHandlerBase<ObjectManager.InterfacesRemoved>() {
+                @Override
+                public Class<ObjectManager.InterfacesRemoved> getImplementationClass() {
+                    return ObjectManager.InterfacesRemoved.class;
+                }
+
+                @Override
+                public void handle(ObjectManager.InterfacesRemoved _signal) {
+                    if (_signal != null) {
+                        onInterfacesRemoved(_signal.getObjectPath(), _signal.getInterfaces());
+                    }
+                }
+            });
+        } catch (DBusException _ex) {
+            logger.warn("Could not register ObjectManager InterfacesRemoved handler; stale device "
+                    + "objects will not be evicted automatically", _ex);
+        }
+    }
+
+    /**
+     * Evicts a cached {@link BluetoothDevice} whose underlying DBus object has been removed by BlueZ,
+     * so it is recreated (with a live proxy and fresh signal subscriptions) on the next lookup.
+     *
+     * @param _objectPath the removed object path
+     * @param _interfaces the interfaces that were removed for that path
+     */
+    private void onInterfacesRemoved(String _objectPath, List<String> _interfaces) {
+        if (_objectPath == null || _interfaces == null || !_interfaces.contains(Device1.class.getName())) {
+            // only care about removed device objects
+            return;
+        }
+        for (List<BluetoothDevice> devices : bluetoothDeviceByAdapterMac.values()) {
+            if (devices.removeIf(_dev -> _objectPath.equals(_dev.getDbusPath()))) {
+                logger.debug("Evicted stale bluetooth device object {} after BlueZ removed it", _objectPath);
+            }
+        }
     }
 
     /**
