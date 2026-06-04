@@ -53,7 +53,7 @@ jnr-unixsockets but with a richer feature set out of the box. It supports filede
 
 # Changelog:
 
-#### Version 0.3.3 (not released yet):
+#### Version 0.3.3 (2026-06-04):
 - Added `InterfaceRemoved` signal listener to clean up old `BluetoothDevice` proxy objects when a bluetooth device disconnects [#PR73](https://github.com/hypfvieh/bluez-dbus/pull/73), thanks to [Vlad Kolotov](https://github.com/vkolotov)
 
 #### Version 0.3.2 (2025-04-20):
