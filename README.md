@@ -1,10 +1,10 @@
-# bluez-dbus [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.hypfvieh/bluez-dbus/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.hypfvieh/bluez-dbus)
-bluetooth library for linux OSes using [DBus](https://dbus.freedesktop.org/) and [bluez](http://www.bluez.org/).
+# bluez-dbus [![Maven Central](https://img.shields.io/maven-central/v/com.github.hypfvieh/bluez-dbus?color=%2300AA00)](https://maven-badges.herokuapp.com/maven-central/com.github.hypfvieh/bluez-dbus)
 
 This project was inspired by [tinyb](https://github.com/intel-iot-devkit/tinyb),
-but does not require any wrapper library as it is based on a newer version of dbus-java which uses jnr-unixsocket.
+but does not require any wrapper library as it is based on a newer version of dbus-java which supports multiple unix socket implementations such as
+the Java 16 native unixsocket implementation, jnr-unixsocket and junixsocket.
 
-This library has been tested with Ubuntu 22.04 (AMD64) and bluez library 5.64.
+This library has been tested on Ubuntu 24.04 (AMD64) and bluez library 5.72.
 
 ## Compatibility
 The different versions of bluez-dbus are using different versions of dbus-java which requires modern Java versions.
@@ -51,31 +51,10 @@ For most cases this implementation should be fine. In some special cases like fi
 Starting from bluez-java 0.3.x, dbus-java 5.x is used which has proper support for junixsocket. JUnixsocket is another implementation for UnixSockets like
 jnr-unixsockets but with a richer feature set out of the box. It supports filedescriptors without the need of additional libraries.
 
-##### To build a newer bluez-library for Ubuntu (16.04 has an older version than 5.50):
--------------
-1. Download new bluez library from http://www.bluez.org/download/
-2. Install Ubuntu build essentials:  
-  &nbsp;&nbsp;&nbsp;&nbsp;sudo apt-get install build-essential
-3. Install required additional dependencies:  
-&nbsp;&nbsp;&nbsp;&nbsp;`sudo apt-get install libdbus-1-dev libudev-dev libical-dev libreadline-dev checkinstall libglib2.0-dev`
-4. Extract the downloaded bluez-tarball:  
-&nbsp;&nbsp;&nbsp;&nbsp;`tar xfvJ bluez-5.50.tar.xz`
-5. Run ./configure in the extracted bluez tarball:  
-   &nbsp;&nbsp;&nbsp;&nbsp;`./configure --prefix=/usr --libexecdir=/usr/lib --enable-manpages`
-6. run checkinstall in bluez tarball directory: `sudo checkinstall`
-7. Answer 'y' to question if default docs should be created
-8. Enter a description (e.g. `New bluez library`), press enter and then CTRL+D
-9. In checkinstall:  
-    &nbsp;&nbsp;Go to Menu option 13 (Replaces)  
-    &nbsp;&nbsp;Enter: `bluez-obexd, bluez-cups, bluez-hcidump, bluez-btsco, bluez-tools`
-10. Press Enter to start the build
-11. Install the generated .deb files:  
-  &nbsp;&nbsp;&nbsp;&nbsp;`sudo dpkg -i bluez_5.50-1_amd64.deb`
-
 # Changelog:
 
 #### Version 0.3.3 (not released yet):
-- nothing so far
+- Added `InterfaceRemoved` signal listener to clean up old `BluetoothDevice` proxy objects when a bluetooth device disconnects [#PR73](https://github.com/hypfvieh/bluez-dbus/pull/73), thanks to [Vlad Kolotov](https://github.com/vkolotov)
 
 #### Version 0.3.2 (2025-04-20):
 - Improved scanning/refreshing behavior of `DeviceManager` [#PR67](https://github.com/hypfvieh/bluez-dbus/pull/67), thanks to [joerg1985](https://github.com/joerg1985)

@@ -20,11 +20,10 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
-        <junit.version>5.10.3</junit.version>
-        <junit.platform.version>1.10.3</junit.platform.version>
-        <slf4j.version>2.0.13</slf4j.version>
-        <dbus.java.version>5.1.1</dbus.java.version>
-        <eclipse.jdt.annotation.version>2.3.0</eclipse.jdt.annotation.version>
+        <junit.version>6.1.0</junit.version>
+        <slf4j.version>2.0.18</slf4j.version>
+        <dbus.java.version>5.2.0</dbus.java.version>
+        <eclipse.jdt.annotation.version>2.4.100</eclipse.jdt.annotation.version>
 
         <mvn.gpg.plugin.version>3.2.4</mvn.gpg.plugin.version>
         <mvn.deploy.plugin.version>3.1.2</mvn.deploy.plugin.version>
@@ -287,7 +286,7 @@
             <dependency>
                 <groupId>org.junit.platform</groupId>
                 <artifactId>junit-platform-launcher</artifactId>
-                <version>${junit.platform.version}</version>
+                <version>${junit.version}</version>
             </dependency>
                         
             <dependency>
