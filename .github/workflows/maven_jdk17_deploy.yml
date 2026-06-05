@@ -1,4 +1,4 @@
-SaPTZzname: Maven Build/Test/Deploy JDK 17
+name: Maven Build/Test/Deploy JDK 17
 
 on:
   push:
