@@ -9,6 +9,8 @@ import org.freedesktop.dbus.exceptions.DBusExecutionException;
 import org.freedesktop.dbus.interfaces.DBusInterface;
 import org.freedesktop.dbus.types.UInt16;
 import org.freedesktop.dbus.types.UInt32;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -20,6 +22,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  */
 public class BluetoothDevice extends AbstractBluetoothObject {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final Device1 rawdevice;
     private final BluetoothAdapter adapter;
@@ -57,17 +61,40 @@ public class BluetoothDevice extends AbstractBluetoothObject {
 
     /**
      * Re-queries the list of available {@link BluetoothGattService}'s on this device.
+     * <p>
+     * The query is built into a temporary map and only committed once it has actually produced
+     * services. This avoids latching {@code servicesDiscovered} to {@code true} with an empty cache
+     * when the introspection yields nothing or throws (e.g. right after a reconnect, before BlueZ has
+     * exported the GATT objects, or on a stale connection): a failed refresh then stays retryable on
+     * the next call instead of leaving the device permanently stuck with no services while reporting
+     * them as "discovered".
      */
     public void refreshGattServices() {
-        servicesDiscovered.set(true);
-        servicesByUuid.clear();
-
-        Set<String> findNodes = DbusHelper.findNodes(getDbusConnection(), getDbusPath());
-        Map<String, GattService1> remoteObjects = getRemoteObjects(findNodes, getDbusPath(), GattService1.class);
-        for (Entry<String, GattService1> entry : remoteObjects.entrySet()) {
-            BluetoothGattService bluetoothGattService = new BluetoothGattService(entry.getValue(), this, entry.getKey(), getDbusConnection());
-            servicesByUuid.put(bluetoothGattService.getUuid(), bluetoothGattService);
+        Map<String, BluetoothGattService> discovered = new LinkedHashMap<>();
+        try {
+            Set<String> findNodes = DbusHelper.findNodes(getDbusConnection(), getDbusPath());
+            Map<String, GattService1> remoteObjects = getRemoteObjects(findNodes, getDbusPath(), GattService1.class);
+            for (Entry<String, GattService1> entry : remoteObjects.entrySet()) {
+                BluetoothGattService bluetoothGattService = new BluetoothGattService(entry.getValue(), this, entry.getKey(), getDbusConnection());
+                discovered.put(bluetoothGattService.getUuid(), bluetoothGattService);
+            }
+        } catch (RuntimeException _ex) {
+            // The introspection failed (e.g. a stale/aborted DBus connection). Keep any previously
+            // known services and leave servicesDiscovered unset so a later call retries, instead of
+            // caching an empty result and reporting it as "discovered".
+            logger.debug("Failed to refresh GATT services for {}: {}", getDbusPath(), _ex.getMessage());
+            return;
         }
+
+        if (discovered.isEmpty()) {
+            // Nothing resolved this time - keep any previously known services and leave
+            // servicesDiscovered unset so a later call retries instead of caching an empty result.
+            return;
+        }
+
+        servicesByUuid.clear();
+        servicesByUuid.putAll(discovered);
+        servicesDiscovered.set(true);
     }
 
     /**
