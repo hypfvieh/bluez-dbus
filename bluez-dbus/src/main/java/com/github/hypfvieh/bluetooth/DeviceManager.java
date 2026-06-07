@@ -20,6 +20,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 
 /**
  * The 'main' class to get access to all DBus/bluez related objects.
@@ -43,6 +45,12 @@ public class DeviceManager {
     private String defaultAdapterMac;
 
     private boolean lazyScan;
+
+    /** Listeners notified (with the removed device's DBus object path) when BlueZ removes a device object. */
+    private final List<Consumer<String>> deviceRemovedListeners = new CopyOnWriteArrayList<>();
+
+    /** Listeners notified (with the removed adapter's DBus object path) when BlueZ removes an adapter object. */
+    private final List<Consumer<String>> adapterRemovedListeners = new CopyOnWriteArrayList<>();
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -75,8 +83,9 @@ public class DeviceManager {
 
                 @Override
                 public void handle(ObjectManager.InterfacesRemoved _signal) {
-                    if (_signal != null) {
-                        onInterfacesRemoved(_signal.getObjectPath(), _signal.getInterfaces());
+                    if (_signal != null && _signal.getSignalSource() != null) {
+                        // getObjectPath() is the ObjectManager signal path ("/"), not the removed object's path.
+                        onInterfacesRemoved(_signal.getSignalSource().getPath(), _signal.getInterfaces());
                     }
                 }
             });
@@ -94,15 +103,120 @@ public class DeviceManager {
      * @param _interfaces the interfaces that were removed for that path
      */
     private void onInterfacesRemoved(String _objectPath, List<String> _interfaces) {
-        if (_objectPath == null || _interfaces == null || !_interfaces.contains(Device1.class.getName())) {
-            // only care about removed device objects
+        if (_objectPath == null || _interfaces == null) {
             return;
         }
+        if (_interfaces.contains(Adapter1.class.getName())) {
+            onAdapterRemoved(_objectPath);
+        } else if (_interfaces.contains(Device1.class.getName())) {
+            onDeviceRemoved(_objectPath);
+        }
+        // any other removed interface (GATT service/characteristic/...) is not cached here
+    }
+
+    /**
+     * Handles removal of a device object: evicts the cached {@link BluetoothDevice} whose DBus object
+     * path matches and notifies device-removed listeners.
+     *
+     * @param _objectPath the removed device's DBus object path
+     */
+    private void onDeviceRemoved(String _objectPath) {
         for (List<BluetoothDevice> devices : bluetoothDeviceByAdapterMac.values()) {
             if (devices.removeIf(_dev -> _objectPath.equals(_dev.getDbusPath()))) {
                 logger.debug("Evicted stale bluetooth device object {} after BlueZ removed it", _objectPath);
             }
         }
+        // Notify consumers so they can react to the removal (e.g. reset their own cached connection
+        // state for this device); the eviction above only clears this manager's cache. The full DBus
+        // object path is passed because it identifies both the adapter and the device, which a
+        // consumer needs to disambiguate the same MAC seen via multiple adapters.
+        for (Consumer<String> listener : deviceRemovedListeners) {
+            try {
+                listener.accept(_objectPath);
+            } catch (RuntimeException _ex) {
+                logger.warn("Device-removed listener threw for {}", _objectPath, _ex);
+            }
+        }
+    }
+
+    /**
+     * Handles removal of an adapter object (e.g. a USB BT dongle being unplugged). BlueZ does not
+     * reliably emit a separate {@code InterfacesRemoved} for every child device before removing the
+     * adapter, so the per-device path above can miss them. Drop the cached adapter wrappers and
+     * cascade-evict every cached device that lived under the removed adapter's path, so they are all
+     * rebuilt with live proxies when the adapter reappears. Then notify adapter-removed listeners so
+     * consumers can reset adapter-scoped state (and their own per-device connection state).
+     *
+     * @param _objectPath the removed adapter's DBus object path, e.g. {@code /org/bluez/hci0}
+     */
+    private void onAdapterRemoved(String _objectPath) {
+        bluetoothAdaptersByMac.values().removeIf(_adapter -> _objectPath.equals(_adapter.getDbusPath()));
+        bluetoothAdaptersByAdapterName.values().removeIf(_adapter -> _objectPath.equals(_adapter.getDbusPath()));
+        // cascade: drop every cached device that lived under this adapter's path
+        String devicePrefix = _objectPath + "/";
+        for (List<BluetoothDevice> devices : bluetoothDeviceByAdapterMac.values()) {
+            if (devices.removeIf(_dev -> {
+                String path = _dev.getDbusPath();
+                return path != null && path.startsWith(devicePrefix);
+            })) {
+                logger.debug("Evicted bluetooth devices under adapter {} after BlueZ removed it", _objectPath);
+            }
+        }
+        for (Consumer<String> listener : adapterRemovedListeners) {
+            try {
+                listener.accept(_objectPath);
+            } catch (RuntimeException _ex) {
+                logger.warn("Adapter-removed listener threw for {}", _objectPath, _ex);
+            }
+        }
+    }
+
+    /**
+     * Registers a listener that is invoked with a device's DBus object path (e.g.
+     * {@code /org/bluez/hci0/dev_AA_BB_CC_DD_EE_FF}) whenever BlueZ removes that device object
+     * (ObjectManager InterfacesRemoved). The path identifies both the adapter and the device. Useful
+     * for consumers that hold their own cached state for a device and need to invalidate it when the
+     * underlying object disappears.
+     *
+     * @param _listener consumer of the removed device's DBus object path
+     */
+    public void registerDeviceRemovedListener(Consumer<String> _listener) {
+        if (_listener != null) {
+            deviceRemovedListeners.add(_listener);
+        }
+    }
+
+    /**
+     * Removes a previously registered device-removed listener.
+     *
+     * @param _listener the listener to remove
+     */
+    public void unregisterDeviceRemovedListener(Consumer<String> _listener) {
+        deviceRemovedListeners.remove(_listener);
+    }
+
+    /**
+     * Registers a listener that is invoked with an adapter's DBus object path (e.g.
+     * {@code /org/bluez/hci0}) whenever BlueZ removes that adapter object (ObjectManager
+     * InterfacesRemoved) — typically a USB BT dongle being unplugged. Useful for consumers that cache
+     * an adapter proxy and the devices found through it, and need to invalidate all of that when the
+     * adapter disappears.
+     *
+     * @param _listener consumer of the removed adapter's DBus object path
+     */
+    public void registerAdapterRemovedListener(Consumer<String> _listener) {
+        if (_listener != null) {
+            adapterRemovedListeners.add(_listener);
+        }
+    }
+
+    /**
+     * Removes a previously registered adapter-removed listener.
+     *
+     * @param _listener the listener to remove
+     */
+    public void unregisterAdapterRemovedListener(Consumer<String> _listener) {
+        adapterRemovedListeners.remove(_listener);
     }
 
     /**
