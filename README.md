@@ -53,8 +53,11 @@ jnr-unixsockets but with a richer feature set out of the box. It supports filede
 
 # Changelog:
 
-#### Version 0.3.3 (not released yet):
+#### Version 0.3.6 (not released yet):
 - nothing yet
+
+#### Version 0.3.5 (2026-06-10):
+- [#PR75](https://github.com/hypfvieh/bluez-dbus/pull/75), thanks to [Vlad Kolotov](https://github.com/vkolotov)
 
 #### Version 0.3.4 (2026-06-07):
 - [#PR74](https://github.com/hypfvieh/bluez-dbus/pull/74) with fix for changes introduced by [#PR73](https://github.com/hypfvieh/bluez-dbus/pull/73), thanks to [Vlad Kolotov](https://github.com/vkolotov)
