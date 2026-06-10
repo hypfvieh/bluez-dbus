@@ -514,7 +514,8 @@ public class DeviceManager {
             }
         }
 
-        return bluetoothDeviceByAdapterMac.getOrDefault(_adapterMac, new ArrayList<>());
+        return new ArrayList<>(
+            bluetoothDeviceByAdapterMac.getOrDefault(_adapterMac, new ArrayList<>()));
     }
 
     /**
